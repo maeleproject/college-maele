@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collège Maele - Impavidi Progrediamuri</title>
+    <link rel="icon" type="image/png" href=./images/oiseaux.jpeg>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Photo gallery : utiliser des images statiques depuis blog/static/blog/Images/
+        const photoGallery = document.getElementById('photo-gallery');
+        const galleryModal = document.getElementById('gallery-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalCaption = document.getElementById('modal-caption');
+        const modalClose = document.getElementById('modal-close');
+        const modalPrev = document.getElementById('modal-prev');
+        const modalNext = document.getElementById('modal-next');
+
+        // Remplacez ces chemins par vos vraies images dans static/blog/Images/
+        const imagesPaths = {
+              logo: "./images/oiseaux.jpeg",
+              campus: "./images/campus.jpg",
+              grotte: "./images/grotte.jpg",
+              facade: "./images/facade.jpg",
+              primaire: "./images/primaire.jpg",
+              cours: "./images/cours.jpg",
+              point: "./images/point.jpg",
+              bbio: "./images/bbio.jpg",
+              cinquantenaire: "./images/cinquantenaire.jpg",
+              drapeau: "./images/drapeau.jpg"
+          };
+
+        let currentIndex = 0;
+
+        // Create thumbnails
+        images.forEach((img, index) => {
+            const a = document.createElement('a');
+            a.href = img.full;
+            a.className = "block relative overflow-hidden rounded-lg shadow-md animated-section slide-up";
+            a.dataset.index = index;
+            a.innerHTML = `\n                <img src="${img.thumb}" alt="${img.caption}" class="w-full h-40 md:h-48 object-cover transform hover:scale-105 transition-transform duration-300">\n                <div class="absolute inset-0 bg-black/0 hover:bg-black/20 flex items-end p-3 opacity-0 hover:opacity-100 transition-opacity duration-200">\n                    <p class=\"text-white text-sm\">${img.caption}</p>\n                </div>`;
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                openGallery(index);
+            });
+            photoGallery.appendChild(a);
+        });
+
+        function openGallery(index) {
+            currentIndex = index;
+            const item = images[currentIndex];
+            modalImg.src = item.full;
+            modalImg.alt = item.caption || 'Image de la galerie';
+            modalCaption.textContent = item.caption || '';
+            galleryModal.classList.remove('hidden');
+            galleryModal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // empêcher le scroll de fond
+        }
+
+        function closeGallery() {
+            galleryModal.classList.add('hidden');
+            galleryModal.classList.remove('flex');
+            modalImg.src = '';
+            modalCaption.textContent = '';
+            document.body.style.overflow = '';
+        }
+
+        function showImage(delta) {
+            currentIndex = (currentIndex + delta + images.length) % images.length;
+            const item = images[currentIndex];
+            modalImg.src = item.full;
+            modalImg.alt = item.caption || '';
+            modalCaption.textContent = item.caption || '';
+        }
+
+        modalClose.addEventListener('click', closeGallery);
+        modalPrev.addEventListener('click', (e) => { e.stopPropagation(); showImage(-1); });
+        modalNext.addEventListener('click', (e) => { e.stopPropagation(); showImage(1); });
+
+        // Close when clicking backdrop
+        galleryModal.addEventListener('click', (e) => {
+            if (e.target === galleryModal) closeGallery();
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (galleryModal.classList.contains('flex')) {
+                if (e.key === 'Escape') closeGallery();
+                if (e.key === 'ArrowLeft') showImage(-1);
+                if (e.key === 'ArrowRight') showImage(1);
+            }
+        });
+
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    });
+    </script>
+    <style>
+        /* ====== Global animation helpers ====== */
+        :root { --anim-duration: 480ms; --anim-ease: cubic-bezier(.2,.9,.3,1); }
+
+        /* Respect user preference */
+        @media (prefers-reduced-motion: reduce) {
+            .animated-section, .slide-in-left, .slide-in-right, .fade-in-up { transition: none !important; transform: none !important; opacity: 1 !important; }
+        }
+
+        .animated-section { opacity: 0; transform: translateY(18px); transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease); will-change: opacity, transform; }
+        .animated-section.visible { opacity: 1; transform: translateY(0); }
+
+        .slide-in-left { transform: translateX(-18px); transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease); }
+        .slide-in-right { transform: translateX(18px); transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease); }
+        .slide-in-left.visible, .slide-in-right.visible { transform: translateX(0); opacity: 1; }
+
+        .fade-in-up { transform: translateY(10px); opacity: 0; transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease); }
+        .fade-in-up.visible { transform: translateY(0); opacity: 1; }
+
+        /* Hamburger menu transition */
+        #mobile-menu { transition: transform 0.32s var(--anim-ease); }
+
+        /* Teacher carousel transition - SMOOTHER ANIMATION */
+        #teacher-carousel-track { transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1); }
+
+        /* Background Slider */
+        #bg-slider .bg-slide { transition: opacity 1.2s ease-in-out; }
+
+        /* Modal transitions */
+        .modal { transition: opacity 220ms ease-in-out; }
+        .modal-content { transition: transform 260ms ease-in-out, opacity 200ms ease-in-out; }
+
+        /* Small utility for focus outlines for keyboard users */
+  :focus { outline: 3px solid rgba(37,99,235,0.14); outline-offset: 2px; }
+  /* Progress bar styling */
+  .progress-wrap { position: fixed; left: 0; right: 0; top: 0; height: 4px; z-index: 60; pointer-events: none; }
+  .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg,#2563eb,#1e40af); transform-origin: 0 50%; transition: width .12s linear; }
+    /* Avatars and teacher images: ensure consistent sizing and cropping */
+    /* Applies to statically-rendered team cards and dynamically-inserted teacher cards */
+    #equipe .rounded-full, #equipe img, .team-card img, #teacher-carousel-track img {
+      width: 8rem; /* 128px */
+      height: 8rem; /* 128px */
+      object-fit: cover;
+      border-radius: 9999px; /* full */
+      display: block;
+    }
+    /* Slightly smaller on very small screens */
+    @media (max-width: 420px) {
+      #equipe .rounded-full, #equipe img, .team-card img, #teacher-carousel-track img { width: 6.5rem; height: 6.5rem; }
+    }
+    </style>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Compteurs “count-up” lorsqu’ils entrent dans le viewport
+  const counters = document.querySelectorAll('#a-propos .counter');
+  if (!counters.length) return;
+
+  const easeOut = t => 1 - Math.pow(1 - t, 3); // easing doux
+  const animateCounter = (el) => {
+    const target = parseInt(el.dataset.count || '0', 10);
+    const start  = 0;
+    const dur    = 1200; // ms
+    let st = null;
+
+    const step = (ts) => {
+      if (!st) st = ts;
+      const p = Math.min((ts - st) / dur, 1);
+      const val = Math.floor(start + (target - start) * easeOut(p));
+      el.textContent = val.toLocaleString('fr-FR');
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        animateCounter(el);
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  counters.forEach(c => io.observe(c));
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  /* ====== Animation d’apparition ====== */
+  const animated = document.querySelectorAll('.animated-section');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }});
+  }, { threshold: .12 });
+  animated.forEach(el=>io.observe(el));
+
+  /* ====== HYMN – play/pause ====== */
+  const playBtn = document.getElementById('hymnPlayBtn');
+  const audio   = document.getElementById('hymnAudio');
+  if (playBtn && audio) {
+    const setIcon = playing => playBtn.innerHTML = `<i class="fa-solid ${playing ? 'fa-pause' : 'fa-play'}"></i>`;
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) { audio.play().catch(()=>{}); setIcon(true); }
+      else { audio.pause(); setIcon(false); }
+    });
+    audio.addEventListener('ended', () => setIcon(false));
+  }
+
+  /* ====== HYMN – copier & télécharger ====== */
+  const copyBtn = document.getElementById('copyLyricsBtn');
+  const dlBtn   = document.getElementById('downloadLyricsBtn');
+  const lyrics  = document.getElementById('lyricsFull');
+  if (copyBtn && lyrics) {
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(lyrics.value);
+        copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copié !';
+        setTimeout(()=> copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copier les paroles', 1400);
+      } catch(e) {}
+    });
+  }
+  if (dlBtn && lyrics) {
+    const blob = new Blob([lyrics.value], {type: 'text/plain;charset=utf-8'});
+    dlBtn.href = URL.createObjectURL(blob);
+  }
+
+  /* ====== HYMN – afficher/masquer colonnes ====== */
+  document.querySelectorAll('[data-expand]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const sel = btn.getAttribute('data-expand');
+      const box = document.querySelector(sel);
+      if(!box) return;
+      const hidden = box.style.maxHeight === '0px' || box.classList.contains('collapsed');
+      if (hidden) {
+        box.classList.remove('collapsed');
+        box.style.maxHeight = box.scrollHeight + 'px';
+        setTimeout(()=> box.style.maxHeight = '', 250);
+      } else {
+        box.style.maxHeight = box.scrollHeight + 'px';
+        requestAnimationFrame(()=> {
+          box.style.maxHeight = '0px';
+          box.classList.add('collapsed');
+        });
+      }
+    });
+  });
+});
+</script>
+<style>
+  /* Forcer la suppression du débordement horizontal pour éviter le "vide à droite" */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  /* transition douce pour les blocs de paroles */
+  #lyrics-col-1, #lyrics-col-2 { overflow: hidden; transition: max-height .25s ease; }
+  #lyrics-col-1.collapsed, #lyrics-col-2.collapsed { max-height: 0; }
+</style>
+
+</head>
+<body class="overflow-x-hidden">
+  <div class="progress-wrap" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
+    <!-- HEADER & NAVIGATION -->
+    <header id="header" class="bg-white/80 backdrop-blur-lg shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#accueil" class="flex items-center space-x-3">
+                <img src="./Images/Oiseaux.jpeg" alt="Logo Collège Maele" class="rounded-full w-10 h-10 object-cover">
+                <span class="text-xl md:text-2xl font-bold text-blue-700">Collège Maele</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center space-x-6">
+                <a href="#accueil" class="text-gray-700 hover:text-blue-600 transition duration-300">Accueil</a>
+                <a href="#a-propos" class="text-gray-700 hover:text-blue-600 transition duration-300">À Propos</a>
+                <a href="#hymne" class="text-gray-700 hover:text-blue-600 transition duration-300">Hymne</a>
+                <a href="#histoire" class="text-gray-700 hover:text-blue-600 transition duration-300">Histoire</a>
+                <a href="#equipe" class="text-gray-700 hover:text-blue-600 transition duration-300">Équipe</a>
+                <a href="./Pages/galerievide.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Galeries</a>
+                <a href="#dons" class="text-gray-700 hover:text-blue-600 transition duration-300">Dons</a>
+                <a href="./pages/accueil.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Blog</a>
+                <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contacts</a>
+            </div>
+
+            <button data-modal-target="don-principal" class="hidden lg:block bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition duration-300">
+                Faire un Don
+            </button>
+
+      <!-- Mobile Menu Button -->
+      <div class="lg:hidden">
+                <button id="hamburger-button" class="text-gray-800 focus:outline-none">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="lg:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-2xl transform translate-x-full opacity-0 pointer-events-none z-50" aria-hidden="true">
+            <div class="p-6">
+                <button id="close-menu-button" class="absolute top-4 right-4 text-gray-800">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <div class="mt-12 flex flex-col space-y-6">
+                    <a href="#accueil" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Accueil</a>
+                    <a href="#a-propos" class="mobile-link text-xl text-gray-700 hover:text-blue-600">À Propos</a>
+                    <a href="#hymne" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Hymne</a>
+                    <a href="#histoire" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Histoire</a>
+                    <a href="#equipe" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Équipe</a>
+                    <a href="./Pages/galerievide.html" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Galeries</a>
+                    <a href="./pages/accueil.html" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Blog</a>
+                    <a href="#contact" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Contact</a>
+                    <button data-modal-target="don-principal" class="mt-4 block w-full bg-gradient-to-r from-blue-600 to-blue-800 text-white text-center font-bold py-3 px-6 rounded-full shadow-lg">
+                        Faire un Don
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION WITH BACKGROUND SLIDER -->
+        <section id="accueil" class="relative h-screen flex items-center justify-center text-white overflow-hidden">
+            <!-- Background Image Slider -->
+            <div id="bg-slider" class="absolute top-0 left-0 w-full h-full">
+                <div class="absolute inset-0 bg-black/50 z-10"></div>
+                <img src=./Images/point.jpg alt="Image d'arrière-plan 1" class="bg-slide absolute w-full h-full object-cover opacity-100">
+                <img src=./Images/campus.jpg alt="campus" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/grotte.jpg alt="grotte" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/drapeau.jpg alt="Image d'arrière-plan 4" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/bbio.jpg alt="Image d'arrière-plan 5" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/facade.jpg alt="Image d'arrière-plan 6" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/point.jpg alt="Image d'arrière-plan 7" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src="./Images/primaire.jpg" alt="Élèves de primaire assis en classe écoutant un enseignant, pupitres et tableau noir en arrière plan, lumière naturelle par de grandes fenêtres, atmosphère studieuse et chaleureuse, pas de texte visible" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/cours.jpg alt="Image d'arrière-plan 9" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/point.jpg alt="Image d'arrière-plan 10" class="bg-slide absolute w-full h-full object-cover opacity-0">
+            </div>
+
+            <!-- Slider Controls -->
+            <button id="prev-slide" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 bg-white/20 text-white p-3 rounded-full hover:bg-white/40 transition">
+                <i class="fas fa-chevron-left fa-lg"></i>
+            </button>
+            <button id="next-slide" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 bg-white/20 text-white p-3 rounded-full hover:bg-white/40 transition">
+                <i class="fas fa-chevron-right fa-lg"></i>
+            </button>
+            
+            <!-- Hero Content -->
+            <div class="relative z-20 text-center px-4">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 animate-fade-in-down" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">Bienvenue au Collège Maele</h1>
+                <p class="text-lg md:text-2xl mb-8 max-w-3xl mx-auto animate-fade-in-up" style="text-shadow: 1px 1px 4px rgba(0,0,0,0.7);">Impavidi Progrediamur.</p>
+                <a href="#a-propos" class="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-4 px-10 text-lg rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300">
+                    Découvrir notre collège
+                </a>
+            </div>
+        </section>
+
+        <!-- A PROPOS SECTION -->
+<section id="a-propos" class="relative overflow-hidden py-20 md:py-32 bg-white">
+  <!-- décor doux -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+    <div class="absolute -top-24 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-200/60 via-blue-300/25 to-transparent blur-3xl"></div>
+    <svg class="absolute -bottom-16 -right-16 h-[520px] w-[520px] opacity-15" viewBox="0 0 200 200" fill="none">
+      <defs><pattern id="dots-ap" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" class="fill-blue-500"></circle></pattern></defs>
+      <rect width="200" height="200" fill="url(#dots-ap)"></rect>
+    </svg>
+  </div>
+
+  <div class="container mx-auto px-6">
+    <!-- Titre -->
+    <div class="text-center mb-16 animated-section fade-in">
+      <div class="inline-flex items-center gap-2 rounded-full border border-blue-200/70 bg-white/80 px-3 py-1 text-xs font-medium text-blue-700 shadow-sm">
+        <i class="fa-solid fa-school-flag"></i> Notre identité
+      </div>
+      <h2 class="mt-3 text-4xl md:text-5xl font-extrabold text-blue-900">Notre mission, nos valeurs</h2>
+      <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">
+        Au Collège Maele, nous offrons une éducation de qualité qui développe l’intelligence, le caractère et le sens du service.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-12 items-center">
+      <!-- Visuel -->
+      <div class="animated-section slide-in-left">
+        <div class="relative group">
+          <img src="./Images/cinquantenaire.jpg" alt="Cours intérieure du Collège Maele"
+               class="rounded-2xl shadow-2xl w-full object-cover transition-transform duration-500 group-hover:scale-[1.015]">
+          <!-- Badge superposé -->
+          <div class="absolute left-4 bottom-4 md:left-6 md:bottom-6">
+            <div class="inline-flex items-center gap-2 rounded-full bg-white/85 backdrop-blur px-4 py-2 text-sm font-semibold text-blue-900 shadow">
+              <i class="fa-solid fa-shield-heart text-blue-700"></i> Excellence & Humanisme
+            </div>
+          </div>
+        </div>
+
+        <!-- Statistiques (compteurs) -->
+        <div class="mt-6 grid grid-cols-3 gap-3 md:gap-4">
+          <div class="rounded-xl bg-white border border-blue-100 p-4 text-center shadow-sm">
+            <div class="text-2xl md:text-3xl font-extrabold text-blue-800">
+              <span class="counter" data-count="1939">0</span>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Année de fondation</p>
+          </div>
+          <div class="rounded-xl bg-white border border-blue-100 p-4 text-center shadow-sm">
+            <div class="text-2xl md:text-3xl font-extrabold text-blue-800">
+              <span class="counter" data-count="3">0</span> <span class="text-base font-bold">+</span>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Parcours structurés</p>
+          </div>
+          <div class="rounded-xl bg-white border border-blue-100 p-4 text-center shadow-sm">
+            <div class="text-2xl md:text-3xl font-extrabold text-blue-800">
+              <span class="counter" data-count="100">0</span><span class="text-base font-bold">%</span>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Engagés pour la réussite</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenu -->
+      <div class="animated-section slide-in-right">
+        <h3 class="text-2xl md:text-3xl font-extrabold mb-3 text-blue-900">Un héritage d’excellence depuis 1939</h3>
+        <p class="text-gray-700 mb-6">
+          Nous cultivons un environnement d’apprentissage stimulant où la curiosité, la pensée critique et la créativité sont encouragées.
+          Notre pédagogie combine exigence scolaire, accompagnement personnalisé et ouverture au monde.
+        </p>
+
+        <!-- Les 3 voies (cartes compactes) -->
+        <div class="grid gap-3 md:gap-4 mb-6">
+          <div class="flex items-start gap-3 rounded-xl border border-blue-100 bg-white p-4 shadow-sm">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+              <i class="fa-solid fa-seedling"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-blue-900">Éducation de base</h4>
+              <p class="text-sm text-gray-600">Fondations du savoir, de la discipline et de la citoyenneté.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 rounded-xl border border-blue-100 bg-white p-4 shadow-sm">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+              <i class="fa-solid fa-feather-pointed"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-blue-900">Humanités littéraires</h4>
+              <p class="text-sm text-gray-600">Esprit critique, expression, culture générale et ouverture.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 rounded-xl border border-blue-100 bg-white p-4 shadow-sm">
+            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
+              <i class="fa-solid fa-atom"></i>
+            </div>
+            <div>
+              <h4 class="font-semibold text-blue-900">Humanités scientifiques</h4>
+              <p class="text-sm text-gray-600">Rigueur, analyse et innovation vers les filières techniques et universitaires.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Liste de valeurs -->
+        <div class="space-y-3">
+          <div class="flex items-start gap-3">
+            <i class="fas fa-check-circle text-blue-600 mt-1"></i>
+            <p class="text-gray-700">Programmes pédagogiques <strong>évolutifs</strong> et adaptés.</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <i class="fas fa-check-circle text-blue-600 mt-1"></i>
+            <p class="text-gray-700">Accompagnement <strong>personnalisé</strong> de chaque élève.</p>
+          </div>
+          <div class="flex items-start gap-3">
+            <i class="fas fa-check-circle text-blue-600 mt-1"></i>
+            <p class="text-gray-700">Ouverture sur le monde & <strong>nouvelles technologies</strong>.</p>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="#equipe" class="inline-flex items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <i class="fa-solid fa-people-group mr-2"></i>Voir notre équipe
+          </a>
+          <a href="#contact" class="inline-flex items-center justify-center rounded-xl border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-800 shadow-sm transition hover:bg-blue-50">
+            <i class="fa-solid fa-paper-plane mr-2"></i>Nous contacter
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+        
+        <!-- HYMNE SECTION -->
+<section id="hymne" class="relative overflow-hidden py-20 md:py-32 bg-gray-100 dark:bg-slate-800">
+  <!-- décor doux -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+    <div class="absolute -top-24 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-200/60 via-blue-300/20 to-transparent blur-3xl dark:from-blue-900/30 dark:via-blue-700/20"></div>
+    <svg class="absolute -bottom-16 -right-16 h-[520px] w-[520px] opacity-15 dark:opacity-10" viewBox="0 0 200 200" fill="none">
+      <defs><pattern id="dots-hymne" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" class="fill-blue-500"></circle></pattern></defs>
+      <rect width="200" height="200" fill="url(#dots-hymne)"></rect>
+    </svg>
+  </div>
+
+  <div class="container mx-auto px-6">
+    <!-- Titre + lecteur -->
+    <div class="text-center mb-10 animated-section fade-in">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-blue-900 dark:text-blue-300">L’Hymne du Collège Maele — <span class="italic">La Maélienne</span></h2>
+      <p class="mt-2 text-gray-600 dark:text-gray-300">Chant de fierté & d’unité de notre communauté éducative.</p>
+
+      <!-- Lecteur audio (optionnel : place ton fichier si disponible) -->
+      <div class="mt-6 inline-flex items-center gap-3 rounded-full border border-blue-200/70 bg-white/80 px-4 py-2 shadow-sm backdrop-blur dark:border-blue-800/40 dark:bg-slate-800/50">
+        <button id="hymnPlayBtn" class="h-10 w-10 inline-flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 transition" aria-label="Lire / mettre en pause l’hymne">
+          <i class="fa-solid fa-play"></i>
+        </button>
+        <audio id="hymnAudio" preload="none">
+          <!-- Remplace ce src si tu as l’audio -->
+          <source src="" type="audio/mpeg">
+        </audio>
+        <div class="text-sm md:text-base font-medium text-blue-900 dark:text-blue-200">Lecture de l’hymne</div>
+        <div class="ml-3 flex items-center gap-2">
+          <button id="copyLyricsBtn" class="text-xs md:text-sm inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-3 py-1.5 text-blue-800 hover:bg-blue-50 transition dark:border-blue-800/40 dark:bg-slate-800/50 dark:text-blue-200">
+            <i class="fa-regular fa-copy"></i> Copier les paroles
+          </button>
+          <a id="downloadLyricsBtn" download="Hymne_College_Maele.txt"
+             class="text-xs md:text-sm inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-3 py-1.5 text-blue-800 hover:bg-blue-50 transition dark:border-blue-800/40 dark:bg-slate-800/50 dark:text-blue-200"
+             href="#">
+            <i class="fa-solid fa-file-arrow-down"></i> Télécharger
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paroles -->
+    <div class="max-w-5xl mx-auto animated-section slide-up">
+      <div class="grid md:grid-cols-2 gap-6 text-gray-800 dark:text-gray-100">
+        <!-- Colonne 1 -->
+        <div class="rounded-2xl bg-white/90 dark:bg-slate-900/50 p-6 shadow ring-1 ring-black/5">
+          <div class="italic leading-relaxed space-y-4" id="lyrics-col-1">
+            <p>Salut à toi, ô noble source,<br> D’où jaillit la vie si douce<br> Creuset d’amour et des sciences<br> Maele, nous te chantons.</p>
+            <p>Ô toi noble berceau<br> Tu nous pousses au plus haut<br> Tu nous armes pour la vie.</p>
+            <p>Que ta splendeur brille à jamais<br> Au jour le jour dans notre vie,<br> Afin que tous réalisions, réalisions, réalisions</p>
+            <p>La grande et belle issue<br> Que nous prépares l’institut.</p>
+          </div>
+          <button class="mt-4 text-sm text-blue-700 hover:underline" data-expand="#lyrics-col-1">Afficher/masquer</button>
+        </div>
+
+        <!-- Colonne 2 -->
+        <div class="rounded-2xl bg-white/90 dark:bg-slate-900/50 p-6 shadow ring-1 ring-black/5">
+          <div class="italic leading-relaxed space-y-4" id="lyrics-col-2">
+            <p>Apprends-nous, ô toi notre Mère,<br> La sagesse et la technique<br> Latin-Philo, math physique<br> Patrimoine séculaire</p>
+            <p>Mais surtout apprends-nous<br> À aimer, à servir<br> Notre beau pays : Congo.</p>
+            <p>Ma-e-liens, main dans la main<br> Marchons sans peur du lendemain,<br> Transformons tout sur nos chemins, sur nos chemins, sur nos chemins</p>
+            <p>Que le bon Dieu bénisse<br> Tous nos efforts d’étudiants !</p>
+          </div>
+          <button class="mt-4 text-sm text-blue-700 hover:underline" data-expand="#lyrics-col-2">Afficher/masquer</button>
+        </div>
+      </div>
+
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-8 text-center">
+        Paroles : Abbé Buse Meluna · Musique : Chovu, Colonel · Fait à Mandombe, le 28 février 1886.
+      </p>
+      <!-- stockage invisible pour le bouton “copier” -->
+      <textarea id="lyricsFull" class="hidden" aria-hidden="true">Salut à toi, ô noble source,
+D’où jaillit la vie si douce
+Creuset d’amour et des sciences
+Maele, nous te chantons.
+
+Ô toi noble berceau
+Tu nous pousses au plus haut
+Tu nous armes pour la vie.
+
+Que ta splendeur brille à jamais
+Au jour le jour dans notre vie,
+Afin que tous réalisions, réalisions, réalisions
+
+La grande et belle issue
+Que nous prépares l’institut.
+
+Apprends-nous, ô toi notre Mère,
+La sagesse et la technique
+Latin-Philo, math physique
+Patrimoine séculaire
+
+Mais surtout apprends-nous
+À aimer, à servir
+Notre beau pays : Congo.
+
+Ma-e-liens, main dans la main
+Marchons sans peur du lendemain,
+Transformons tout sur nos chemins, sur nos chemins, sur nos chemins
+
+Que le bon Dieu bénisse
+Tous nos efforts d’étudiants !</textarea>
+    </div>
+  </div>
+</section>
+
+
+       <!-- HISTOIRE SECTION - Timeline premium -->
+<section id="histoire" class="relative overflow-hidden py-20 md:py-32 bg-gray-50 dark:bg-slate-900">
+  <!-- décor -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+    <div class="absolute -top-24 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-200/60 via-blue-300/20 to-transparent blur-3xl dark:from-blue-900/30 dark:via-blue-700/20"></div>
+    <svg class="absolute -bottom-20 -left-20 h-[560px] w-[560px] opacity-10 dark:opacity-10" viewBox="0 0 200 200" fill="none">
+      <defs><pattern id="dots-hist" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" class="fill-blue-500"></circle></pattern></defs>
+      <rect width="200" height="200" fill="url(#dots-hist)"></rect>
+    </svg>
+  </div>
+
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16 animated-section fade-in">
+      <span class="inline-flex items-center gap-2 chip px-3 py-1 rounded-full border border-blue-200/70 bg-white/80 text-blue-800 shadow-sm dark:border-blue-800/40 dark:bg-slate-800/50 dark:text-blue-200">Notre héritage</span>
+      <h2 class="text-4xl md:text-5xl font-extrabold text-blue-900 dark:text-blue-300 mt-4">Histoire & Préfets des Études</h2>
+      <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">Un hommage aux leaders qui ont façonné l’identité du Collège Maele.</p>
+    </div>
+
+    <!-- Timeline alternée -->
+    <ol class="relative max-w-5xl mx-auto space-y-12 before:content-[''] before:absolute before:left-1/2 before:top-0 before:h-full before:w-1 before:-translate-x-1/2 before:bg-gradient-to-b before:from-blue-200 before:via-blue-300/60 before:to-blue-100 dark:before:from-blue-900/40 dark:before:via-blue-700/30 dark:before:to-blue-800/30">
+      <!-- ITEM 1 -->
+      <li class="relative grid md:grid-cols-2 gap-6 items-center animated-section slide-up">
+        <div class="md:col-start-1 md:justify-self-end md:text-right">
+          <span class="inline-flex items-center gap-2 rounded-full bg-blue-600 text-white px-3 py-1 text-xs shadow"><i class="fa-solid fa-star text-[10px]"></i> 1939–1948</span>
+          <h3 class="mt-3 text-2xl font-bold text-blue-800 dark:text-blue-200">Père Wittebols</h3>
+          <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">Préfet fondateur</p>
+          <p class="mt-2 text-gray-700 dark:text-gray-200">Fondations académiques et disciplinaires, culture d’excellence et de rigueur.</p>
+        </div>
+        <div class="md:col-start-2">
+          <div class="card overflow-hidden group">
+            <img src="./Images/facade.jpg" alt="Père Wittebols" class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-[1.02]">
+          </div>
+        </div>
+        <span class="absolute left-1/2 top-1 md:top-10 -translate-x-1/2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white ring-2 ring-blue-500 text-blue-600 shadow"><i class="fa-solid fa-landmark text-[10px]"></i></span>
+      </li>
+
+      <!-- ITEM 2 -->
+      <li class="relative grid md:grid-cols-2 gap-6 items-center animated-section slide-up">
+        <div class="md:col-start-2">
+          <span class="inline-flex items-center gap-2 rounded-full bg-blue-600 text-white px-3 py-1 text-xs shadow"><i class="fa-solid fa-forward text-[10px]"></i> 1948–1957</span>
+          <h3 class="mt-3 text-2xl font-bold text-blue-800 dark:text-blue-200">Père Neises</h3>
+          <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">Ère de modernisation</p>
+          <p class="mt-2 text-gray-700 dark:text-gray-200">Pratiques pédagogiques modernes, ouverture internationale.</p>
+        </div>
+        <div class="md:col-start-1 md:justify-self-end">
+          <div class="card overflow-hidden group">
+            <img src="./Images/campus.jpg" alt="Père Neises" class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-[1.02]">
+          </div>
+        </div>
+        <span class="absolute left-1/2 md:top-10 -translate-x-1/2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white ring-2 ring-blue-500 text-blue-600 shadow"><i class="fa-solid fa-forward-step text-[10px]"></i></span>
+      </li>
+
+      <!-- ITEM 3 -->
+      <li class="relative grid md:grid-cols-2 gap-6 items-center animated-section slide-up">
+        <div class="md:col-start-1 md:justify-self-end md:text-right">
+          <span class="inline-flex items-center gap-2 rounded-full bg-blue-600 text-white px-3 py-1 text-xs shadow"><i class="fa-solid fa-heart text-[10px]"></i> 1964–1965</span>
+          <h3 class="mt-3 text-2xl font-bold text-blue-800 dark:text-blue-200">Père Roelants Rébelion</h3>
+          <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">Développement humain</p>
+          <p class="mt-2 text-gray-700 dark:text-gray-200">Bien-être des élèves, vie parascolaire et engagement communautaire.</p>
+        </div>
+        <div class="md:col-start-2">
+          <div class="card overflow-hidden group">
+            <img src="./Images/cours.jpg" alt="Père Roelants Rébelion" class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-[1.02]">
+          </div>
+        </div>
+        <span class="absolute left-1/2 md:top-10 -translate-x-1/2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white ring-2 ring-blue-500 text-blue-600 shadow"><i class="fa-solid fa-user-group text-[10px]"></i></span>
+      </li>
+
+      <!-- ITEM 4 -->
+      <li class="relative grid md:grid-cols-2 gap-6 items-center animated-section slide-up">
+        <div class="md:col-start-2">
+          <span class="inline-flex items-center gap-2 rounded-full bg-blue-600 text-white px-3 py-1 text-xs shadow"><i class="fa-solid fa-leaf text-[10px]"></i> Période récente</span>
+          <h3 class="mt-3 text-2xl font-bold text-blue-800 dark:text-blue-200">Père Lommel</h3>
+          <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">Vision & innovation</p>
+          <p class="mt-2 text-gray-700 dark:text-gray-200">Développement durable, innovation pédagogique, intelligence socio-émotionnelle.</p>
+        </div>
+        <div class="md:col-start-1 md:justify-self-end">
+          <div class="card overflow-hidden group">
+            <img src="./Images/primaire.jpg" alt="Père Lommel" class="w-full h-56 object-cover transition-transform duration-500 group-hover:scale-[1.02]">
+          </div>
+        </div>
+        <span class="absolute left-1/2 md:top-10 -translate-x-1/2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-white ring-2 ring-blue-500 text-blue-600 shadow"><i class="fa-solid fa-leaf text-[10px]"></i></span>
+      </li>
+    </ol>
+
+    <!-- CTA bas -->
+    <div class="mt-14 text-center">
+      <a href="#equipe" class="inline-flex items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <i class="fa-solid fa-people-group mr-2"></i> Voir notre équipe
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+        <!-- EQUIPE SECTION -->
+        <section id="equipe" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 animated-section fade-in">
+                    <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-4">Notre Équipe Dédiée</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">Rencontrez les professionnels passionnés qui œuvrent chaque jour pour l'excellence et le bien-être de nos élèves.</p>
+                </div>
+                <!-- Direction -->
+                <h3 class="text-3xl font-bold text-center mb-10 text-blue-700 animated-section slide-up">Préfecture et Direction Scolaire</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto mb-20">
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+                        <img src="./Images/Préfet.png" alt="Préfet des études du College Maele" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
+                        <h4 class="text-xl font-bold">M. Jean-Claude Kazadi</h4><p class="text-blue-600">Préfet des Etudes</p>
+                    </div>
+          <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300 team-card" style="transition-delay: 150ms;">
+            <img src="./Images/directeur1.png" alt="Directeur des Études" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md team-avatar" loading="lazy">
+            <h4 class="text-xl font-bold">M. Richard Essymandra</h4><p class="text-blue-600">Directeur des Etudes</p>
+          </div>
+            <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300 team-card" style="transition-delay: 300ms;">
+              <img src="./Images/directeur2.png" alt="Directeur des Etudes" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md team-avatar" loading="lazy">
+              <h4 class="text-xl font-bold">M. Cléement LUGALUGA </h4><p class="text-blue-600">Direcetur des Etudes</p>
+            </div>
+                </div>
+                
+                    <!-- Administration -->
+                    <h3 class="text-3xl font-bold text-center mb-10 text-blue-700 animated-section slide-up">Secrétariat et Administration</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto mb-20">
+            <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300 team-card">
+              <img src="./images/Professeurs/28.png" alt="Sècretaire" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md team-avatar" loading="lazy">
+              <h4 class="text-xl font-bold">M. Alain AMSINI</h4><p class="text-blue-600">Secrétaire</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300 team-card" style="transition-delay: 150ms;">
+              <img src="./Images/disciplinaire.png" alt="disciplinaire" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md team-avatar" loading="lazy">
+              <h4 class="text-xl font-bold">M. Pierre KASONGO</h4><p class="text-blue-600">Directeur de discipline</p>
+            </div>
+            <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300 team-card" style="transition-delay: 300ms;">
+                    <img src="./images/Professeurs/3.png" alt="Etandante" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md team-avatar" loading="lazy">
+                <h4 class="text-xl font-bold">Soeur YUMA SAFINA</h4><p class="text-blue-600">Etandante</p>
+            </div>
+                    </div>
+
+                <!-- Teacher Carousel (stylised section) -->
+                <section id="equipe-profs" class="py-16 bg-gradient-to-b from-white to-blue-50 rounded-2xl shadow-inner border border-blue-100 animated-section fade-in max-w-6xl mx-auto px-6">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h3 class="text-3xl font-bold text-blue-700">Notre Corps Enseignant</h3>
+                            <p class="text-gray-600 mt-2">Une équipe dévouée, riche en expériences et passionnée par l'enseignement.</p>
+                        </div>
+                        <div class="hidden sm:block">
+                            <a href="./Pages/professeurs.html" class="inline-flex items-center gap-3 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:scale-105 transition transform">En savoir plus sur nos professeurs <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div id="teacher-carousel" class="overflow-hidden">
+                            <div id="teacher-carousel-track" class="flex items-stretch">
+                                <!-- Teacher cards will be dynamically inserted here by JavaScript -->
+                            </div>
+                        </div>
+                        <button id="teacher-prev" class="absolute top-1/2 -translate-y-1/2 -left-2 md:-left-4 bg-white/90 text-blue-700 p-0 text-[8px] w-4 h-4 md:w-5 md:h-5 rounded-full shadow-sm hover:bg-blue-600 hover:text-white transition-transform transform hover:scale-110 flex items-center justify-center"><i class="fas fa-chevron-left fa-2xs"></i></button>
+                        <button id="teacher-next" class="absolute top-1/2 -translate-y-1/2 -right-2 md:-right-4 bg-white/90 text-blue-700 p-0 text-[8px] w-4 h-4 md:w-5 md:h-5 rounded-full shadow-sm hover:bg-blue-600 hover:text-white transition-transform transform hover:scale-110 flex items-center justify-center"><i class="fas fa-chevron-right fa-2xs"></i></button>
+                    </div>
+
+                    <!-- Small screen CTA -->
+                    <div class="mt-6 sm:hidden text-center">
+                        <a href="./Pages/professeurs.html" class="inline-flex items-center gap-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:scale-105 transition transform">En savoir plus sur nos professeurs <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </section>
+            </div>
+        </section>
+        <!-- GALERIE PHOTO (Teaser) -->
+        <section id="galeries" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6 text-center">
+                <div class="text-center mb-8 animated-section fade-in">
+                    <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-4">La Vie au Collège</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">Plongez au cœur de notre quotidien à travers notre galerie photos.</p>
+                </div>
+                <a href="./Pages/galerievide.html" class="inline-flex items-center gap-3 bg-white rounded-xl shadow p-6 hover:shadow-xl transition transform hover:-translate-y-1">
+                    <img src="./Images/campus.jpg" alt="Aperçu galerie" class="w-32 h-24 object-cover rounded">
+                    <div class="text-left">
+                        <h3 class="font-bold text-xl text-blue-700">Visitez notre Galerie</h3>
+                        <p class="text-gray-600">Voir toutes les photos du collège et découvrir des souvenirs d'événements, d'activités et de vie scolaire.</p>
+                    </div>
+                    <span class="ml-auto text-blue-600"><i class="fas fa-arrow-right"></i></span>
+                </a>
+            </div>
+        </section>
+
+        <!-- DONS SECTION - WITH MODALS -->
+        <section id="dons" class="py-20 md:py-32 bg-gray-50">
+            <div class="container mx-auto px-6 text-center">
+                 <div class="max-w-4xl mx-auto animated-section fade-in">
+                    <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-4">Soutenez le Collège Maele</h2>
+                    <p class="text-lg text-gray-600 mb-12">Votre générosité nous aide à enrichir l'expérience éducative de nos élèves. Chaque don compte !</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-blue-500 animated-section slide-up">
+                            <i class="fas fa-mobile-alt text-5xl text-blue-500 mb-4"></i>
+                            <h4 class="text-2xl font-bold mb-2">Paiement Mobile</h4>
+                            <p class="text-gray-600 mb-6">Effectuez un don rapide via les services locaux.</p>
+                            <button data-modal-target="don-mobile" class="bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-600 transition duration-300">Voir numéros</button>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-2xl border-t-4 border-blue-700 transform md:scale-110 animated-section slide-up" style="transition-delay: 150ms;">
+                            <i class="fas fa-credit-card text-5xl text-blue-700 mb-4"></i>
+                            <h4 class="text-2xl font-bold mb-2">Carte & Banque</h4>
+                            <p class="text-gray-600 mb-6">Plateforme sécurisée pour cartes et virements.</p>
+                            <button data-modal-target="don-banque" class="bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">Voir infos</button>
+                        </div>
+                        <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-blue-500 animated-section slide-up" style="transition-delay: 300ms;">
+                            <i class="fas fa-hands-helping text-5xl text-blue-500 mb-4"></i>
+                            <h4 class="text-2xl font-bold mb-2">Don Matériel</h4>
+                            <p class="text-gray-600 mb-6">Contactez-nous pour les dons d'articles ou de meubles.</p>
+                            <a href="#contact" class="bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-600 transition duration-300">Nous Contacter</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nouvelle Section : Bureau des Élèves (BDE) - Stylisée -->
+    <section id="bde" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="max-w-7xl mx-auto bg-gradient-to-r from-blue-50 via-white to-blue-50 rounded-3xl shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-6 items-center p-6 md:p-10 animated-section slide-up">
+                <!-- Image -->
+                <div class="relative">
+                    <img src=./Images/oiseaux.jpeg alt="Activités du Bureau des Élèves du Collège Maele" class="w-full h-80 md:h-[420px] object-cover rounded-2xl shadow-inner">
+                    <div class="absolute bottom-4 left-4 bg-white/80 backdrop-blur-md rounded-full px-4 py-2 flex items-center space-x-3 shadow-md">
+                        <i class="fas fa-users text-blue-700"></i>
+                        <span class="text-sm font-semibold text-gray-800">BDE • Vie Scolaire</span>
+                    </div>
+                </div>
+
+                <!-- Contenu -->
+                <div class="p-2 md:p-6">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-blue-800 mb-3">Le Bureau des Élèves (BDE)</h2>
+                    <p class="text-gray-700 mb-4 leading-relaxed">Le Bureau des Élèves du Collège Maele est le cœur vibrant de la vie scolaire. Composé d'élèves motivés, il organise des événements variés : soirées thématiques, tournois sportifs, journées caritatives, journées culturelles et bien plus.</p>
+
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                        <li class="flex items-start space-x-3">
+                            <span class="text-blue-600 mt-1"><i class="fas fa-calendar-alt"></i></span>
+                            <span class="text-gray-700">Soirées à thème et animations culturelles</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <span class="text-blue-600 mt-1"><i class="fas fa-futbol"></i></span>
+                            <span class="text-gray-700">Tournois sportifs interclasses</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <span class="text-blue-600 mt-1"><i class="fas fa-hand-holding-heart"></i></span>
+                            <span class="text-gray-700">Journées caritatives et collectes</span>
+                        </li>
+                        <li class="flex items-start space-x-3">
+                            <span class="text-blue-600 mt-1"><i class="fas fa-map-signs"></i></span>
+                            <span class="text-gray-700">Excursions et visites pédagogiques</span>
+                        </li>
+                    </ul>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
+                        <a href="#contact" class="inline-block w-full sm:w-auto text-center bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold py-3 px-6 rounded-lg shadow hover:scale-105 transform transition">Rejoindre le BDE</a>
+                        <a href="/pages/galerievide.html" class="inline-block w-full sm:w-auto text-center bg-white border border-blue-200 text-blue-700 font-semibold py-3 px-6 rounded-lg shadow-sm hover:bg-blue-50 transition">Voir nos Événements</a>
+                    </div>
+
+                    <p class="mt-6 text-sm text-gray-500">Vous avez une idée d'événement ? <a href="#contact" class="text-blue-700 font-semibold underline">Contactez-nous</a> — nous serons ravis d'en discuter.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- CONTACT SECTION (stylisé + Web3Forms prêt) -->
+<section id="contact" class="relative overflow-hidden py-20 md:py-32 bg-gray-50 dark:bg-slate-900">
+  <!-- décor -->
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+    <div class="absolute -top-24 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-200/70 via-blue-300/30 to-transparent blur-3xl dark:from-blue-900/30 dark:via-blue-700/20"></div>
+    <svg class="absolute -bottom-16 -right-16 h-[520px] w-[520px] opacity-15 dark:opacity-10" viewBox="0 0 200 200" fill="none">
+      <defs>
+        <pattern id="dots-cm" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="1" class="fill-blue-500"></circle>
+        </pattern>
+      </defs>
+      <rect width="200" height="200" fill="url(#dots-cm)"></rect>
+    </svg>
+  </div>
+
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-12">
+      <div class="mx-auto mb-4 inline-flex items-center justify-center rounded-full border border-blue-200/60 bg-white/70 px-3 py-1 text-xs font-medium text-blue-700 shadow-sm backdrop-blur dark:border-blue-800/40 dark:bg-slate-800/50 dark:text-blue-200">
+        <!-- icône -->
+        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v.5l-10 6L2 6.5V6Zm0 3.382V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9.382l-9.553 5.73a2 2 0 0 1-2.894 0L2 9.382Z"/></svg>
+        Restons en contact
+      </div>
+      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-blue-900 dark:text-blue-300">Contactez-nous</h2>
+      <p class="mt-2 text-gray-600 dark:text-gray-300">Une question, une demande d’information ou une visite ? Écrivez-nous.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 items-stretch">
+      <!-- Carte coordonnées -->
+      <div class="relative rounded-2xl bg-white/80 p-6 md:p-8 shadow-xl ring-1 ring-black/5 backdrop-blur dark:bg-slate-800/60 dark:ring-white/5">
+        <h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-5">Coordonnées</h3>
+        <ul class="space-y-4 text-gray-700 dark:text-gray-100">
+          <li class="flex items-start gap-3">
+            <svg class="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Zm0 9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
+            <p><strong class="font-semibold">Adresse :</strong> Avenue Désirable, Commune MAKISO, Kisangani, RDC</p>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24 11.36 11.36 0 0 0 3.56.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C11.85 21 3 12.15 3 2a1 1 0 0 1 1-1h3.49a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.56 1 1 0 0 1-.24 1.01l-2.2 2.2Z"/></svg>
+            <p><strong class="font-semibold">Téléphone :</strong> <a class="underline decoration-blue-300/50 hover:decoration-blue-600" href="tel:+243812345678">+243 81 54 93 115  </a></p>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M2 6a2  2 0 0 1 2-2h16a2 2 0 0 1 2 2v.5l-10 6L2 6.5V6Zm0 3.382V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9.382l-9.553 5.73a2 2 0 0 1-2.894 0L2 9.382Z"/></svg>
+            <p><strong class="font-semibold">Email :</strong> <a class="underline decoration-blue-300/50 hover:decoration-blue-600" href="mailto:contactcollegemaele@gmail.com">contactcollegemaele@gmail.com</a></p>
+          </li>
+        </ul>
+
+        <div class="mt-6 flex gap-3">
+          <a href="https://wa.me/243812345678" target="_blank" rel="noopener" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-green-500/10 text-green-600 ring-1 ring-green-500/20 hover:scale-105 transition">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 12a8 8 0 0 1-11.88 6.92L4 20l1.08-3.9A8 8 0 1 1 20 12Zm-8-6a6 6 0 0 0-5.2 9l.3.46-.64 2.3 2.37-.62.45.27A6 6 0 1 0 12 6.5Zm3.77 7.68c-.2-.1-1.17-.58-1.36-.65s-.32-.1-.45.1-.52.65-.64.79-.24.15-.44.05a4.9 4.9 0 0 1-1.45-.89 5.39 5.39 0 0 1-1-1.24c-.1-.2 0-.31.09-.41l.25-.29c.1-.1.13-.18.19-.3s0-.23 0-.33 0-.3-.05-.45-.44-.44-.6-.5-.33-.08-.52-.05a1 1 0 0 0-.74.35 3.13 3.13 0 0 0-.97 2.3 5.45 5.45 0 0 0 1.14 2.9 6.2 6.2 0 0 0 2.72 2.26c.32.14.64.26.98.34a2.84 2.84 0 0 0 1.87-.12 3.06 3.06 0 0 0 1.34-1c.16-.22.2-.41.13-.56s-.18-.12-.38-.22Z"/></svg>
+          </a>
+          <a href="https://facebook.com/collegemaele" target="_blank" rel="noopener" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-blue-600/10 text-blue-600 ring-1 ring-blue-600/20 hover:scale-105 transition">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10h3l-1 4h-2v8h-4v-8H7v-4h2V8a4 4 0 0 1 4-4h3v4h-3a1 1 0 0 0-1 1v1Z"/></svg>
+          </a>
+          <a href="https://instagram.com/collegemaele" target="_blank" rel="noopener" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-pink-500/10 text-pink-500 ring-1 ring-pink-500/20 hover:scale-105 transition">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm5.75-3.25a1.25 1.25 0 1 1-1.25 1.25 1.25 1.25 0 0 1 1.25-1.25Z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/collegemaele" target="_blank" rel="noopener" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-sky-500/10 text-sky-600 ring-1 ring-sky-500/20 hover:scale-105 transition">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 9H3v12h3V9Zm-.5-6A1.5 1.5 0 1 0 7 4.5 1.5 1.5 0 0 0 5.5 3ZM21 21h-3v-6.5c0-1.38-.56-2.5-2-2.5s-2 .95-2 2.5V21h-3V9h3v1.53S15.78 9 17.5 9s3 1.57 3 4.26V21Z"/></svg>
+          </a>
+        </div>
+
+        <!-- Carte -->
+        <div class="mt-8 rounded-xl overflow-hidden ring-1 ring-black/5 shadow-sm">
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
+            <iframe
+    width="100%" height="280" frameborder="0" scrolling="no"
+    src="https://www.google.com/maps?q=COLLEGE%20MAELE%2C%20Kisangani&hl=fr-FR&output=embed">
+  </iframe>
+          </div>
+          <p class="text-sm text-gray-600 mt-2">Voir sur <a href="https://www.google.com/maps/place/COLLEGE+MAELE,+Kisangani,+R%C3%A9publique+d%C3%A9mocratique+du+Congo/@0.5190459,25.187568,17z/data=!3m1!4b1!4m6!3m5!1s0x1757a0cd5d7468a1:0xf7c71ce988f91bdb!8m2!3d0.5189767!4d25.1902128!16s%2Fg%2F11bvt9wkz0?hl=fr-FR&entry=ttu&g_ep=EgoyMDI1MDkxNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Google Maps</a></p>
+        </div>
+      </div>
+
+      <main class="min-h-screen flex items-center justify-center p-6">
+    <div class="relative rounded-2xl bg-white/90 p-6 md:p-8 shadow-xl ring-1 ring-black/5 backdrop-blur">
+      <h3 class="text-lg font-semibold text-blue-800">Écrivez-nous</h3>
+      <p class="mt-1 mb-6 text-sm text-gray-600">Nous répondons rapidement aux messages reçus via ce formulaire.</p>
+
+      <form action="https://api.web3forms.com/submit" method="POST" class="space-y-5">
+        <!-- Clé Web3Forms -->
+        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
+        <!-- Page de remerciement -->
+        <input type="hidden" name="redirect" value="merci.html">
+        <!-- Sujet par défaut -->
+        <input type="hidden" name="subject" value="Nouveau message - Collège Maele" />
+        <!-- Nom du site -->
+        <input type="hidden" name="from_name" value="Site Web Collège Maele" />
+        <!-- Honeypot -->
+        <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for="name" class="mb-1 block text-sm font-medium text-gray-700">Nom complet</label>
+            <input id="name" name="name" type="text" required
+              class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
+              placeholder="Ex. Marie K." />
+          </div>
+          <div>
+            <label for="email" class="mb-1 block text-sm font-medium text-gray-700">Email</label>
+            <input id="email" name="email" type="email" required
+              class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
+              placeholder="vous@exemple.com" />
+          </div>
+        </div>
+
+        <div>
+          <label for="phone" class="mb-1 block text-sm font-medium text-gray-700">Téléphone (optionnel)</label>
+          <input id="phone" name="phone" type="tel" inputmode="tel" pattern="^[0-9+\s().-]{6,}$"
+            class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
+            placeholder="+243 8xx xxx xxx" />
+        </div>
+
+        <div>
+          <label for="message" class="mb-1 block text-sm font-medium text-gray-700">Message</label>
+          <textarea id="message" name="message" required rows="5"
+            class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
+            placeholder="Comment pouvons-nous vous aider ?"></textarea>
+        </div>
+
+        <label class="flex items-start gap-3 text-sm text-gray-600">
+          <input type="checkbox" required class="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+          <span>J’accepte que mes informations soient utilisées pour me recontacter (RGPD).</span>
+        </label>
+
+        <div class="pt-1 flex items-center gap-3">
+          <button type="submit"
+            class="inline-flex items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+            Envoyer le message
+          </button>
+          <p class="text-xs text-gray-500">Réponse sous 24–48h ouvrées.</p>
+        </div>
+      </form>
+
+      <p class="mt-4 text-xs text-gray-500">Protégé par validation côté serveur & honeypot. Pas de compte requis côté visiteur.</p>
+    </div>
+  </main>
+
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="md:col-span-1"><h3 class="text-xl font-bold mb-4">Collège Maele</h3><p class="text-gray-400">Former les leaders de demain avec excellence et intégrité.</p></div>
+                <div><h4 class="font-semibold mb-4">Liens Rapides</h4><ul class="space-y-2"><li><a href="#a-propos" class="text-gray-400 hover:text-white">À Propos</a></li><li><a href="#equipe" class="text-gray-400 hover:text-white">Notre Équipe</a></li><li><a href="./pages/accueil.html" class="text-gray-400 hover:text-white">Blog</a></li><li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li></ul></div>
+                 <div><h4 class="font-semibold mb-4">Contact Info</h4><ul class="space-y-2 text-gray-400"><li>123 Rue de l'Excellence</li><li>Kisangani, RDC</li><li>contactcollegemaele@gmail.com</li><li>+243 815493115</li></ul></div>
+                 <div><h4 class="font-semibold mb-4">Suivez-nous</h4><div class="flex space-x-4"><a href="https://wa.me/243812345678" class="text-green-400 hover:text-white text-2xl"><i class="fab fa-whatsapp"></i></a><a href="https://facebook.com/collegemaele" class="text-blue-600 hover:text-white text-2xl"><i class="fab fa-facebook-f"></i></a><a href="https://instagram.com/collegemaele" class="text-pink-500 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a><a href="https://www.linkedin.com/company/collegemaele" class="text-sky-500 hover:text-white text-2xl"><i class="fab fa-linkedin-in"></i></a></div></div>
+            </div>
+            <div class="border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">© <span id="current-year"></span> Collège Maele. Desing By <a href="https://portfoliodavidwawina.vercel.app">Optimum Entreprise</a>. Tous droits réservés.</div>
+        </div>
+    </footer>
+
+     <!-- MODALS SECTION -->
+    <div id="don-mobile" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 opacity-0">
+        <div class="modal-content bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl transform scale-95 opacity-0">
+            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">×</button>
+            <div class="text-center"><i class="fas fa-mobile-alt text-5xl text-blue-500 mb-4"></i><h3 class="text-2xl font-bold mb-4">Don par Paiement Mobile</h3></div>
+            <p class="text-center text-gray-600 mb-6">Envoyez votre don à l'un des numéros ci-dessous.</p>
+            <div class="space-y-3 text-lg"><p><strong>Airtel Money:</strong> +243 99 86 73 432</p><p><strong>M-Pesa:</strong> +243 81 54 93 115 </p><p><strong>Orange Money:</strong> +243 85 14 24 534  </p></div>
+        </div>
+    </div>
+    <div id="don-banque" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 opacity-0">
+        <div class="modal-content bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl transform scale-95 opacity-0">
+            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">×</button>
+            <div class="text-center"><i class="fas fa-university text-5xl text-blue-700 mb-4"></i><h3 class="text-2xl font-bold mb-4">Don par Banque ou Carte</h3></div>
+            <p class="text-center text-gray-600 mb-6">Utilisez les informations suivantes pour un virement.</p>
+            <div class="space-y-3 text-left text-md bg-gray-100 p-4 rounded-lg"><p><strong>Nom du Compte:</strong> Collège Maele</p><p><strong>Banque:</strong> SMICO</p><p><strong>Numéro de Compte:</strong> KS000174</p></div>
+        </div>
+    </div>
+    <div id="don-principal" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 opacity-0">
+        <div class="modal-content bg-white w-full max-w-lg p-8 rounded-2xl shadow-2xl transform scale-95 opacity-0">
+            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">×</button>
+            <div class="text-center"><i class="fas fa-donate text-5xl text-blue-600 mb-4"></i><h3 class="text-2xl font-bold mb-4">Choisissez votre mode de Don</h3></div>
+            <p class="text-center text-gray-600 mb-8">Sélectionnez la méthode qui vous convient.</p>
+            <div class="flex flex-col md:flex-row gap-4">
+                <button data-modal-target="don-mobile" class="flex-1 bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition">Paiement Mobile</button>
+                <button data-modal-target="don-banque" class="flex-1 bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-800 transition">Banque / Carte</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Donation Modal: Generic for main button -->
+    <div id="don-principal" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="modal-content bg-white w-full max-w-lg p-8 rounded-2xl shadow-2xl transform scale-95">
+            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">×</button>
+            <div class="text-center"><i class="fas fa-donate text-5xl text-blue-600 mb-4"></i><h3 class="text-2xl font-bold mb-4">Choisissez votre mode de Don</h3></div>
+            <p class="text-center text-gray-600 mb-8">Votre soutien est précieux. Sélectionnez la méthode qui vous convient le mieux.</p>
+            <div class="flex flex-col md:flex-row gap-4">
+                <button data-modal-target="don-mobile" class="modal-switch-btn flex-1 bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300">Paiement Mobile</button>
+                <button data-modal-target="don-banque" class="modal-switch-btn flex-1 bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-800 transition duration-300">Banque / Carte</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Photo Gallery Modal -->
+    <div id="gallery-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="relative max-w-[90vw] w-full">
+            <button id="modal-close" class="absolute -top-12 right-0 text-white text-4xl">×</button>
+            <img id="modal-img" src="" alt="Image de la galerie" class="w-full max-w-[90vw] max-h-[75vh] rounded-lg shadow-2xl object-contain">
+            <p id="modal-caption" class="mt-3 text-sm text-gray-200 text-center"></p>
+            <button id="modal-prev" class="absolute top-1/2 -translate-y-1/2 left-4 text-white text-3xl bg-black/30 p-2 rounded-full"><i class="fas fa-chevron-left"></i></button>
+            <button id="modal-next" class="absolute top-1/2 -translate-y-1/2 right-4 text-white text-3xl bg-black/30 p-2 rounded-full"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+    // --- HAMBURGER MENU ---
+    const hamburgerButton = document.getElementById('hamburger-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMenuButton = document.getElementById('close-menu-button');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    // Ensure the menu is completely non-interactive when closed
+    if (mobileMenu) {
+      mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+    }
+
+    if (hamburgerButton) {
+      hamburgerButton.setAttribute('aria-expanded', 'false');
+      hamburgerButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const closed = mobileMenu.classList.contains('translate-x-full') || mobileMenu.getAttribute('aria-hidden') === 'true';
+        if (closed) {
+          // open menu: make interactive and visible
+          mobileMenu.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
+          mobileMenu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
+          mobileMenu.setAttribute('aria-hidden', 'false');
+          hamburgerButton.setAttribute('aria-expanded', 'true');
+          // focus first link if any
+          setTimeout(() => mobileMenu.querySelector('.mobile-link')?.focus(), 120);
+        } else {
+          // close
+          mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
+          mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+          hamburgerButton.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // Close handlers
+    closeMenuButton?.addEventListener('click', () => {
+      mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
+      mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      hamburgerButton?.setAttribute('aria-expanded', 'false');
+    });
+
+    mobileLinks.forEach(link => link.addEventListener('click', () => {
+      mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
+      mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      hamburgerButton?.setAttribute('aria-expanded', 'false');
+    }));
+
+    // click outside to close
+    document.addEventListener('click', (ev) => {
+      if (!mobileMenu) return;
+      const isOpen = !mobileMenu.classList.contains('translate-x-full') && mobileMenu.getAttribute('aria-hidden') !== 'true';
+      if (!isOpen) return;
+      const clickInside = mobileMenu.contains(ev.target) || hamburgerButton?.contains(ev.target);
+      if (!clickInside) {
+        mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
+        mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        hamburgerButton?.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // close on Escape
+    document.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape' && mobileMenu && mobileMenu.getAttribute('aria-hidden') === 'false') {
+        mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
+        mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        hamburgerButton?.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+        // --- BACKGROUND SLIDER ---
+        const bgSlider = document.getElementById('bg-slider');
+        const slides = bgSlider.querySelectorAll('.bg-slide');
+        const prevBtn = document.getElementById('prev-slide');
+        const nextBtn = document.getElementById('next-slide');
+        let currentSlide = 0;
+        let slideInterval;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => { slide.style.opacity = i === index ? '1' : '0'; });
+            currentSlide = index;
+        }
+        function nextSlide() { showSlide((currentSlide + 1) % slides.length); }
+        function prevSlide() { showSlide((currentSlide - 1 + slides.length) % slides.length); }
+        function startSlider() { slideInterval = setInterval(nextSlide, 7000); }
+        function stopSlider() { clearInterval(slideInterval); }
+        nextBtn.addEventListener('click', () => { nextSlide(); stopSlider(); startSlider(); });
+        prevBtn.addEventListener('click', () => { prevSlide(); stopSlider(); startSlider(); });
+        bgSlider.addEventListener('mouseenter', () => { stopSlider(); showSlide(0); });
+        bgSlider.addEventListener('mouseleave', startSlider);
+        startSlider();
+
+        // --- SCROLL ANIMATIONS ---
+        const animatedSections = document.querySelectorAll('.animated-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        animatedSections.forEach(section => observer.observe(section));
+        
+        // --- TEACHER CAROUSEL (41 items, smooth animation) ---
+        const teacherCarouselTrack = document.getElementById('teacher-carousel-track');
+        const teacherPrevBtn = document.getElementById('teacher-prev');
+        const teacherNextBtn = document.getElementById('teacher-next');
+        const TEACHER_COUNT = 41; // requested by user
+        let teacherCurrentIndex = 0;
+        let teacherSlidesToShow = getTeacherSlidesToShow();
+        let teacherAutoScroll;
+
+        const matieres = ["Mathématiques", "Physique", "Chimie", "Français", "Histoire", "Géographie", "Anglais", "Biologie", "Philosophie", "Sport"];
+        // base path to prof images (Django will render this)
+        const profBase = "./Images/Professeurs/";
+
+    // clear any existing content then create cards using the provided 41 professeurs
+    teacherCarouselTrack.innerHTML = '';
+    // Map explicite nom -> fichier pour l'ensemble des professeurs (assure la correspondance exacte)
+    const explicitPhotos = {
+      'Trésor KISONDOKOLO': '1.png',
+      'Germaine HAWA SUNGA': '2.png',
+      'Sœur YUMA SAFINIA': '3.png',
+      'Hubert KATAPULU': '4.png',
+      'Jean de la Croix KATSUVA': '5png.png',
+      'Diaz MATIKALI': '6.png',
+      'Cédric KAYEMBE': '7.png',
+      'Yvon TSHITENDA': '8.png',
+      'Scolastique AMISI': '9.png',
+      'Jephté MUMBERE': '12.png',
+      'Luc BOBANGA': '10.png',
+      'Alain OTEPA': '11.png',
+      'Grâce AMBWA': '13.png',
+      'Peter KAKEYI': '14.png',
+      'Faustin LINGOMBO MONDENGA': '15.png',
+      'Michel KILYOBO KIMWANGA': '16.png',
+      'Floribert ILONGA BIKI': '17.png',
+      'Paulin KASONGO NSENGA': '18.png',
+      'John KAMANGO': '19.png',
+      'Edo KAPITA': '20.png',
+      'Justin NGONGO KIBONDO': '21.png',
+      'Alfonse IGWANGOZI BUMBA': '22.png',
+      'Gérard BASILA LABAMA': '23.png',
+      'Joseph LITETE BOBINA': '24.png',
+      'Lucien RAMAZANI MUNGANGA': '25.png',
+      'Donat MWAMBA WETU TSHIALU': '26.png',
+      'Édouard LOBOLO AMURI': '27.png',
+      'Alain AMSINI': '28.png',
+      'Georges LIKENGE LOTIKA': '29.png',
+      'Marie BOYOMA MATOLO': '30.png',
+      'Martin MUHINDO BUSANGI': '31.png',
+      'José MAKANGA': '32.png',
+      'Jean Floribert Mondondo Mongita': '33.png',
+      'Evariste LITHO LOULA': '34.png',
+      'Père Joseph-Prince EKAGNY': '35.png',
+      'Rachel SOMANA': '36.png',
+      'François KOSHI KILOLO': '37.png',
+      'Franck YANYONGO MAINGOLO': '38.png',
+      'Franck MUMBERE': '39.png',
+      'Albert BUKASA': '40.png',
+      'Prof Dieu-Merci BOLONGE': '41.png',
+      'Emmanuel AMURI': '42.png',
+    };
+        const profsList = [
+            ["Trésor KISONDOKOLO","Technologie de science physique"],
+            ["Germaine HAWA SUNGA","Éducation à la vie"],
+            ["Sœur YUMA SAFINIA","Catéchèse"],
+            ["Hubert KATAPULU","Chimie"],
+            ["Jean de la Croix KATSUVA","Anglais"],
+            ["Diaz MATIKALI","Français"],
+            ["Cédric KAYEMBE","Mathématique et sciences physique et technologie"],
+            ["Yvon TSHITENDA","Dessin scientifique, physique et mathématiques"],
+            ["Scolastique AMISI","TIC"],
+            ["Jephté MUMBERE","Latin et français"],
+            ["Luc BOBANGA","Éducation à la vie"],
+            ["Alain OTEPA","Français"],
+            ["Grâce AMBWA","Anglais"],
+            ["Peter KAKEYI","SVT"],
+            ["Faustin LINGOMBO MONDENGA","Français"],
+            ["Michel KILYOBO KIMWANGA","SVT et Chimie"],
+            ["Floribert ILONGA BIKI","Mathématiques"],
+            ["Paulin KASONGO NSENGA","Anglais"],
+            ["John KAMANGO","SVT"],
+            ["Edo KAPITA","Mathématiques"],
+            ["Justin NGONGO KIBONDO","Mathématiques"],
+            ["Alfonse IGWANGOZI BUMBA","Français"],
+            ["Gérard BASILA LABAMA","Éducation Physique"],
+            ["Joseph LITETE BOBINA","SVT"],
+            ["Lucien RAMAZANI MUNGANGA","Géographie"],
+            ["Donat MWAMBA WETU TSHIALU","Français"],
+            ["Édouard LOBOLO AMURI","Anglais"],
+            ["Alain AMSINI","Français"],
+            ["Georges LIKENGE LOTIKA","Mathématiques"],
+            ["Marie BOYOMA MATOLO","Dessin"],
+            ["Martin MUHINDO BUSANGI","Mathématiques"],
+            ["José MAKANGA","Bibliothécaire"],
+            ["Jean Floribert Mondondo Mongita","Histoire"],
+            ["Evariste LITHO LOULA","Français"],
+            ["Père Joseph-Prince EKAGNY","Religion"],
+            ["Rachel SOMANA","Dessin"],
+            ["François KOSHI KILOLO","Géographie"],
+            ["Franck YANYONGO MAINGOLO","TIC"],
+            ["Franck MUMBERE","Latin"],
+            ["Albert BUKASA","Histoire"],
+            ["Prof Dieu-Merci BOLONGE","Physique"],
+            ["Emmanuel AMURI","Professeur et Surveillant"],
+        ];
+
+    profsList.forEach((p, index) => {
+            const i = index + 1;
+            const name = p[0];
+            const subject = p[1];
+      const filename = explicitPhotos[name] || ((i === 5) ? '5png.png' : `${i}.png`);
+            const src = profBase + filename;
+            const card = document.createElement('div');
+            card.className = 'flex-shrink-0 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-3';
+            card.innerHTML = `
+                <div class="bg-white rounded-lg shadow-md p-4 text-center hover:shadow-xl transition-shadow duration-300">
+                    <div class="w-24 h-24 mx-auto -mt-6 mb-3 rounded-full overflow-hidden border-4 border-white shadow-md">
+                        <img src="${src}" alt="${name}" class="w-full h-full object-cover">
+                    </div>
+                    <h5 class="font-bold text-sm text-blue-900">${name}</h5>
+                    <p class="text-xs text-blue-600">${subject}</p>
+                </div>
+            `;
+            teacherCarouselTrack.appendChild(card);
+        });
+
+        // make the track animate smoothly
+        teacherCarouselTrack.style.transition = 'transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)';
+
+        function getTeacherSlidesToShow() {
+            if (window.innerWidth >= 1280) return 5; if (window.innerWidth >= 1024) return 4; if (window.innerWidth >= 768) return 3; return 2;
+        }
+
+        function updateTeacherCarousel(animate = true) {
+            const firstChild = teacherCarouselTrack.children[0];
+            if (!firstChild) return;
+            const cardWidth = firstChild.getBoundingClientRect().width + parseFloat(getComputedStyle(firstChild).marginRight || 0);
+            teacherCarouselTrack.style.transform = `translateX(-${teacherCurrentIndex * cardWidth}px)`;
+        }
+
+        function moveTeacherCarousel(direction) {
+            const totalItems = TEACHER_COUNT;
+            teacherCurrentIndex += direction;
+            // clamp between 0 and max start index
+            const maxStart = Math.max(0, totalItems - teacherSlidesToShow);
+            if (teacherCurrentIndex < 0) teacherCurrentIndex = maxStart;
+            if (teacherCurrentIndex > maxStart) teacherCurrentIndex = 0;
+            updateTeacherCarousel();
+        }
+
+        function startTeacherAutoScroll() { teacherAutoScroll = setInterval(() => moveTeacherCarousel(1), 4000); }
+        function stopTeacherAutoScroll() { clearInterval(teacherAutoScroll); }
+
+        teacherNextBtn?.addEventListener('click', () => { moveTeacherCarousel(1); stopTeacherAutoScroll(); startTeacherAutoScroll(); });
+        teacherPrevBtn?.addEventListener('click', () => { moveTeacherCarousel(-1); stopTeacherAutoScroll(); startTeacherAutoScroll(); });
+        window.addEventListener('resize', () => { teacherSlidesToShow = getTeacherSlidesToShow(); updateTeacherCarousel(); });
+
+        // ensure initial layout and start
+        setTimeout(() => { teacherSlidesToShow = getTeacherSlidesToShow(); updateTeacherCarousel(); startTeacherAutoScroll(); }, 50);
+
+        // --- DYNAMIC PHOTO GALLERY ---
+        const photoGallery = document.getElementById('photo-gallery');
+        const galleryModal = document.getElementById('gallery-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalClose = document.getElementById('modal-close');
+        const modalPrev = document.getElementById('modal-prev');
+        const modalNext = document.getElementById('modal-next');
+
+          // ancienne implémentation de la galerie supprimée (remplacée par la version unifiée plus haut)
+
+        // --- DONATION MODALS LOGIC ---
+        const allModals = document.querySelectorAll('.modal');
+        const modalTriggers = document.querySelectorAll('[data-modal-target]');
+
+        modalTriggers.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetModalId = button.getAttribute('data-modal-target');
+                const targetModal = document.getElementById(targetModalId);
+                if (targetModal) {
+                    allModals.forEach(m => m.classList.add('hidden')); // Close any open modal
+                    openModal(targetModal);
+                }
+            });
+        });
+        
+        allModals.forEach(modal => {
+            const closeButton = modal.querySelector('.modal-close');
+            if (closeButton) {
+                closeButton.addEventListener('click', () => closeModal(modal));
+            }
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal);
+            });
+        });
+
+        document.querySelectorAll('.modal-switch-btn').forEach(button => {
+             button.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const currentModal = button.closest('.modal');
+                const targetModalId = button.getAttribute('data-modal-target');
+                const targetModal = document.getElementById(targetModalId);
+                if(currentModal) closeModal(currentModal, () => {
+                     if(targetModal) openModal(targetModal);
+                });
+            });
+        });
+
+        function openModal(modal) {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('.modal-content').classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeModal(modal, callback) {
+            modal.classList.add('opacity-0');
+            modal.querySelector('.modal-content').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                if (callback) callback();
+            }, 300);
+        }
+        
+        // --- FOOTER YEAR ---
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    });
+  </script>
+    <!-- GALLERY & UI SCRIPT (dynamic lightbox) -->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const photoGallery = document.getElementById('photo-gallery');
+        const galleryModal = document.getElementById('gallery-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalCaption = document.getElementById('modal-caption');
+        const modalClose = document.getElementById('modal-close');
+        const modalPrev = document.getElementById('modal-prev');
+        const modalNext = document.getElementById('modal-next');
+        if (!photoGallery || !galleryModal) return;
+
+        // Images with captions
+        // Remplacer tous les {% static '...' %} par des chemins directs
+        const imagesPaths = {
+            logo: "./images/oiseaux.jpeg",
+            campus: "./images/campus.jpg",
+            grotte: "./images/grotte.jpg",
+            facade: "./images/facade.jpg",
+            primaire: "./images/primaire.jpg",
+            cours: "./images/cours.jpg",
+            point: "./images/point.jpg",
+            bbio: "./images/bbio.jpg",
+            cinquantenaire: "./images/cinquantenaire.jpg",
+            drapeau: "./images/drapeau.jpg"
+        };
+
+        // build thumbnails
+        photoGallery.innerHTML = '';
+        images.forEach((img, idx) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'block relative overflow-hidden rounded-lg shadow-md';
+            btn.setAttribute('aria-label', img.caption || `Photo ${idx+1}`);
+            btn.innerHTML = `<img src="${img.thumb}" alt="${img.caption||'Photo'}" class="w-full h-48 object-cover transform hover:scale-105 transition-transform duration-300">`;
+            btn.addEventListener('click', (e) => { e.preventDefault(); openLightbox(idx); });
+            photoGallery.appendChild(btn);
+        });
+
+        let currentIndex = 0;
+        function openLightbox(index) {
+            currentIndex = index;
+            const it = images[currentIndex];
+            modalImg.src = it.full;
+            modalImg.alt = it.caption || '';
+            modalCaption.textContent = it.caption || '';
+            galleryModal.classList.remove('hidden');
+            galleryModal.classList.add('flex');
+            // small delay to trigger transition classes if present
+            setTimeout(() => galleryModal.classList.remove('opacity-0'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            galleryModal.classList.add('opacity-0');
+            setTimeout(() => {
+                galleryModal.classList.add('hidden');
+                galleryModal.classList.remove('flex');
+                modalImg.src = '';
+                document.body.style.overflow = '';
+            }, 200);
+        }
+
+        modalClose?.addEventListener('click', closeLightbox);
+        modalPrev?.addEventListener('click', (e) => { e.stopPropagation(); currentIndex = (currentIndex - 1 + images.length) % images.length; openLightbox(currentIndex); });
+        modalNext?.addEventListener('click', (e) => { e.stopPropagation(); currentIndex = (currentIndex + 1) % images.length; openLightbox(currentIndex); });
+
+        galleryModal.addEventListener('click', (e) => { if (e.target === galleryModal) closeLightbox(); });
+
+        document.addEventListener('keydown', (e) => {
+            if (galleryModal.classList.contains('flex')) {
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') modalPrev?.click();
+                if (e.key === 'ArrowRight') modalNext?.click();
+            }
+        });
+
+        // set footer year if not already set
+        const cy = document.getElementById('current-year'); if(cy) cy.textContent = new Date().getFullYear();
+    });
+    </script>
+    <script>
+
+
+// SCRIPT UNIFIÉ ET CORRIGÉ 
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- MENU HAMBURGER ---
+        const hamburgerButton = document.getElementById('hamburger-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMenuButton = document.getElementById('close-menu-button');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        if (hamburgerButton) hamburgerButton.addEventListener('click', () => mobileMenu.classList.remove('translate-x-full'));
+        if (closeMenuButton) closeMenuButton.addEventListener('click', () => mobileMenu.classList.add('translate-x-full'));
+        mobileLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('translate-x-full')));
+
+        // --- SLIDER D'ARRIÈRE-PLAN ---
+        const bgSlider = document.getElementById('bg-slider');
+        if (bgSlider) {
+            const slides = bgSlider.querySelectorAll('.bg-slide');
+            let currentSlide = 0;
+            let slideInterval = setInterval(() => showSlide((currentSlide + 1) % slides.length), 7000);
+            function showSlide(index) {
+                slides.forEach((slide, i) => { slide.style.opacity = i === index ? '1' : '0'; });
+                currentSlide = index;
+            }
+        }
+
+        // --- ANIMATIONS AU DÉFILEMENT ---
+        const animatedSections = document.querySelectorAll('.animated-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        animatedSections.forEach(section => observer.observe(section));
+
+        // --- CONTRÔLEUR DE MODALES UNIFIÉ ---
+        const modalTriggers = document.querySelectorAll('[data-modal-target]');
+        const allModals = document.querySelectorAll('.modal');
+
+        function openModal(modal) {
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => { // Permet au navigateur de rendre le 'flex' avant d'animer l'opacité
+                modal.classList.remove('opacity-0');
+                modal.querySelector('.modal-content')?.classList.remove('opacity-0', 'scale-95');
+            }, 20);
+        }
+
+        function closeModal(modal) {
+            if (!modal) return;
+            modal.classList.add('opacity-0');
+            modal.querySelector('.modal-content')?.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => { // Attend la fin de la transition avant de cacher
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        modalTriggers.forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const targetId = trigger.getAttribute('data-modal-target');
+                const targetModal = document.getElementById(targetId);
+                
+                // Si le déclencheur est dans une modale, fermer la modale actuelle d'abord
+                const currentModal = trigger.closest('.modal');
+                if (currentModal) {
+                    closeModal(currentModal);
+                }
+                
+                openModal(targetModal);
+            });
+        });
+
+        allModals.forEach(modal => {
+            // Fermer avec le bouton '×'
+            modal.querySelector('.modal-close')?.addEventListener('click', () => closeModal(modal));
+            // Fermer en cliquant sur le fond
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal(modal);
+            });
+        });
+
+        // Fermer avec la touche 'Echap'
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const openModal = document.querySelector('.modal:not(.hidden)');
+                if (openModal) closeModal(openModal);
+            }
+        });
+
+        // --- ANNÉE DU FOOTER ---
+        const yearSpan = document.getElementById('current-year');
+        if(yearSpan) yearSpan.textContent = new Date().getFullYear();
+    });
+  </script>
+
+  <!-- Centralized animation initializer: ensures elements with animation classes become visible -->
+  <script>
+  (function(){
+    function shouldReduceMotion(){
+      return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    function applyVisible(el, delay){
+      if(!el) return;
+      if(shouldReduceMotion()){
+        el.classList.add('visible');
+        return;
+      }
+      if(delay && delay > 0){
+        setTimeout(()=> el.classList.add('visible'), delay);
+      } else {
+        el.classList.add('visible');
+      }
+    }
+
+    function initAnimations(){
+      const selector = '.animated-section, .slide-in-left, .slide-in-right, .fade-in-up, .stagger-item';
+      const els = Array.from(document.querySelectorAll(selector));
+      if(!els.length) return;
+
+      // First pass: mark items already in viewport
+      els.forEach((el, i) => {
+        // allow per-item data-delay (ms) or stagger (small incremental delays)
+        const dataDelay = parseInt(el.getAttribute('data-delay') || '0', 10);
+        const stagger = el.classList.contains('stagger-item') ? (i % 6) * 80 : 0;
+        const totalDelay = Math.max(0, dataDelay + stagger);
+
+        const rect = el.getBoundingClientRect();
+        if(rect.top < (window.innerHeight || document.documentElement.clientHeight) - 40){
+          applyVisible(el, totalDelay);
+        }
+      });
+
+      if(shouldReduceMotion()) return; // no observer when reduced motion requested
+
+      const obsOptions = { threshold: 0.12 };
+      const animObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            const el = entry.target;
+            const dataDelay = parseInt(el.getAttribute('data-delay') || '0', 10);
+            const idx = Array.from(document.querySelectorAll(selector)).indexOf(el);
+            const stagger = el.classList.contains('stagger-item') ? (idx % 6) * 80 : 0;
+            applyVisible(el, dataDelay + stagger);
+            obs.unobserve(el);
+          }
+        });
+      }, obsOptions);
+
+      els.forEach(el => {
+        // skip if already visible
+        if(el.classList.contains('visible')) return;
+        animObserver.observe(el);
+      });
+    }
+
+    if(document.readyState === 'loading'){
+      document.addEventListener('DOMContentLoaded', initAnimations);
+    } else {
+      initAnimations();
+    }
+
+    // Re-run on resize/orientation change to catch layout changes
+    let resizeTO;
+    window.addEventListener('resize', () => { clearTimeout(resizeTO); resizeTO = setTimeout(initAnimations, 200); });
+    window.addEventListener('orientationchange', () => setTimeout(initAnimations, 120));
+  })();
+  </script>
+  <script>
+    (function(){
+      const bar = document.getElementById('progressBar');
+      if(!bar) return;
+      function update(){
+        const doc = document.documentElement;
+        const scrollTop = window.scrollY || doc.scrollTop || 0;
+        const height = doc.scrollHeight - doc.clientHeight;
+        const pct = height > 0 ? Math.min(100, Math.max(0, (scrollTop / height) * 100)) : 0;
+        bar.style.width = pct + '%';
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    })();
+  </script>
+</body>
+</html>
+

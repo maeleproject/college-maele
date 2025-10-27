@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Nos Professeurs - Collège Maele</title>
+  <link rel="icon" type="image/png" href="/Images/Oiseaux.jpeg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    .card{background:#fff;border-radius:1rem;box-shadow:0 10px 15px -3px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.04);}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:0.75rem;font-weight:600;transition:transform .2s ease,box-shadow .2s ease,background-color .2s ease,color .2s ease;}
+    .btn-primary{background-image:linear-gradient(90deg,#2563eb,#1e3a8a);color:#fff;box-shadow:0 10px 15px -3px rgb(37 99 235 / .25);}
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 20px 25px -5px rgb(30 58 138 / .25);}
+    .btn-outline{background:#fff;color:#1e40af;border:1px solid rgba(30,64,175,.25);}
+    .btn-outline:hover{background:#eff6ff;}
+    .chip{display:inline-flex;align-items:center;gap:.375rem;border:1px solid rgba(30,58,138,.18);color:#1e3a8a;background:#fff;border-radius:9999px;padding:.375rem .75rem;font-size:.75rem;font-weight:600;}
+    .chip.active{background:#1e3a8a;color:#fff;border-color:#1e3a8a;}
+    .animated{opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .45s ease;}
+    .animated.visible{opacity:1;transform:translateY(0);}
+    .progress-wrap { position: fixed; left: 0; right: 0; top: 0; height: 4px; z-index: 60; pointer-events: none; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg,#2563eb,#1e40af); transform-origin: 0 50%; transition: width .12s linear; }
+    /* Skeleton shimmer */
+    .skeleton{position:relative;overflow:hidden;background:#eef2ff;}
+    .skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:shimmer 1.4s infinite;}
+    @keyframes shimmer{100%{transform:translateX(100%)}}
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+  <!-- Barre de progression -->
+  <div class="progress-wrap"><div id="progressBar" class="progress-bar"></div></div>
+
+  <!-- HEADER -->
+  <header class="bg-white/90 backdrop-blur shadow sticky top-0 z-40">
+    <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="/Images/Oiseaux.jpeg" alt="Logo" class="w-10 h-10 rounded-full object-cover">
+        <span class="font-extrabold text-xl md:text-2xl text-blue-800">Collège Maele</span>
+      </a>
+      <nav class="space-x-4 hidden md:flex">
+        <a href="/pages/accueil.html" class="text-gray-600 hover:text-blue-700">Blog</a>
+        <a href="#prof-list" class="text-gray-600 hover:text-blue-700">Professeurs</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-6">
+    <section class="card p-6 md:p-8 my-8 animated">
+      <div class="flex items-start justify-between gap-6 flex-wrap">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-extrabold text-blue-900">Nos Professeurs</h1>
+          <p class="mt-2 text-gray-600 max-w-2xl">Découvrez l’équipe enseignante : matières, parcours, disponibilités et contacts.</p>
+        </div>
+        <a href="index.html#equipe" class="btn btn-outline px-4 py-2"><i class="fa-solid fa-people-group mr-2"></i>Retour à l’équipe</a>
+      </div>
+    </section>
+
+    <!-- OUTILS -->
+    <section class="card p-4 md:p-6 mb-8 animated">
+      <div class="grid md:grid-cols-4 gap-4">
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Rechercher</label>
+          <div class="relative">
+            <input id="searchInput" type="text" placeholder="Nom, matière, mot-clé…" class="w-full rounded-xl border border-gray-300/80 bg-white px-4 py-3 pr-10 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30">
+            <i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Trier par</label>
+          <select id="sortSelect" class="w-full rounded-xl border border-gray-300/80 bg-white px-4 py-3 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30">
+            <option value="name_asc">Nom (A → Z)</option>
+            <option value="name_desc">Nom (Z → A)</option>
+            <option value="subject">Matière</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <button id="resetBtn" class="btn btn-outline w-full px-4 py-3"><i class="fa-solid fa-rotate-left mr-2"></i>Réinitialiser</button>
+        </div>
+      </div>
+      <div id="chipsRow" class="mt-4 flex flex-wrap gap-2"></div>
+    </section>
+
+    <!-- SKELETONS -->
+    <section id="prof-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <div class="card p-6 skeleton h-52"></div>
+      <div class="card p-6 skeleton h-52"></div>
+      <div class="card p-6 skeleton h-52"></div>
+      <div class="card p-6 skeleton h-52"></div>
+      <div class="card p-6 skeleton h-52"></div>
+      <div class="card p-6 skeleton h-52"></div>
+    </section>
+
+    <div id="noProfMsg" class="card p-8 text-center md:col-span-2 lg:col-span-3 hidden">
+      <p class="text-gray-600">Aucun professeur pour le moment.</p>
+    </div>
+
+    <section id="contact" class="mb-16 text-center animated">
+      <a href="/index.html" class="btn btn-outline px-5 py-3"><i class="fa-solid fa-house mr-2"></i>Retour à l’accueil</a>
+    </section>
+  </main>
+
+  <!-- MODAL APERÇU -->
+  <div id="quickview-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="card relative w-full max-w-lg overflow-hidden">
+      <button id="quickview-close" class="absolute top-3 right-3 text-2xl text-gray-500 hover:text-gray-800">×</button>
+      <div class="grid md:grid-cols-2">
+        <div class="bg-blue-50 p-6 flex items-center justify-center">
+          <img id="qv-photo" src="Images/point.jpg" alt="Photo professeur" class="w-40 h-40 rounded-full object-cover border-4 border-white shadow-md">
+        </div>
+        <div class="p-6">
+          <h4 id="qv-name" class="text-xl font-bold text-blue-900">Nom du professeur</h4>
+          <p id="qv-subject" class="text-blue-600">Matière</p>
+          <p id="qv-bio" class="mt-3 text-gray-700 text-sm leading-relaxed">—</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    /* === Données === */
+    const profBase = "/Images/Professeurs/";
+    const explicitPhotos = {
+      'Trésor KISONDOKO': '1.png','Germaine HAWA SUNGA': '2.png','Sœur YUMA SAFINIA': '3.png','Hubert KATAPULU': '4.png','Jean de la Croix KATSUVA': '5png.png',
+      'Diaz MATIKALI': '6.png','Cédric KAYEMBE': '7.png','Yvon TSHITENDA': '8.png','Scolastique AMISI': '9.png','Jephté MUMBERE': '12.png',
+      'Luc BOBANGA': '10.png','Alain OTEPA': '11.png','Grâce AMBWA': '13.png','Peter KAKEYI': '14.png','Faustin LINGOMBO MONDENGA': '15.png',
+      'Michel KILYOBO KIMWANGA': '16.png','Floribert ILONGA BIKI': '17.png','Paulin KASONGO NSENGA': '18.png','John KAMANGO': '19.png',
+      'Edo KAPITA': '20.png','Justin NGONGO KIBONDO': '21.png','Alfonse IGWANGOZI BUMBA': '22.png','Gérard BASILA LABAMA': '23.png',
+      'Joseph LITETE BOBINA': '24.png','Lucien RAMAZANI MUNGANGA': '25.png','Donat MWAMBA WETU TSHIALU': '26.png','Édouard LOBOLO AMURI': '27.png',
+      'Alain AMSINI': '28.png','Georges LIKENGE LOTIKA': '29.png','Marie BOYOMA MATOLO': '30.png','Martin MUHINDO BUSANGI': '31.png',
+      'José MAKANGA': '32.png','Jean Floribert Mondondo Mongita': '33.png','Evariste LITHO LOULA': '34.png','Père Joseph-Prince EKAGNY': '35.png',
+      'Rachel SOMANA': '36.png','François KOSHI KILOLO': '37.png','Franck YANYONGO MAINGOLO': '38.png','Franck MUMBERE': '39.png',
+      'Albert BUKASA': '40.png','Dieu-Merci BOLONGE': '41.png','Emmanuel AMURI': '42.png'
+    };
+
+    const profsList = [
+      ["Trésor KISONDOKO","Technologie de science physique"],["Germaine HAWA SUNGA","Éducation à la vie"],["Sœur YUMA SAFINIA","Catéchèse"],
+      ["Hubert KATAPULU","Chimie"],["Jean de la Croix KATSUVA","Anglais"],["Diaz MATIKALI","Français"],["Cédric KAYEMBE","Mathématique et sciences physique et technologie"],
+      ["Yvon TSHITENDA","Dessin scientifique, physique et mathématiques"],["Scolastique AMISI","TIC"],["Jephté MUMBERE","Latin", "français"],
+      ["Luc BOBANGA","Éducation à la vie"],["Alain OTEPA","Français"],["Grâce AMBWA","Anglais"],["Peter KAKEYI","SVT"],["Faustin LINGOMBO MONDENGA","Français"],
+      ["Michel KILYOBO KIMWANGA","SVT et Chimie"],["Floribert ILONGA BIKI","Mathématiques"],["Paulin KASONGO NSENGA","Anglais"],["John KAMANGO","SVT"],
+      ["Edo KAPITA","Mathématiques"],["Justin NGONGO KIBONDO","Mathématiques"],["Alfonse IGWANGOZI BUMBA","Français"],["Gérard BASILA LABAMA","Éducation Physique"],
+      ["Joseph LITETE BOBINA","SVT"],["Lucien RAMAZANI MUNGANGA","Géographie"],["Donat MWAMBA WETU TSHIALU","Français"],["Édouard LOBOLO AMURI","Anglais"],
+      ["Alain AMSINI","Français"],["Georges LIKENGE LOTIKA","Mathématiques"],["Marie BOYOMA MATOLO","Dessin"],["Martin MUHINDO BUSANGI","Mathématiques"],
+      ["José MAKANGA","Bibliothécaire"],["Jean Floribert Mondondo Mongita","Histoire"],["Evariste LITHO LOULA","Français"],["Père Joseph-Prince EKAGNY","Religion"],
+      ["Rachel SOMANA","Dessin"],["François KOSHI KILOLO","Géographie"],["Franck YANYONGO MAINGOLO","TIC"],["Franck MUMBERE","Latin"],
+      ["Albert BUKASA","Histoire"],["Dieu-Merci BOLONGE","Physique"],["Emmanuel AMURI","Professeur et Surveillant"]
+    ];
+
+    const grid = document.getElementById('prof-list');
+
+    // Délai simulé de chargement (skeleton visible)
+    setTimeout(() => {
+      grid.innerHTML = "";
+      profsList.forEach(([nom, matiere]) => {
+        const img = explicitPhotos[nom] ? profBase + explicitPhotos[nom] : "Images/point.jpg";
+        const card = document.createElement('article');
+        card.className = "card p-6 text-center animated prof-card";
+        card.dataset.name = nom.toLowerCase();
+        card.dataset.subject = matiere;
+        card.dataset.keywords = nom.toLowerCase() + " " + matiere.toLowerCase();
+        card.innerHTML = `
+          <div class="relative w-28 h-28 mx-auto -mt-2 mb-3">
+            <img src="${img}" alt="${nom}" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-white shadow-md">
+            <span class="absolute -bottom-1 -right-1 inline-flex items-center justify-center h-7 w-7 rounded-full bg-blue-600 text-white ring-2 ring-white shadow"><i class="fa-solid fa-user-graduate text-xs"></i></span>
+          </div>
+          <h3 class="font-bold text-lg text-blue-900">${nom}</h3>
+          <p class="text-sm text-blue-600 font-medium">${matiere}</p>
+          <div class="mt-4 flex items-center justify-center">
+            <button type="button" class="btn btn-primary px-3 py-2 text-sm quickview-btn" data-name="${nom}" data-subject="${matiere}" data-photo="${img}">
+              <i class="fa-solid fa-circle-info mr-2"></i>Aperçu rapide
+            </button>
+          </div>`;
+        grid.appendChild(card);
+      });
+      initFeatures();
+    }, 1300);
+
+    function initFeatures() {
+      const searchInput = document.getElementById('searchInput');
+      const resetBtn = document.getElementById('resetBtn');
+      const cards = Array.from(document.querySelectorAll('.prof-card'));
+      const chipsRow = document.getElementById('chipsRow');
+      const noProfMsg = document.getElementById('noProfMsg');
+      const subjects = [...new Set(profsList.map(p=>p[1]))].sort();
+      let activeSubject="";
+
+      function renderChips(){
+        chipsRow.innerHTML="";
+        subjects.forEach(s=>{
+          const btn=document.createElement('button');
+          btn.className='chip'+(activeSubject===s?' active':'');
+          btn.innerHTML=`<i class="fa-solid fa-book-open text-xs"></i><span>${s}</span>`;
+          btn.onclick=()=>{activeSubject=(activeSubject===s?"":s);filter();renderChips();};
+          chipsRow.appendChild(btn);
+        });
+      }
+
+      function filter(){
+        const q=(searchInput.value||"").toLowerCase();
+        let visible=0;
+        cards.forEach(c=>{
+          const matchQ=!q||c.dataset.name.includes(q)||c.dataset.subject.toLowerCase().includes(q);
+          const matchS=!activeSubject||c.dataset.subject===activeSubject;
+          c.style.display=(matchQ&&matchS)?'':'none';
+          if(matchQ&&matchS)visible++;
+        });
+        noProfMsg.classList.toggle('hidden',visible>0);
+      }
+
+      searchInput.addEventListener('input',filter);
+      resetBtn.addEventListener('click',()=>{searchInput.value="";activeSubject="";filter();renderChips();});
+      renderChips();
+      filter();
+
+      const modal=document.getElementById('quickview-modal');
+      const qvPhoto=document.getElementById('qv-photo');
+      const qvName=document.getElementById('qv-name');
+      const qvSubj=document.getElementById('qv-subject');
+      const qvClose=document.getElementById('quickview-close');
+
+      document.querySelectorAll('.quickview-btn').forEach(btn=>{
+        btn.onclick=()=>{qvPhoto.src=btn.dataset.photo;qvName.textContent=btn.dataset.name;qvSubj.textContent=btn.dataset.subject;modal.classList.remove('hidden');modal.classList.add('flex');document.body.style.overflow='hidden';};
+      });
+      qvClose.onclick=()=>{modal.classList.add('hidden');modal.classList.remove('flex');document.body.style.overflow='';};
+
+      const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});},{threshold:.1});
+      document.querySelectorAll('.animated').forEach(el=>observer.observe(el));
+    }
+
+    window.addEventListener('scroll',()=>{
+      const doc=document.documentElement;
+      const pct=(window.scrollY/(doc.scrollHeight-doc.clientHeight))*100;
+      document.getElementById('progressBar').style.width=pct+'%';
+    });
+  });
+  </script>
+</body>
+</html>

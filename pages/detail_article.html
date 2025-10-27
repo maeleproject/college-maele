@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ article.titre }} - Collège Maele</title>
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* Styles personnalisés pour les animations et les ajustements */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Arrière-plan gris clair */
+            color: #1a202c; /* Texte gris foncé */
+        }
+
+        /* Classes d'animation pour l'Intersection Observer */
+        .fade-in { opacity: 0; transition: opacity 1s ease-in-out; }
+        .fade-in.is-visible { opacity: 1; }
+        
+        .slide-in-up { transform: translateY(20px); opacity: 0; transition: transform 0.8s ease-out, opacity 0.8s ease-out; }
+        .slide-in-up.is-visible { transform: translateY(0); opacity: 1; }
+
+        .zoom-in { transform: scale(0.9); opacity: 0; transition: transform 0.8s ease-out, opacity 0.8s ease-out; }
+        .zoom-in.is-visible { transform: scale(1); opacity: 1; }
+
+        /* Styles personnalisés pour la section du blog */
+        .blog-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- En-tête -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="{% url 'accueil' %}" class="text-2xl font-bold text-gray-900 flex items-center">
+                <i class="fa-solid fa-graduation-cap text-blue-600 text-3xl mr-2"></i>
+                Collège Maele
+            </a>
+            <div class="space-x-4 hidden md:flex">
+                <a href="{% url 'accueil' %}" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Accueil</a>
+                <a href="#equipe" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Équipe</a>
+                <a href="#evenements" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Événements</a>
+                <a href="#blog" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Blog</a>
+                <a href="#contact" class="text-gray-600 hover:text-blue-600 transition-colors duration-200">Contact</a>
+            </div>
+            <button id="mobile-menu-btn" class="text-gray-600 md:hidden focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </nav>
+        <!-- Menu mobile -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg py-4 px-6 space-y-4">
+            <a href="{% url 'accueil' %}" class="block text-gray-600 hover:text-blue-600 transition-colors duration-200">Accueil</a>
+            <a href="#equipe" class="block text-gray-600 hover:text-blue-600 transition-colors duration-200">Équipe</a>
+            <a href="#evenements" class="block text-gray-600 hover:text-blue-600 transition-colors duration-200">Événements</a>
+            <a href="#blog" class="block text-gray-600 hover:text-blue-600 transition-colors duration-200">Blog</a>
+            <a href="#contact" class="block text-gray-600 hover:text-blue-600 transition-colors duration-200">Contact</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        <article class="bg-white p-8 md:p-12 rounded-lg shadow-lg">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">{{ article.titre }}</h1>
+            <div class="text-sm text-gray-500 mb-8 flex items-center space-x-4">
+                <span><i class="fas fa-user-circle mr-1"></i> Par Admin</span>
+                <span><i class="fas fa-calendar-alt mr-1"></i> Publié le {{ article.date_publication|date:"d F Y" }}</span>
+            </div>
+            
+            <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed" style="font-size: 1.1rem;">
+                {{ article.contenu|safe|linebreaks }}
+            </div>
+            
+            <a href="{% url 'accueil' %}" class="mt-8 inline-block text-blue-600 hover:underline font-semibold transition-colors duration-200">
+                <i class="fas fa-arrow-left mr-2"></i>Retour à la liste des articles
+            </a>
+        </article>
+    </main>
+
+    <!-- Pied de page -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="md:flex md:justify-between md:items-center">
+                <div class="mb-6 md:mb-0">
+                    <h4 class="text-2xl font-bold mb-2">Collège Maele</h4>
+                    <p class="text-gray-400">&copy; <span id="current-year"></span> Tous droits réservés.</p>
+                </div>
+                <div class="flex space-x-6 text-2xl">
+                    <a href="#" class="text-gray-400 hover:text-blue-500 transition-colors duration-200"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-500 transition-colors duration-200"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-500 transition-colors duration-200"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-500 transition-colors duration-200"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Définir l'année actuelle dans le pied de page
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>

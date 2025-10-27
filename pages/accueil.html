@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Collège Maele — Articles</title>
+   <link rel="icon" type="image/png" href="/Images/Oiseaux.jpeg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root{--cm-blue:#1e3a8a;--cm-blue2:#2563eb}
+    body{font-family:'Inter',sans-serif;background:#f7fafc;color:#1a202c}
+    .card{background:#fff;border-radius:1rem;box-shadow:0 10px 15px -3px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.04)}
+    .chip{display:inline-flex;align-items:center;gap:.4rem;border:1px solid rgba(30,58,138,.18);color:#1e3a8a;background:#fff;border-radius:9999px;padding:.35rem .7rem;font-size:.75rem;font-weight:600}
+    .chip.active{background:var(--cm-blue);color:#fff;border-color:var(--cm-blue)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:.8rem;font-weight:700;transition:transform .15s,box-shadow .15s,background .15s,color .15s}
+    .btn-primary{background-image:linear-gradient(90deg,var(--cm-blue2),var(--cm-blue));color:#fff;box-shadow:0 10px 15px -3px rgb(37 99 235 /.25)}
+    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 20px 25px -5px rgb(30 58 138 /.25)}
+    .btn-outline{background:#fff;color:var(--cm-blue);border:1px solid rgba(30,64,175,.25)}
+    .btn-outline:hover{background:#eff6ff}
+    .skeleton{position:relative;overflow:hidden;background:#eef2ff;border-radius:.8rem}
+    .skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),transparent);animation:shimmer 1.2s infinite}
+    @keyframes shimmer{100%{transform:translateX(100%)}}
+    /* Progress bar styling */
+    .progress-wrap { position: fixed; left: 0; right: 0; top: 0; height: 4px; z-index: 60; pointer-events: none; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg,#2563eb,#1e40af); transform-origin: 0 50%; transition: width .12s linear; }
+  </style>
+</head>
+<body>
+  <div class="progress-wrap" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
+  <!-- HEADER -->
+  <header class="bg-white shadow sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/index.html" class="flex items-center gap-3 text-gray-900">
+        <i class="fa-solid fa-graduation-cap text-blue-600 text-2xl"></i>
+        <span class="font-bold text-lg">Collège Maele</span>
+      </a>
+      <nav class="hidden md:flex gap-6 text-gray-600">
+        <a href="/index.html" class="hover:text-blue-600">Retour</a>
+        <a href="/index.html#contact" class="hover:text-blue-600">Contact</a>
+      </nav>
+      <button class="md:hidden text-gray-700" aria-label="Ouvrir le menu mobile"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-6 py-10">
+    <!-- HERO -->
+    <header class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 chip">
+        <i class="fa-regular fa-newspaper"></i> Actualités
+      </div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-blue-900 mt-2">Derniers Articles</h1>
+      <p class="text-gray-600 mt-2 max-w-2xl mx-auto">Actualités, événements et publications du Collège Maele.</p>
+    </header>
+
+    <!-- BARRE D’OUTILS -->
+    <section class="card p-4 md:p-6 mb-8" aria-label="Filtres et recherche des articles">
+      <div class="grid md:grid-cols-5 gap-4">
+        <!-- Recherche -->
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Rechercher</label>
+          <div class="relative">
+            <input id="searchInput" type="text" placeholder="Titre, extrait, tag, auteur…"
+              class="w-full rounded-xl border border-gray-300/80 bg-white px-4 py-3 pr-10 shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30">
+            <i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+          </div>
+        </div>
+        <!-- Auteur -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Auteur</label>
+          <select id="authorSelect" class="w-full rounded-xl border border-gray-300/80 bg-white px-4 py-3 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30">
+            <option value="">Tous</option>
+          </select>
+        </div>
+        <!-- Année -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Année</label>
+          <select id="yearSelect" class="w-full rounded-xl border border-gray-300/80 bg-white px-4 py-3 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30">
+            <option value="">Toutes</option>
+          </select>
+        </div>
+        <!-- Tri -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Trier par</label>
+          <select id="sortSelect" class="w-full rounded-xl border border-gray-300/80 bg-white px-4 py-3 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30">
+            <option value="date_desc">Plus récent</option>
+            <option value="date_asc">Plus ancien</option>
+            <option value="title_asc">Titre (A → Z)</option>
+            <option value="title_desc">Titre (Z → A)</option>
+            <option value="author_asc">Auteur (A → Z)</option>
+            <option value="author_desc">Auteur (Z → A)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <div class="mt-4">
+        <p class="text-sm font-medium text-gray-700 mb-2">Tags</p>
+        <div id="chipsRow" class="flex flex-wrap gap-2"></div>
+      </div>
+
+      <!-- Résumé -->
+      <div class="mt-4 flex items-center justify-between text-sm text-gray-600">
+        <span id="resultCount">—</span>
+        <div class="flex items-center gap-2">
+          <button id="resetBtn" class="btn btn-outline px-4 py-2"><i class="fa-solid fa-rotate-left mr-2"></i>Réinitialiser</button>
+          <button id="viewToggle" class="btn btn-outline px-3 py-2" title="Basculer grille/liste"><i class="fa-solid fa-table-cells-large"></i></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRID/LIST 
+    <section id="articlesWrap" class="card p-4 md:p-6">
+      <div id="articlesGrid" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <!-- ======= ARTICLES STATIQUES (HTML pur) ======= -
+        <article class="article-card bg-white rounded-xl border overflow-hidden shadow hover:shadow-lg transition group"
+          data-title="Rentrée académique 2025 : organisation et nouveautés" data-author="Secrétariat"
+          data-date="2025-09-01" data-tags="Rentrée,Organisation,Parents">
+          <a href="#" class="block focus:outline-none">
+            <div class="relative overflow-hidden">
+              <img loading="lazy" src="./images/articles/rentree.jpg" alt="Rentrée académique 2025" class="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105">
+              <span class="absolute left-3 top-3 chip bg-white/90 backdrop-blur border border-white/60">Annonce</span>
+            </div>
+            <div class="p-5">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">Rentrée académique 2025 : organisation et nouveautés</h2>
+              <div class="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-x-4 gap-y-1">
+                <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i><span class="js-date">1 septembre 2025</span></span>
+                <span class="flex items-center"><i class="fas fa-user-circle mr-1"></i>Secrétariat</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-4 line-clamp-3">Horaires, listes des classes, mesures d’accueil et nouveautés pédagogiques pour une reprise sereine.</p>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-600 font-semibold group-hover:underline">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                <span class="text-xs text-gray-400 js-timeago"></span>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="chip text-[11px]">Rentrée</span><span class="chip text-[11px]">Organisation</span><span class="chip text-[11px]">Parents</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="article-card bg-white rounded-xl border overflow-hidden shadow hover:shadow-lg transition group"
+          data-title="Journée scientifique : les sciences à l’honneur" data-author="Préfecture"
+          data-date="2025-06-12" data-tags="Événement,Sciences,Innovation">
+          <a href="#" class="block focus:outline-none">
+            <div class="relative overflow-hidden">
+              <img loading="lazy" src="./images/articles/sciences.jpg" alt="Journée scientifique" class="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105">
+              <span class="absolute left-3 top-3 chip bg-white/90 backdrop-blur border border-white/60">Événement</span>
+            </div>
+            <div class="p-5">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">Journée scientifique : les sciences à l’honneur</h2>
+              <div class="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-x-4 gap-y-1">
+                <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i><span class="js-date">12 juin 2025</span></span>
+                <span class="flex items-center"><i class="fas fa-user-circle mr-1"></i>Préfecture</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-4 line-clamp-3">Conférences, expériences et stands : retour sur une journée riche en découvertes et en créativité.</p>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-600 font-semibold group-hover:underline">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                <span class="text-xs text-gray-400 js-timeago"></span>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="chip text-[11px]">Événement</span><span class="chip text-[11px]">Sciences</span><span class="chip text-[11px]">Innovation</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="article-card bg-white rounded-xl border overflow-hidden shadow hover:shadow-lg transition group"
+          data-title="Tournoi sportif interclasses : palmarès 2025" data-author="EPS"
+          data-date="2025-05-28" data-tags="Sport,Communauté,Événement">
+          <a href="#" class="block focus:outline-none">
+            <div class="relative overflow-hidden">
+              <img loading="lazy" src="./images/articles/sport.jpg" alt="Tournoi sportif" class="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105">
+              <span class="absolute left-3 top-3 chip bg-white/90 backdrop-blur border border-white/60">Vie scolaire</span>
+            </div>
+            <div class="p-5">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">Tournoi sportif interclasses : palmarès 2025</h2>
+              <div class="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-x-4 gap-y-1">
+                <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i><span class="js-date">28 mai 2025</span></span>
+                <span class="flex items-center"><i class="fas fa-user-circle mr-1"></i>EPS</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-4 line-clamp-3">Ambiance, fair-play et performances : retour en images sur les finales et la remise des trophées.</p>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-600 font-semibold group-hover:underline">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                <span class="text-xs text-gray-400 js-timeago"></span>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="chip text-[11px]">Sport</span><span class="chip text-[11px]">Communauté</span><span class="chip text-[11px]">Événement</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="article-card bg-white rounded-xl border overflow-hidden shadow hover:shadow-lg transition group"
+          data-title="Atelier lecture & écriture pour le primaire" data-author="Français"
+          data-date="2025-03-15" data-tags="Pédagogie,Primaire,Lecture">
+          <a href="#" class="block focus:outline-none">
+            <div class="relative overflow-hidden">
+              <img loading="lazy" src="./images/articles/lecture.jpg" alt="Atelier lecture" class="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105">
+              <span class="absolute left-3 top-3 chip bg-white/90 backdrop-blur border border-white/60">Pédagogie</span>
+            </div>
+            <div class="p-5">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">Atelier lecture & écriture pour le primaire</h2>
+              <div class="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-x-4 gap-y-1">
+                <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i><span class="js-date">15 mars 2025</span></span>
+                <span class="flex items-center"><i class="fas fa-user-circle mr-1"></i>Français</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-4 line-clamp-3">Des activités ludiques pour développer vocabulaire, syntaxe et plaisir de lire chez les plus jeunes.</p>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-600 font-semibold group-hover:underline">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                <span class="text-xs text-gray-400 js-timeago"></span>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="chip text-[11px]">Pédagogie</span><span class="chip text-[11px]">Primaire</span><span class="chip text-[11px]">Lecture</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="article-card bg-white rounded-xl border overflow-hidden shadow hover:shadow-lg transition group"
+          data-title="Portes ouvertes : visite du campus et rencontres" data-author="Direction"
+          data-date="2024-11-20" data-tags="Admissions,Parents,Événement">
+          <a href="#" class="block focus:outline-none">
+            <div class="relative overflow-hidden">
+              <img loading="lazy" src="./images/articles/portes-ouvertes.jpg" alt="Portes ouvertes" class="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105">
+              <span class="absolute left-3 top-3 chip bg-white/90 backdrop-blur border border-white/60">Admissions</span>
+            </div>
+            <div class="p-5">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">Portes ouvertes : visite du campus et rencontres</h2>
+              <div class="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-x-4 gap-y-1">
+                <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i><span class="js-date">20 novembre 2024</span></span>
+                <span class="flex items-center"><i class="fas fa-user-circle mr-1"></i>Direction</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-4 line-clamp-3">Parents et futurs élèves ont découvert nos salles, laboratoires et installations sportives.</p>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-600 font-semibold group-hover:underline">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                <span class="text-xs text-gray-400 js-timeago"></span>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="chip text-[11px]">Admissions</span><span class="chip text-[11px]">Parents</span><span class="chip text-[11px]">Événement</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="article-card bg-white rounded-xl border overflow-hidden shadow hover:shadow-lg transition group"
+          data-title="Remise des prix : excellence et mérite" data-author="Équipe pédagogique"
+          data-date="2025-07-05" data-tags="Excellence,Cérémonie,Communauté">
+          <a href="#" class="block focus:outline-none">
+            <div class="relative overflow-hidden">
+              <img loading="lazy" src="./images/articles/prix.jpg" alt="Remise des prix" class="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105">
+              <span class="absolute left-3 top-3 chip bg-white/90 backdrop-blur border border-white/60">Cérémonie</span>
+            </div>
+            <div class="p-5">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">Remise des prix : excellence et mérite</h2>
+              <div class="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-x-4 gap-y-1">
+                <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i><span class="js-date">5 juillet 2025</span></span>
+                <span class="flex items-center"><i class="fas fa-user-circle mr-1"></i>Équipe pédagogique</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-4 line-clamp-3">Bravo aux lauréats et à tous les élèves pour leur engagement tout au long de l’année.</p>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-600 font-semibold group-hover:underline">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                <span class="text-xs text-gray-400 js-timeago"></span>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="chip text-[11px]">Excellence</span><span class="chip text-[11px]">Cérémonie</span><span class="chip text-[11px]">Communauté</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="article-card bg-white rounded-xl border overflow-hidden shadow hover:shadow-lg transition group"
+          data-title="Club informatique : lancement du site des élèves" data-author="TIC"
+          data-date="2025-04-09" data-tags="Numérique,Projet,Club">
+          <a href="#" class="block focus:outline-none">
+            <div class="relative overflow-hidden">
+              <img loading="lazy" src="./images/articles/club-info.jpg" alt="Club informatique" class="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105">
+              <span class="absolute left-3 top-3 chip bg-white/90 backdrop-blur border border-white/60">Club</span>
+            </div>
+            <div class="p-5">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">Club informatique : lancement du site des élèves</h2>
+              <div class="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-x-4 gap-y-1">
+                <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i><span class="js-date">9 avril 2025</span></span>
+                <span class="flex items-center"><i class="fas fa-user-circle mr-1"></i>TIC</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-4 line-clamp-3">Un projet collaboratif avec HTML, Tailwind et JavaScript, réalisé par les membres du club.</p>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-600 font-semibold group-hover:underline">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                <span class="text-xs text-gray-400 js-timeago"></span>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="chip text-[11px]">Numérique</span><span class="chip text-[11px]">Projet</span><span class="chip text-[11px]">Club</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="article-card bg-white rounded-xl border overflow-hidden shadow hover:shadow-lg transition group"
+          data-title="Plantation d’arbres : notre engagement écologique" data-author="BDE"
+          data-date="2025-02-10" data-tags="Écologie,Engagement,Communauté">
+          <a href="#" class="block focus:outline-none">
+            <div class="relative overflow-hidden">
+              <img loading="lazy" src="./images/articles/ecologie.jpg" alt="Plantation d’arbres" class="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105">
+              <span class="absolute left-3 top-3 chip bg-white/90 backdrop-blur border border-white/60">Projet vert</span>
+            </div>
+            <div class="p-5">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">Plantation d’arbres : notre engagement écologique</h2>
+              <div class="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-x-4 gap-y-1">
+                <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i><span class="js-date">10 février 2025</span></span>
+                <span class="flex items-center"><i class="fas fa-user-circle mr-1"></i>BDE</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-4 line-clamp-3">Des élèves mobilisés pour reboiser les abords du campus et sensibiliser à l’environnement.</p>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-600 font-semibold group-hover:underline">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                <span class="text-xs text-gray-400 js-timeago"></span>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="chip text-[11px]">Écologie</span><span class="chip text-[11px]">Engagement</span><span class="chip text-[11px]">Communauté</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="article-card bg-white rounded-xl border overflow-hidden shadow hover:shadow-lg transition group"
+          data-title="Nouveaux équipements pour le labo de sciences" data-author="Laboratoire"
+          data-date="2024-12-02" data-tags="Sciences,Équipement,Pédagogie">
+          <a href="#" class="block focus:outline-none">
+            <div class="relative overflow-hidden">
+              <img loading="lazy" src="./images/articles/labo.jpg" alt="Labo de sciences" class="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105">
+              <span class="absolute left-3 top-3 chip bg-white/90 backdrop-blur border border-white/60">Infrastructure</span>
+            </div>
+            <div class="p-5">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">Nouveaux équipements pour le labo de sciences</h2>
+              <div class="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-x-4 gap-y-1">
+                <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i><span class="js-date">2 décembre 2024</span></span>
+                <span class="flex items-center"><i class="fas fa-user-circle mr-1"></i>Laboratoire</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-4 line-clamp-3">Microscopes, verrerie et capteurs : de nouvelles ressources au service des TP.</p>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-600 font-semibold group-hover:underline">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                <span class="text-xs text-gray-400 js-timeago"></span>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="chip text-[11px]">Sciences</span><span class="chip text-[11px]">Équipement</span><span class="chip text-[11px]">Pédagogie</span>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <article class="article-card bg-white rounded-xl border overflow-hidden shadow hover:shadow-lg transition group"
+          data-title="Chorale : concert de fin d’année" data-author="Musique"
+          data-date="2024-12-18" data-tags="Culture,Musique,Communauté">
+          <a href="#" class="block focus:outline-none">
+            <div class="relative overflow-hidden">
+              <img loading="lazy" src="./images/articles/chorale.jpg" alt="Chorale" class="w-full h-44 object-cover transition-transform duration-300 group-hover:scale-105">
+              <span class="absolute left-3 top-3 chip bg-white/90 backdrop-blur border border-white/60">Culture</span>
+            </div>
+            <div class="p-5">
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">Chorale : concert de fin d’année</h2>
+              <div class="text-sm text-gray-500 mb-3 flex items-center flex-wrap gap-x-4 gap-y-1">
+                <span class="flex items-center"><i class="fas fa-calendar-alt mr-1"></i><span class="js-date">18 décembre 2024</span></span>
+                <span class="flex items-center"><i class="fas fa-user-circle mr-1"></i>Musique</span>
+              </div>
+              <p class="text-gray-700 text-sm mb-4 line-clamp-3">Un moment chaleureux avec des œuvres classiques et contemporaines interprétées par les élèves.</p>
+              <div class="flex items-center justify-between">
+                <span class="text-blue-600 font-semibold group-hover:underline">Lire la suite <i class="fas fa-arrow-right ml-2"></i></span>
+                <span class="text-xs text-gray-400 js-timeago"></span>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span class="chip text-[11px]">Culture</span><span class="chip text-[11px]">Musique</span><span class="chip text-[11px]">Communauté</span>
+              </div>
+            </div>
+          </a>
+        </article>
+        <!-- ======= /ARTICLES STATIQUES ======= 
+      </div> -->
+
+      <!-- ÉTAT VIDE -->
+      <div id="emptyState" class="hidden text-center py-12">
+        <div class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+          <i class="fa-regular fa-newspaper"></i>
+        </div>
+        <p class="mt-3 font-semibold text-blue-900">Aucun article ne correspond à vos filtres</p>
+        <p class="text-sm text-gray-600">Essayez d’enlever un tag, de changer d’année, ou de vider la recherche.</p>
+        <div class="mt-4">
+          <button id="clearFilters2" class="btn btn-outline px-4 py-2"><i class="fa-solid fa-broom mr-2"></i>Effacer les filtres</button>
+        </div>
+      </div>
+
+      <!-- PAGINATION CLIENT -->
+      <div id="loadMoreWrap" class="text-center mt-8">
+        <button id="loadMoreBtn" class="btn btn-primary px-5 py-3"><i class="fa-solid fa-plus mr-2"></i>Afficher plus</button>
+      </div>
+    </section>
+
+    <!-- Lien retour -->
+    <div class="mt-8 text-center">
+      <a href="./index.html" class="inline-block btn btn-outline px-5 py-3">
+        Aucun Article pour le moment. Retour à la page d'Accueil
+      </a>
+    </div>
+  </main>
+
+  <footer class="bg-gray-900 text-white mt-12">
+    <div class="container mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center">
+      <div>
+        <h4 class="font-bold text-lg">Collège Maele</h4>
+        <p class="text-gray-400 text-sm">© <span id="current-year"></span> Tous droits réservés.</p>
+      </div>
+      <!--<div class="flex gap-4 mt-4 md:mt-0">
+        <a href="https://wa.me/243812345678" target="_blank" rel="noopener" class="text-green-400 hover:text-white text-2xl"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://facebook.com/collegemaele" target="_blank" rel="noopener" class="text-blue-600 hover:text-white text-2xl"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://instagram.com/collegemaele" target="_blank" rel="noopener" class="text-pink-500 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/company/collegemaele" target="_blank" rel="noopener" class="text-sky-500 hover:text-white text-2xl"><i class="fab fa-linkedin-in"></i></a>
+      </div>-->
+    </div>
+  </footer>
+
+  <script>
+  // Année footer
+  document.getElementById('current-year').textContent = new Date().getFullYear();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = Array.from(document.querySelectorAll('.article-card'));
+    const grid  = document.getElementById('articlesGrid');
+
+    const searchInput = document.getElementById('searchInput');
+    const authorSelect = document.getElementById('authorSelect');
+    const yearSelect   = document.getElementById('yearSelect');
+    const sortSelect   = document.getElementById('sortSelect');
+    const chipsRow     = document.getElementById('chipsRow');
+    const resultCount  = document.getElementById('resultCount');
+    const resetBtn     = document.getElementById('resetBtn');
+    const clearFilters2= document.getElementById('clearFilters2');
+    const emptyState   = document.getElementById('emptyState');
+    const loadMoreBtn  = document.getElementById('loadMoreBtn');
+    const loadMoreWrap = document.getElementById('loadMoreWrap');
+    const viewToggle   = document.getElementById('viewToggle');
+
+    // Grille/Liste toggle
+    let listMode = false;
+    viewToggle.addEventListener('click', ()=>{
+      listMode = !listMode;
+      viewToggle.innerHTML = listMode ? '<i class="fa-solid fa-list"></i>' : '<i class="fa-solid fa-table-cells-large"></i>';
+      grid.className = listMode ? 'grid gap-6 md:grid-cols-1' : 'grid gap-6 md:grid-cols-2 lg:grid-cols-3';
+    });
+
+    // Construire auteurs / années / tags
+    const tagSet = new Set(); const authorSet = new Set(); const yearSet = new Set();
+    const yyyy = d => (d||'').slice(0,4);
+
+    cards.forEach(c=>{
+      const a = (c.dataset.author||'').trim(); if(a) authorSet.add(a);
+      const y = yyyy(c.dataset.date||''); if(y) yearSet.add(y);
+      const ts = (c.dataset.tags||'').split(',').map(t=>t.trim()).filter(Boolean);
+      ts.forEach(t => tagSet.add(t));
+    });
+
+    authorSelect.innerHTML = '<option value="">Tous</option>' + Array.from(authorSet).sort((a,b)=>a.localeCompare(b,'fr',{sensitivity:'base'})).map(a=>`<option value="${a}">${a}</option>`).join('');
+    yearSelect.innerHTML = '<option value="">Toutes</option>' + Array.from(yearSet).sort((a,b)=>b.localeCompare(a)).map(y=>`<option value="${y}">${y}</option>`).join('');
+
+    let activeTags = new Set();
+    function renderChips(){
+      chipsRow.innerHTML = '';
+      Array.from(tagSet).sort((a,b)=>a.localeCompare(b,'fr',{sensitivity:'base'})).forEach(tag=>{
+        const b = document.createElement('button');
+        b.type='button'; b.className='chip '+(activeTags.has(tag)?'active':''); b.innerHTML='<i class="fa-solid fa-tag text-xs"></i> '+tag;
+        b.addEventListener('click', ()=>{ activeTags.has(tag)?activeTags.delete(tag):activeTags.add(tag); filterSortRender(true); renderChips(); });
+        chipsRow.appendChild(b);
+      });
+      if(activeTags.size){
+        const clr=document.createElement('button'); clr.type='button'; clr.className='chip'; clr.innerHTML='<i class="fa-solid fa-xmark text-xs"></i> Effacer tags';
+        clr.addEventListener('click', ()=>{ activeTags.clear(); filterSortRender(true); renderChips(); });
+        chipsRow.appendChild(clr);
+      }
+    }
+    renderChips();
+
+    // Filtrage / Tri
+    function matches(c,q,author,year,tags){
+      const t = (c.dataset.title||'').toLowerCase();
+      const a = (c.dataset.author||'').toLowerCase();
+      const tg= (c.dataset.tags||'').toLowerCase();
+      const hay = t+' '+a+' '+tg+' '+(c.textContent||'').toLowerCase();
+      if(q && !hay.includes(q)) return false;
+      if(author && (c.dataset.author||'')!==author) return false;
+      if(year && yyyy(c.dataset.date||'')!==year) return false;
+      if(tags && tags.size){
+        const have = new Set((c.dataset.tags||'').split(',').map(x=>x.trim().toLowerCase()));
+        for(const tag of tags){ if(!have.has(tag.toLowerCase())) return false; }
+      }
+      return true;
+    }
+    function sortCards(list,mode){
+      const g = s => (s||'').toLowerCase();
+      switch(mode){
+        case 'date_asc':  return list.sort((A,B)=> (A.dataset.date||'').localeCompare(B.dataset.date||''));
+        case 'title_asc': return list.sort((A,B)=> g(A.dataset.title).localeCompare(g(B.dataset.title),'fr',{sensitivity:'base'}));
+        case 'title_desc':return list.sort((A,B)=> g(B.dataset.title).localeCompare(g(A.dataset.title),'fr',{sensitivity:'base'}));
+        case 'author_asc':return list.sort((A,B)=> g(A.dataset.author).localeCompare(g(B.dataset.author),'fr',{sensitivity:'base'}));
+        case 'author_desc':return list.sort((A,B)=> g(B.dataset.author).localeCompare(g(A.dataset.author),'fr',{sensitivity:'base'}));
+        case 'date_desc':
+        default: return list.sort((A,B)=> (B.dataset.date||'').localeCompare(A.dataset.date||''));
+      }
+    }
+
+    // “Afficher plus” (client)
+    const PAGE_SIZE = 9;
+    let visibleRefs = []; let shown = 0;
+
+    function renderList(withSkeleton=false){
+      const overlay = withSkeleton ? addSkeleton() : null;
+      grid.innerHTML = '';
+      const slice = visibleRefs.slice(0, shown);
+      slice.forEach(c => grid.appendChild(c));
+      loadMoreWrap.classList.toggle('hidden', shown >= visibleRefs.length || visibleRefs.length===0);
+      emptyState.classList.toggle('hidden', visibleRefs.length>0);
+      resultCount.textContent = `${visibleRefs.length} article${visibleRefs.length>1?'s':''}`;
+      if(overlay) setTimeout(()=> overlay.remove(), 200);
+      window.scrollTo({top: 0, behavior: 'smooth'});
+      // mettre à jour les libellés "il y a ..."
+      updateTimeago();
+    }
+    function addSkeleton(){
+      const overlay = document.createElement('div');
+      overlay.className='grid gap-6 md:grid-cols-2 lg:grid-cols-3';
+      overlay.innerHTML = Array(6).fill(0).map(()=>'<div class="skeleton h-72"></div>').join('');
+      grid.parentElement.appendChild(overlay);
+      return overlay;
+    }
+
+    function filterSortRender(withSkeleton=false){
+      const q = (searchInput.value||'').trim().toLowerCase();
+      const author = authorSelect.value;
+      const year   = yearSelect.value;
+
+      // Filtrer
+      const filtered = cards.filter(c => matches(c,q,author,year,activeTags));
+      // Trier
+      sortCards(filtered, sortSelect.value);
+      // Reset pagination
+      visibleRefs = filtered;
+      shown = Math.min(PAGE_SIZE, visibleRefs.length);
+      renderList(withSkeleton);
+    }
+
+    // Interactions
+    let t=null;
+    searchInput.addEventListener('input', ()=>{ clearTimeout(t); t=setTimeout(()=>filterSortRender(true), 180); });
+    authorSelect.addEventListener('change', ()=>filterSortRender(true));
+    yearSelect.addEventListener('change', ()=>filterSortRender());
+    sortSelect.addEventListener('change', ()=>filterSortRender());
+    resetBtn.addEventListener('click', ()=>{
+      searchInput.value=""; authorSelect.value=""; yearSelect.value=""; sortSelect.value="date_desc"; activeTags.clear(); renderChips(); filterSortRender(true);
+    });
+    clearFilters2?.addEventListener('click', ()=> resetBtn.click());
+    loadMoreBtn.addEventListener('click', ()=>{
+      shown = Math.min(shown + PAGE_SIZE, visibleRefs.length);
+      renderList();
+    });
+
+    // Init
+    filterSortRender();
+
+    // ------ Helpers : timeago à partir de data-date ------
+    function timeagoFrom(dateStr){
+      const d = new Date(dateStr);
+      if(isNaN(d)) return '';
+      const now = new Date();
+      const sec = Math.max(1, Math.floor((now - d) / 1000));
+      const units = [
+        ['an', 365*24*3600],
+        ['mois', 30*24*3600],
+        ['semaine', 7*24*3600],
+        ['jour', 24*3600],
+        ['heure', 3600],
+        ['minute', 60],
+        ['seconde', 1]
+      ];
+      for(const [name, s] of units){
+        if(sec >= s){
+          const val = Math.floor(sec / s);
+          const plural = (name==='mois') ? '' : (val>1 ? 's' : '');
+          return `il y a ${val} ${name}${plural}`;
+        }
+      }
+      return '';
+    }
+    function updateTimeago(){
+      visibleRefs.forEach(card => {
+        const span = card.querySelector('.js-timeago');
+        if(span){ span.textContent = timeagoFrom(card.dataset.date || ''); }
+      });
+    }
+    updateTimeago();
+  });
+  </script>
+  <script>
+    (function(){
+      const bar = document.getElementById('progressBar');
+      if(!bar) return;
+      function update(){
+        const doc = document.documentElement;
+        const scrollTop = window.scrollY || doc.scrollTop || 0;
+        const height = doc.scrollHeight - doc.clientHeight;
+        const pct = height > 0 ? Math.min(100, Math.max(0, (scrollTop / height) * 100)) : 0;
+        bar.style.width = pct + '%';
+      }
+      window.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    })();
+  </script>
+</body>
+</html>
