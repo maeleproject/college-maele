@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Soumettez vos idées d’articles au Collège Maele. Partagez vos réflexions, études ou analyses éducatives avec la communauté." />
+  <meta name="keywords" content="Collège Maele, article, enseignant, publication, Kisangani, éducation" />
+  <meta name="author" content="Optimum Entreprise" />
+  <title>Soumettre un article – Collège Maele</title>
+  <link rel="icon" type="image/png" href="/Images/Oiseaux.jpeg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("current-year").textContent = new Date().getFullYear();
+
+      // Animation d’envoi du formulaire
+      const form = document.getElementById("article-form");
+      form.addEventListener("submit", () => {
+        const button = form.querySelector("button[type='submit']");
+        button.disabled = true;
+        button.innerHTML = `
+          <svg class="animate-spin h-5 w-5 mr-2 inline-block text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3.5-3.5L12 0v4a8 8 0 018 8h-4l3.5 3.5L20 20h-4a8 8 0 01-8-8z"></path>
+          </svg> Envoi en cours...
+        `;
+      });
+    });
+  </script>
+</head>
+
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+<!-- SECTION FORMULAIRE -->
+<section class="relative overflow-hidden py-20 md:py-28">
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+    <div class="absolute -top-24 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-200/70 via-blue-300/30 to-transparent blur-3xl"></div>
+  </div>
+
+  <div class="container mx-auto px-6 max-w-4xl">
+    <div class="text-center mb-12">
+      <div class="mx-auto mb-4 inline-flex items-center justify-center rounded-full border border-blue-200 bg-white/70 px-3 py-1 text-xs font-medium text-blue-700 shadow-sm backdrop-blur">
+        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v16H4z"/></svg>
+        Soumission d’un article – Professeurs
+      </div>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-blue-900">Partagez votre savoir</h1>
+      <p class="mt-2 text-gray-600">Soumettez votre article pour publication sur le site du <strong>Collège Maele</strong>.</p>
+    </div>
+
+    <!-- Formulaire -->
+    <div class="rounded-2xl bg-white/90 p-6 md:p-8 shadow-xl ring-1 ring-black/5 backdrop-blur">
+      <form action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data" id="article-form" class="space-y-6">
+
+        <!-- Clé Web3Forms -->
+        <input type="hidden" name="access_key" value="315f3a8e-ab8b-4d41-bd8a-4d35726497c1">
+        <input type="hidden" name="redirect" value="merci.html">
+        <input type="hidden" name="subject" value="Nouvelle proposition d’article – Collège Maele">
+        <input type="hidden" name="from_name" value="Formulaire articles Collège Maele">
+        <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off">
+
+        <!-- Identité -->
+        <div class="grid sm:grid-cols-3 gap-5">
+          <div>
+            <label for="nom" class="block text-sm font-medium text-gray-700">Nom</label>
+            <input id="nom" name="Nom" type="text" required placeholder="Ex. Wawina" class="block w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500/30">
+          </div>
+          <div>
+            <label for="postnom" class="block text-sm font-medium text-gray-700">Post-nom</label>
+            <input id="postnom" name="Post-nom" type="text" required placeholder="Ex. Mbula" class="block w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500/30">
+          </div>
+          <div>
+            <label for="prenom" class="block text-sm font-medium text-gray-700">Prénom</label>
+            <input id="prenom" name="Prénom" type="text" required placeholder="Ex. David" class="block w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500/30">
+          </div>
+        </div>
+
+        <!-- Titre -->
+        <div>
+          <label for="titre" class="block text-sm font-medium text-gray-700">Titre de l’article</label>
+          <input id="titre" name="Titre" type="text" required placeholder="Ex. L’impact du numérique sur l’enseignement" class="block w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500/30">
+        </div>
+
+        <!-- Corps -->
+        <div>
+          <label for="contenu" class="block text-sm font-medium text-gray-700">Corps de l’article</label>
+          <textarea id="contenu" name="Corps_de_l_article" rows="8" required placeholder="Rédigez ici votre article complet..." class="block w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500/30"></textarea>
+        </div>
+
+        <!-- Références -->
+        <div>
+          <label for="references" class="block text-sm font-medium text-gray-700">Références, auteurs ou œuvres citées</label>
+          <textarea id="references" name="Références" rows="3" placeholder="Ex. Platon – La République ; Jean Piaget – Psychologie et pédagogie..." class="block w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500/30"></textarea>
+        </div>
+
+        <!-- Études / Diagrammes -->
+        <div>
+          <label for="diagrammes" class="block text-sm font-medium text-gray-700">Lien vers une étude ou diagramme (facultatif)</label>
+          <input id="diagrammes" name="Lien_étude_ou_diagramme" type="url" placeholder="Ex. https://..." class="block w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500/30">
+        </div>
+
+        <!-- Validation RGPD -->
+        <label class="flex items-start gap-3 text-sm text-gray-600">
+          <input type="checkbox" required class="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+          <span>J’accepte que mes informations soient utilisées pour la publication de cet article (RGPD).</span>
+        </label>
+
+        <!-- Bouton -->
+        <div class="pt-2 flex items-center gap-3">
+          <button type="submit" class="rounded-xl bg-blue-700 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-800 transition">
+            Soumettre l’article
+          </button>
+          <p class="text-xs text-gray-500">L’article sera examiné avant publication.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-gray-800 text-white mt-20">
+  <div class="container mx-auto px-6 py-10 text-center text-sm text-gray-400">
+    © <span id="current-year"></span> Collège Maele – Design par <a href="https://portfoliodavidwawina.vercel.app" class="underline hover:text-white">Optimum Entreprise</a>.
+  </div>
+</footer>
+
+</body>
+</html>
