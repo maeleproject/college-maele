@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Merci – Collège Maele Kisangani</title>
+      <link rel="icon" type="image/png" href="/images/oiseaux.jpeg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <meta name="description" content="Merci d'avoir contacté le Collège Maele. Nous vous répondrons dans les plus brefs délais.">
+  <link rel="icon" href="favicon.ico">
+  <script src="https://kit.fontawesome.com/a2e0a4b6f5.js" crossorigin="anonymous"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("current-year").textContent = new Date().getFullYear();
+    });
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(to bottom right, #eff6ff, #f0fdfa);
+      color: #1e3a8a;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .thank-box {
+      background: white;
+      border-radius: 1.5rem;
+      padding: 3rem 2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      max-width: 480px;
+      width: 100%;
+      animation: fadeInUp 0.8s ease-in-out;
+    }
+
+    .thank-box h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #1e40af;
+      margin-bottom: 1rem;
+    }
+
+    .thank-box p {
+      color: #334155;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .thank-box .icon {
+      font-size: 3.5rem;
+      color: #2563eb;
+      margin-bottom: 1rem;
+      animation: pop 0.6s ease-out;
+    }
+
+    .btn-home {
+      display: inline-block;
+      background-color: #1d4ed8;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      margin-top: 1.5rem;
+      font-weight: 600;
+      transition: all 0.2s ease-in-out;
+      text-decoration: none;
+    }
+
+    .btn-home:hover {
+      background-color: #1e3a8a;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      background-color: #1f2937;
+      color: #9ca3af;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: #fbbf24;
+      text-decoration: none;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div class="thank-box">
+      <div class="icon"><i class="fas fa-check-circle"></i></div>
+      <h1>Merci pour votre message !</h1>
+      <p>Nous avons bien reçu votre demande.  
+      L’équipe du <strong>Collège Maele</strong> vous répondra sous 24 à 48 heures ouvrées.</p>
+      <a href="index.html" class="btn-home">← Retour à l’accueil</a>
+    </div>
+  </main>
+
+  <footer>
+    © <span id="current-year"></span> Collège Maele – Design par <a href="https://portfoliodavidwawina.vercel.app" target="_blank" rel="noopener">Optimum Entreprise</a>.
+  </footer>
+</body>
+</html>

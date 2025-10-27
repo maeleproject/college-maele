@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <a href="./Pages/galerievide.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Galeries</a>
                 <a href="#dons" class="text-gray-700 hover:text-blue-600 transition duration-300">Dons</a>
                 <a href="./pages/accueil.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Blog</a>
-                <a href="#contact" class="text-gray-700 hover:text-blue-600 transition duration-300">Contacts</a>
+                <a href="/contact.html" class="text-gray-700 hover:text-blue-600 transition duration-300">Contacts</a>
             </div>
 
             <button data-modal-target="don-principal" class="hidden lg:block bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition duration-300">
@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <a href="#equipe" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Équipe</a>
                     <a href="./Pages/galerievide.html" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Galeries</a>
                     <a href="./pages/accueil.html" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Blog</a>
-                    <a href="#contact" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Contact</a>
+                    <a href="/contact.html" class="mobile-link text-xl text-gray-700 hover:text-blue-600">Contact</a>
                     <button data-modal-target="don-principal" class="mt-4 block w-full bg-gradient-to-r from-blue-600 to-blue-800 text-white text-center font-bold py-3 px-6 rounded-full shadow-lg">
                         Faire un Don
                     </button>
@@ -483,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="#equipe" class="inline-flex items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400">
             <i class="fa-solid fa-people-group mr-2"></i>Voir notre équipe
           </a>
-          <a href="#contact" class="inline-flex items-center justify-center rounded-xl border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-800 shadow-sm transition hover:bg-blue-50">
+          <a href="/contact.html" class="inline-flex items-center justify-center rounded-xl border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-800 shadow-sm transition hover:bg-blue-50">
             <i class="fa-solid fa-paper-plane mr-2"></i>Nous contacter
           </a>
         </div>
@@ -806,7 +806,7 @@ Tous nos efforts d’étudiants !</textarea>
                             <i class="fas fa-hands-helping text-5xl text-blue-500 mb-4"></i>
                             <h4 class="text-2xl font-bold mb-2">Don Matériel</h4>
                             <p class="text-gray-600 mb-6">Contactez-nous pour les dons d'articles ou de meubles.</p>
-                            <a href="#contact" class="bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-600 transition duration-300">Nous Contacter</a>
+                            <a href="/contact.html" class="bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-600 transition duration-300">Nous Contacter</a>
                         </div>
                     </div>
                 </div>
@@ -851,151 +851,15 @@ Tous nos efforts d’étudiants !</textarea>
                     </ul>
 
                     <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
-                        <a href="#contact" class="inline-block w-full sm:w-auto text-center bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold py-3 px-6 rounded-lg shadow hover:scale-105 transform transition">Rejoindre le BDE</a>
-                        <a href="./pages/galerievide.html" class="inline-block w-full sm:w-auto text-center bg-white border border-blue-200 text-blue-700 font-semibold py-3 px-6 rounded-lg shadow-sm hover:bg-blue-50 transition">Voir nos Événements</a>
+                        <a href="/contact.html" class="inline-block w-full sm:w-auto text-center bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold py-3 px-6 rounded-lg shadow hover:scale-105 transform transition">Rejoindre le BDE</a>
+                        <a href="/galerievide.html" class="inline-block w-full sm:w-auto text-center bg-white border border-blue-200 text-blue-700 font-semibold py-3 px-6 rounded-lg shadow-sm hover:bg-blue-50 transition">Voir nos Événements</a>
                     </div>
 
-                    <p class="mt-6 text-sm text-gray-500">Vous avez une idée d'événement ? <a href="#contact" class="text-blue-700 font-semibold underline">Contactez-nous</a> — nous serons ravis d'en discuter.</p>
+                    <p class="mt-6 text-sm text-gray-500">Vous avez une idée d'événement ? <a href="/contact.html" class="text-blue-700 font-semibold underline">Contactez-nous</a> — nous serons ravis d'en discuter.</p>
                 </div>
             </div>
         </div>
     </section>
-
-<!-- CONTACT SECTION (stylisé + Web3Forms prêt) -->
-<section id="contact" class="relative overflow-hidden py-20 md:py-32 bg-gray-50 dark:bg-slate-900">
-  <!-- décor -->
-  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-    <div class="absolute -top-24 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-200/70 via-blue-300/30 to-transparent blur-3xl dark:from-blue-900/30 dark:via-blue-700/20"></div>
-    <svg class="absolute -bottom-16 -right-16 h-[520px] w-[520px] opacity-15 dark:opacity-10" viewBox="0 0 200 200" fill="none">
-      <defs>
-        <pattern id="dots-cm" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-          <circle cx="1" cy="1" r="1" class="fill-blue-500"></circle>
-        </pattern>
-      </defs>
-      <rect width="200" height="200" fill="url(#dots-cm)"></rect>
-    </svg>
-  </div>
-
-  <div class="container mx-auto px-6">
-    <div class="text-center mb-12">
-      <div class="mx-auto mb-4 inline-flex items-center justify-center rounded-full border border-blue-200/60 bg-white/70 px-3 py-1 text-xs font-medium text-blue-700 shadow-sm backdrop-blur dark:border-blue-800/40 dark:bg-slate-800/50 dark:text-blue-200">
-        <!-- icône -->
-        <svg class="mr-2 h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v.5l-10 6L2 6.5V6Zm0 3.382V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9.382l-9.553 5.73a2 2 0 0 1-2.894 0L2 9.382Z"/></svg>
-        Restons en contact
-      </div>
-      <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-blue-900 dark:text-blue-300">Contactez-nous</h2>
-      <p class="mt-2 text-gray-600 dark:text-gray-300">Une question, une demande d’information ou une visite ? Écrivez-nous.</p>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-8 items-stretch">
-      <!-- Carte coordonnées -->
-      <div class="relative rounded-2xl bg-white/80 p-6 md:p-8 shadow-xl ring-1 ring-black/5 backdrop-blur dark:bg-slate-800/60 dark:ring-white/5">
-        <h3 class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-5">Coordonnées</h3>
-        <ul class="space-y-4 text-gray-700 dark:text-gray-100">
-          <li class="flex items-start gap-3">
-            <svg class="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Zm0 9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
-            <p><strong class="font-semibold">Adresse :</strong> Avenue Désirable, Commune MAKISO, Kisangani, RDC</p>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24 11.36 11.36 0 0 0 3.56.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C11.85 21 3 12.15 3 2a1 1 0 0 1 1-1h3.49a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.56 1 1 0 0 1-.24 1.01l-2.2 2.2Z"/></svg>
-            <p><strong class="font-semibold">Téléphone :</strong> <a class="underline decoration-blue-300/50 hover:decoration-blue-600" href="tel:+243812345678">+243 81 54 93 115  </a></p>
-          </li>
-          <li class="flex items-start gap-3">
-            <svg class="mt-0.5 h-5 w-5 text-blue-600 dark:text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M2 6a2  2 0 0 1 2-2h16a2 2 0 0 1 2 2v.5l-10 6L2 6.5V6Zm0 3.382V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9.382l-9.553 5.73a2 2 0 0 1-2.894 0L2 9.382Z"/></svg>
-            <p><strong class="font-semibold">Email :</strong> <a class="underline decoration-blue-300/50 hover:decoration-blue-600" href="mailto:contactcollegemaele@gmail.com">contactcollegemaele@gmail.com</a></p>
-          </li>
-        </ul>
-
-        <div class="mt-6 flex gap-3">
-          <a href="https://wa.me/243812345678" target="_blank" rel="noopener" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-green-500/10 text-green-600 ring-1 ring-green-500/20 hover:scale-105 transition">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 12a8 8 0 0 1-11.88 6.92L4 20l1.08-3.9A8 8 0 1 1 20 12Zm-8-6a6 6 0 0 0-5.2 9l.3.46-.64 2.3 2.37-.62.45.27A6 6 0 1 0 12 6.5Zm3.77 7.68c-.2-.1-1.17-.58-1.36-.65s-.32-.1-.45.1-.52.65-.64.79-.24.15-.44.05a4.9 4.9 0 0 1-1.45-.89 5.39 5.39 0 0 1-1-1.24c-.1-.2 0-.31.09-.41l.25-.29c.1-.1.13-.18.19-.3s0-.23 0-.33 0-.3-.05-.45-.44-.44-.6-.5-.33-.08-.52-.05a1 1 0 0 0-.74.35 3.13 3.13 0 0 0-.97 2.3 5.45 5.45 0 0 0 1.14 2.9 6.2 6.2 0 0 0 2.72 2.26c.32.14.64.26.98.34a2.84 2.84 0 0 0 1.87-.12 3.06 3.06 0 0 0 1.34-1c.16-.22.2-.41.13-.56s-.18-.12-.38-.22Z"/></svg>
-          </a>
-          <a href="https://facebook.com/collegemaele" target="_blank" rel="noopener" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-blue-600/10 text-blue-600 ring-1 ring-blue-600/20 hover:scale-105 transition">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M13 10h3l-1 4h-2v8h-4v-8H7v-4h2V8a4 4 0 0 1 4-4h3v4h-3a1 1 0 0 0-1 1v1Z"/></svg>
-          </a>
-          <a href="https://instagram.com/collegemaele" target="_blank" rel="noopener" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-pink-500/10 text-pink-500 ring-1 ring-pink-500/20 hover:scale-105 transition">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A5.5 5.5 0 1 1 6.5 13 5.5 5.5 0 0 1 12 7.5Zm0 2A3.5 3.5 0 1 0 15.5 13 3.5 3.5 0 0 0 12 9.5Zm5.75-3.25a1.25 1.25 0 1 1-1.25 1.25 1.25 1.25 0 0 1 1.25-1.25Z"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/company/collegemaele" target="_blank" rel="noopener" class="inline-flex items-center justify-center h-10 w-10 rounded-full bg-sky-500/10 text-sky-600 ring-1 ring-sky-500/20 hover:scale-105 transition">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M6 9H3v12h3V9Zm-.5-6A1.5 1.5 0 1 0 7 4.5 1.5 1.5 0 0 0 5.5 3ZM21 21h-3v-6.5c0-1.38-.56-2.5-2-2.5s-2 .95-2 2.5V21h-3V9h3v1.53S15.78 9 17.5 9s3 1.57 3 4.26V21Z"/></svg>
-          </a>
-        </div>
-
-        <!-- Carte -->
-        <div class="mt-8 rounded-xl overflow-hidden ring-1 ring-black/5 shadow-sm">
-          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-            <iframe
-    width="100%" height="280" frameborder="0" scrolling="no"
-    src="https://www.google.com/maps?q=COLLEGE%20MAELE%2C%20Kisangani&hl=fr-FR&output=embed">
-  </iframe>
-          </div>
-          <p class="text-sm text-gray-600 mt-2">Voir sur <a href="https://www.google.com/maps/place/COLLEGE+MAELE,+Kisangani,+R%C3%A9publique+d%C3%A9mocratique+du+Congo/@0.5190459,25.187568,17z/data=!3m1!4b1!4m6!3m5!1s0x1757a0cd5d7468a1:0xf7c71ce988f91bdb!8m2!3d0.5189767!4d25.1902128!16s%2Fg%2F11bvt9wkz0?hl=fr-FR&entry=ttu&g_ep=EgoyMDI1MDkxNy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">Google Maps</a></p>
-        </div>
-      </div>
-
-      <main class="min-h-screen flex items-center justify-center p-6">
-    <div class="relative rounded-2xl bg-white/90 p-6 md:p-8 shadow-xl ring-1 ring-black/5 backdrop-blur">
-      <h3 class="text-lg font-semibold text-blue-800">Écrivez-nous</h3>
-      <p class="mt-1 mb-6 text-sm text-gray-600">Nous répondons rapidement aux messages reçus via ce formulaire.</p>
-
-      <form action="https://api.web3forms.com/submit" method="POST" class="space-y-5">
-        <!-- Clé Web3Forms -->
-        <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
-        <!-- Page de remerciement -->
-        <input type="hidden" name="redirect" value="merci.html">
-        <!-- Sujet par défaut -->
-        <input type="hidden" name="subject" value="Nouveau message - Collège Maele" />
-        <!-- Nom du site -->
-        <input type="hidden" name="from_name" value="Site Web Collège Maele" />
-        <!-- Honeypot -->
-        <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" />
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-          <div>
-            <label for="name" class="mb-1 block text-sm font-medium text-gray-700">Nom complet</label>
-            <input id="name" name="name" type="text" required
-              class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-              placeholder="Ex. Marie K." />
-          </div>
-          <div>
-            <label for="email" class="mb-1 block text-sm font-medium text-gray-700">Email</label>
-            <input id="email" name="email" type="email" required
-              class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-              placeholder="vous@exemple.com" />
-          </div>
-        </div>
-
-        <div>
-          <label for="phone" class="mb-1 block text-sm font-medium text-gray-700">Téléphone (optionnel)</label>
-          <input id="phone" name="phone" type="tel" inputmode="tel" pattern="^[0-9+\s().-]{6,}$"
-            class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-            placeholder="+243 8xx xxx xxx" />
-        </div>
-
-        <div>
-          <label for="message" class="mb-1 block text-sm font-medium text-gray-700">Message</label>
-          <textarea id="message" name="message" required rows="5"
-            class="block w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30"
-            placeholder="Comment pouvons-nous vous aider ?"></textarea>
-        </div>
-
-        <label class="flex items-start gap-3 text-sm text-gray-600">
-          <input type="checkbox" required class="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-          <span>J’accepte que mes informations soient utilisées pour me recontacter (RGPD).</span>
-        </label>
-
-        <div class="pt-1 flex items-center gap-3">
-          <button type="submit"
-            class="inline-flex items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
-            Envoyer le message
-          </button>
-          <p class="text-xs text-gray-500">Réponse sous 24–48h ouvrées.</p>
-        </div>
-      </form>
-
-      <p class="mt-4 text-xs text-gray-500">Protégé par validation côté serveur & honeypot. Pas de compte requis côté visiteur.</p>
-    </div>
-  </main>
 
 
     <!-- FOOTER -->
@@ -1003,7 +867,7 @@ Tous nos efforts d’étudiants !</textarea>
         <div class="container mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 <div class="md:col-span-1"><h3 class="text-xl font-bold mb-4">Collège Maele</h3><p class="text-gray-400">Former les leaders de demain avec excellence et intégrité.</p></div>
-                <div><h4 class="font-semibold mb-4">Liens Rapides</h4><ul class="space-y-2"><li><a href="#a-propos" class="text-gray-400 hover:text-white">À Propos</a></li><li><a href="#equipe" class="text-gray-400 hover:text-white">Notre Équipe</a></li><li><a href="./pages/accueil.html" class="text-gray-400 hover:text-white">Blog</a></li><li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li></ul></div>
+                <div><h4 class="font-semibold mb-4">Liens Rapides</h4><ul class="space-y-2"><li><a href="#a-propos" class="text-gray-400 hover:text-white">À Propos</a></li><li><a href="#equipe" class="text-gray-400 hover:text-white">Notre Équipe</a></li><li><a href="./pages/accueil.html" class="text-gray-400 hover:text-white">Blog</a></li><li><a href="/contact.html" class="text-gray-400 hover:text-white">Contact</a></li></ul></div>
                  <div><h4 class="font-semibold mb-4">Contact Info</h4><ul class="space-y-2 text-gray-400"><li>123 Rue de l'Excellence</li><li>Kisangani, RDC</li><li>contactcollegemaele@gmail.com</li><li>+243 815493115</li></ul></div>
                  <div><h4 class="font-semibold mb-4">Suivez-nous</h4><div class="flex space-x-4"><a href="https://wa.me/243812345678" class="text-green-400 hover:text-white text-2xl"><i class="fab fa-whatsapp"></i></a><a href="https://facebook.com/collegemaele" class="text-blue-600 hover:text-white text-2xl"><i class="fab fa-facebook-f"></i></a><a href="https://instagram.com/collegemaele" class="text-pink-500 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a><a href="https://www.linkedin.com/company/collegemaele" class="text-sky-500 hover:text-white text-2xl"><i class="fab fa-linkedin-in"></i></a></div></div>
             </div>
