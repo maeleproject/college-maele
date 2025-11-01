@@ -4,94 +4,199 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Galerie - Collège Maele</title>
-  <link rel="icon" type="image/png" href="/images/oiseaux.jpeg">
+  <link rel="icon" type="image/png" href="./images/oiseaux.jpeg">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
-    .card{background:#fff;border-radius:1rem;box-shadow:0 10px 15px -3px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.04)}
-    .grid-thumb button{position:relative;overflow:hidden;border-radius:0.75rem;box-shadow:0 4px 10px -4px rgba(0,0,0,.15)}
-    .grid-thumb img{transition:transform .25s ease}
-    .grid-thumb button:hover img{transform:scale(1.03)}
-    .lightbox-backdrop{transition:opacity .2s ease}
-    .lb-zoom{transition:transform .25s ease}
-    .lb-nav-btn{position:absolute;top:50%;transform:translateY(-50%);font-size:2rem;color:white;background:rgba(0,0,0,0.4);padding:0.5rem 0.8rem;border-radius:50%;cursor:pointer}
-    .lb-nav-btn:hover{background:rgba(0,0,0,0.6)}
+    /* --- ANIMATIONS ET EFFETS --- */
+    .thumb {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.9rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      transform: translateY(0);
+      transition: all 0.35s ease;
+    }
+    .thumb:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    .thumb img {
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    .thumb:hover img {
+      transform: scale(1.08);
+      opacity: 0.9;
+    }
+    .thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 0.9rem;
+    }
+    .thumb:hover::after {
+      opacity: 1;
+    }
+
+    /* Apparition douce */
+    .fade-in {
+      animation: fadeIn 0.4s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    /* Progress bar */
+    .progress {
+      height: 4px;
+      width: 100%;
+      background-color: rgba(255,255,255,0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #4f46e5;
+      width: 0;
+      transition: width 0.2s ease;
+    }
+
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
 
   <!-- HEADER -->
-  <header class="bg-white shadow py-4 mb-6">
-    <div class="container mx-auto px-6 flex items-center justify-between">
-      <a href="/index.html#galeries" class="flex items-center gap-3">
-        <img src="/Images/Oiseaux.jpeg" alt="Logo" class="w-10 h-10 rounded-full object-cover">
-        <span class="font-bold text-xl text-blue-700">Collège Maele</span>
+  <header class="bg-white/90 shadow-sm py-4 mb-6 sticky top-0 z-40 backdrop-blur-md border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <a href="./index.html#galeries" class="flex items-center gap-3">
+        <img src="/images/Oiseaux.jpeg" alt="Logo" class="w-10 h-10 rounded-full object-cover">
+        <span class="font-bold text-2xl text-indigo-700 tracking-tight">Collège Maele</span>
       </a>
-      <nav class="space-x-4 hidden md:flex">
-        <a href="/index.html" class="text-gray-600 hover:text-blue-700">Accueil</a>
-        <a href="/pages/professeurs.html" class="text-gray-600 hover:text-blue-700">Professeurs</a>
-        <a href="#galerie" class="text-gray-600 hover:text-blue-700">Galerie</a>
+      <nav class="space-x-6 hidden md:flex text-sm font-medium">
+        <a href="./index.html" class="text-gray-600 hover:text-indigo-700 transition">Accueil</a>
+        <a href="/professeurs.html" class="text-gray-600 hover:text-indigo-700 transition">Professeurs</a>
+        <a href="#galerie" class="text-indigo-700 font-semibold">Galerie</a>
       </nav>
     </div>
   </header>
 
-  <main class="container mx-auto px-6">
-    <section class="mb-6">
-      <h1 class="text-3xl font-extrabold text-blue-900">Galerie</h1>
-      <p class="text-gray-600">Parcourez nos <strong>photos</strong> et <strong>vidéos</strong> : événements, vie scolaire et moments marquants.</p>
+  <!-- MAIN -->
+  <main class="max-w-7xl mx-auto px-6 pb-24">
+    <section class="mb-12 text-center">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-900 mb-3">Galerie du Collège</h1>
+      <p class="text-gray-600 max-w-2xl mx-auto leading-relaxed">
+        Explorez les moments forts, les activités et les événements qui font la vie du <strong>Collège Maele</strong>.
+      </p>
     </section>
 
-    <!-- SECTION GALERIE -->
-    <section id="galerie" class="card p-4 md:p-6 mb-16">
-      <div id="mediaGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-thumb">
-        <!-- ⚠️ Laisse vide si aucun média -->
-        <!-- Exemple (tu peux réactiver plus tard)
-        <button class="thumb" data-type="photo" data-full="./images/galerie/sport.jpg" data-caption="Tournoi sportif 2025">
-          <img src="./images/galerie/sport.jpg" class="w-full h-44 object-cover rounded">
-        </button>
-        -->
-      </div>
+    <!-- GALERIE -->
+    <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 relative">
 
-      <!-- Message si vide -->
-      <div id="emptyMessage" class="hidden text-center py-12 text-gray-600">
-        <div class="inline-flex h-12 w-12 items-center justify-center rounded-full bg-blue-50 text-blue-700 mb-3">
-          <i class="fa-regular fa-image text-xl"></i>
+      <!-- PHOTOS -->
+      <button class="thumb group" data-type="photo" data-full="/images/Oiseaux.jpeg" data-caption="Logo du Collège Maele">
+        <img src="/images/Oiseaux.jpeg" alt="Logo du Collège Maele" class="w-full h-48 md:h-56 object-cover">
+        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
+          <span class="font-semibold">Logo du Collège Maele
+          </span>
         </div>
-        <p class="font-semibold text-blue-900 text-lg">Aucun média pour l'instant</p>
-        <p class="text-sm text-gray-500">Revenez plus tard pour découvrir nos nouvelles photos et vidéos.</p>
-      </div>
-    </section>
+      </button>
+
+      <button class="thumb group" data-type="photo" data-full="/Images/campus.jpg" data-caption="Cours intérieure">
+        <img src="/Images/campus.jpg" alt="Cours intérieure" class="w-full h-48 md:h-56 object-cover">
+        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
+          <span class="font-semibold">Cours intérieure</span>
+        </div>
+      </button>
+      <button class="thumb group" data-type="photo" data-full="/Images/cinquantenaire.jpg" data-caption="Le cinquantenaire du Collège Maele">
+        <img src="/Images/cinquantenaire.jpg" alt="Le cinquantenaire du Collège Maele" class="w-full h-48 md:h-56 object-cover">
+        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
+          <span class="font-semibold">Le cinquantenaire</span>
+        </div>
+      </button>
+      <button class="thumb group" data-type="photo" data-full="/Images/grotte.jpg" data-caption="La grotte de prière du College Maele">
+        <img src="/Images/grotte.jpg" alt="La grotte de prière du Collège Maele" class="w-full h-48 md:h-56 object-cover">
+        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
+          <span class="font-semibold">La Grotte</span>
+        </div>
+      </button>
+
+      <!-- VIDÉO LOCALE
+      <button class="thumb group" data-type="video" data-full="./videos/presentation.mp4" data-caption="Présentation du collège">
+        <img src="/Images/galerie/video-thumb.jpg" alt="Vidéo" class="w-full h-48 md:h-56 object-cover">
+        <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/60 transition">
+          <i class="fa-solid fa-play text-white text-3xl"></i>
+        </div>
+        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
+          <span class="font-semibold">Présentation du collège</span>
+        </div>
+      </button>-->
+
+      <!-- VIDÉO YOUTUBE 
+      <button class="thumb group" data-type="youtube" data-full="https://www.youtube.com/watch?v=dQw4w9WgXcQ" data-caption="Présentation YouTube">
+        <img src="./images/galerie/youtube-thumb.jpg" alt="YouTube" class="w-full h-48 md:h-56 object-cover">
+        <div class="absolute inset-0 flex items-center justify-center bg-red-600/40 group-hover:bg-red-700/60 transition">
+          <i class="fa-brands fa-youtube text-white text-3xl"></i>
+        </div>
+        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
+          <span class="font-semibold">Présentation YouTube</span>
+        </div>
+      </button>-->
+
+    </div>
+
+    <!-- Aucun média -->
+    <div id="no-media" class="hidden text-center py-12 text-gray-500 text-sm">
+      Aucun média pour l’instant 📷
+    </div>
   </main>
 
-  <!-- LIGHTBOX -->
-  <div id="lightbox" class="fixed inset-0 hidden items-center justify-center z-50 lightbox-backdrop bg-black/80">
-    <div class="relative max-w-[92vw] w-full p-4 flex flex-col items-center">
-      <button id="lb-close" class="absolute -top-10 right-0 text-white text-4xl" aria-label="Fermer">&times;</button>
-      <img id="lb-img" class="max-h-[80vh] rounded-lg shadow-xl hidden">
-      <video id="lb-video" controls class="max-h-[80vh] rounded-lg shadow-xl hidden" playsinline></video>
-      <iframe id="lb-iframe" class="max-h-[80vh] w-full rounded-lg shadow-xl hidden" frameborder="0" allowfullscreen></iframe>
-      <p id="lb-caption" class="mt-3 text-sm text-gray-200 text-center"></p>
+<!-- LIGHTBOX -->
+<div id="lightbox" class="fixed inset-0 hidden z-50 bg-black/90 fade-in backdrop-blur-sm flex items-center justify-center">
+  <div class="relative max-w-6xl w-[90vw] mx-auto flex flex-col items-center">
+    
+    <!-- Bouton Fermer -->
+    <button id="lb-close" 
+      class="absolute top-4 right-4 text-white text-4xl font-light hover:scale-110 transition"
+      aria-label="Fermer">&times;
+    </button>
 
-      <!-- Navigation -->
-      <button id="lb-prev" class="lb-nav-btn left-6"><i class="fa-solid fa-chevron-left"></i></button>
-      <button id="lb-next" class="lb-nav-btn right-6"><i class="fa-solid fa-chevron-right"></i></button>
+    <!-- Contenu -->
+    <div class="relative flex justify-center items-center w-full">
+      <button id="lb-prev" 
+        class="absolute left-4 text-4xl text-white/70 hover:text-white transition"
+        aria-label="Précédent">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <img id="lb-img" class="max-h-[80vh] rounded-xl shadow-2xl hidden mx-auto">
+      <video id="lb-video" controls class="max-h-[80vh] rounded-xl shadow-2xl hidden mx-auto" playsinline></video>
+      <iframe id="lb-iframe" class="max-h-[80vh] w-full rounded-xl shadow-2xl hidden mx-auto" frameborder="0" allowfullscreen></iframe>
+
+      <button id="lb-next" 
+        class="absolute right-4 text-4xl text-white/70 hover:text-white transition"
+        aria-label="Suivant">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
     </div>
-  </div>
 
+    <!-- Légende -->
+    <p id="lb-caption" class="mt-4 text-gray-300 text-sm text-center italic max-w-2xl"></p>
+  </div>
+</div>
+
+
+  <!-- SCRIPT -->
   <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const grid = document.getElementById('mediaGrid');
-    const emptyMessage = document.getElementById('emptyMessage');
-    const thumbs = [...grid.querySelectorAll('.thumb')];
-
-    // Affiche le message si aucun média
-    if (thumbs.length === 0) {
-      emptyMessage.classList.remove('hidden');
-      grid.classList.add('hidden');
-      return; // rien d'autre à faire
-    }
-
-    // Lightbox
+    const thumbs = [...document.querySelectorAll('.thumb')];
     const lightbox = document.getElementById('lightbox');
     const lbImg = document.getElementById('lb-img');
     const lbVideo = document.getElementById('lb-video');
@@ -100,69 +205,68 @@
     const lbClose = document.getElementById('lb-close');
     const btnPrev = document.getElementById('lb-prev');
     const btnNext = document.getElementById('lb-next');
+    const noMedia = document.getElementById('no-media');
     let currentIndex = -1;
 
-    function getYouTubeEmbed(url){
+    if (thumbs.length === 0) noMedia.classList.remove('hidden');
+
+    const getYouTubeEmbed = url => {
       const match = url.match(/(?:youtube\.com.*v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
       return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1` : null;
-    }
+    };
 
-    function showContent(el){
+    const showContent = el => {
       const type = el.dataset.type;
       const src = el.dataset.full;
       const caption = el.dataset.caption || '';
-
       [lbImg, lbVideo, lbIframe].forEach(e => { e.classList.add('hidden'); e.src = ''; });
 
-      if(type === 'photo'){
+      if (type === 'photo') {
         lbImg.src = src;
         lbImg.classList.remove('hidden');
-      } else if(type === 'video'){
+      } else if (type === 'video') {
         lbVideo.src = src;
         lbVideo.classList.remove('hidden');
-      } else if(type === 'youtube'){
+      } else if (type === 'youtube') {
         lbIframe.src = getYouTubeEmbed(src);
         lbIframe.classList.remove('hidden');
       }
 
       lbCaption.textContent = caption;
-    }
+    };
 
-    function openLightbox(index){
+    const openLightbox = index => {
       currentIndex = index;
       lightbox.classList.remove('hidden');
       document.body.classList.add('overflow-hidden');
       showContent(thumbs[currentIndex]);
-    }
+    };
 
-    function closeLightbox(){
+    const closeLightbox = () => {
       lightbox.classList.add('hidden');
       document.body.classList.remove('overflow-hidden');
       [lbImg, lbVideo, lbIframe].forEach(e => { e.classList.add('hidden'); e.src = ''; });
-    }
+    };
 
-    function nextItem(){
+    const nextItem = () => {
       currentIndex = (currentIndex + 1) % thumbs.length;
       showContent(thumbs[currentIndex]);
-    }
+    };
 
-    function prevItem(){
+    const prevItem = () => {
       currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
       showContent(thumbs[currentIndex]);
-    }
+    };
 
-    thumbs.forEach((el, i) => {
-      el.addEventListener('click', () => openLightbox(i));
-    });
-
+    thumbs.forEach((el, i) => el.addEventListener('click', () => openLightbox(i)));
     lbClose.addEventListener('click', closeLightbox);
     btnNext.addEventListener('click', nextItem);
     btnPrev.addEventListener('click', prevItem);
-    lightbox.addEventListener('click', e => { if(e.target === lightbox) closeLightbox(); });
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
     document.addEventListener('keydown', e => {
-      if(e.key === 'Escape') closeLightbox();
-      if(e.key === 'ArrowRight') nextItem();
-      if(e.key === 'ArrowLeft') prevItem();
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextItem();
+      if (e.key === 'ArrowLeft') prevItem();
     });
   });
   </script>

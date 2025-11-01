@@ -7,86 +7,147 @@
   <link rel="icon" type="image/png" href="./images/oiseaux.jpeg">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
-    .card{background:#fff;border-radius:1rem;box-shadow:0 10px 15px -3px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.04)}
-    .grid-thumb button{position:relative;overflow:hidden;border-radius:0.75rem;box-shadow:0 4px 10px -4px rgba(0,0,0,.15)}
-    .grid-thumb img{transition:transform .25s ease}
-    .grid-thumb button:hover img{transform:scale(1.03)}
-    .lightbox-backdrop{transition:opacity .2s ease}
-    .lb-zoom{transition:transform .25s ease}
-    .lb-nav-btn{position:absolute;top:50%;transform:translateY(-50%);font-size:2rem;color:white;background:rgba(0,0,0,0.4);padding:0.5rem 0.8rem;border-radius:50%;cursor:pointer}
-    .lb-nav-btn:hover{background:rgba(0,0,0,0.6)}
+    /* Animation et effets */
+    .thumb img {
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .thumb:hover img {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+    .thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: 0.75rem;
+    }
+    .thumb:hover::after {
+      opacity: 1;
+    }
+    .fade-in {
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
   </style>
 </head>
+
 <body class="bg-gray-50 text-gray-800">
 
-  <header class="bg-white shadow py-4 mb-6">
+  <!-- HEADER -->
+  <header class="bg-white shadow-sm py-4 mb-6 sticky top-0 z-40 backdrop-blur">
     <div class="container mx-auto px-6 flex items-center justify-between">
       <a href="./index.html#galeries" class="flex items-center gap-3">
         <img src="./images/oiseaux.jpeg" alt="Logo" class="w-10 h-10 rounded-full object-cover">
-        <span class="font-bold text-xl text-blue-700">Collège Maele</span>
+        <span class="font-bold text-xl text-indigo-700">Collège Maele</span>
       </a>
-      <nav class="space-x-4 hidden md:flex">
-        <a href="./index.html" class="text-gray-600 hover:text-blue-700">Accueil</a>
-        <a href="./professeurs.html" class="text-gray-600 hover:text-blue-700">Professeurs</a>
-        <a href="#galerie" class="text-gray-600 hover:text-blue-700">Galerie</a>
+      <nav class="space-x-6 hidden md:flex">
+        <a href="./index.html" class="text-gray-600 hover:text-indigo-700 transition">Accueil</a>
+        <a href="./professeurs.html" class="text-gray-600 hover:text-indigo-700 transition">Professeurs</a>
+        <a href="#galerie" class="text-gray-600 hover:text-indigo-700 transition">Galerie</a>
       </nav>
     </div>
   </header>
 
+  <!-- MAIN -->
   <main class="container mx-auto px-6">
-    <section class="mb-6">
-      <h1 class="text-3xl font-extrabold text-blue-900">Galerie</h1>
-      <p class="text-gray-600">Parcourez nos <strong>photos</strong> et <strong>vidéos</strong> : événements, vie scolaire et moments marquants.</p>
+    <section class="mb-8 text-center">
+      <h1 class="text-4xl font-extrabold text-indigo-900 mb-2">Galerie</h1>
+      <p class="text-gray-600 max-w-2xl mx-auto">
+        Découvrez les <strong>événements</strong>, <strong>activités</strong> et <strong>moments marquants</strong> de la vie scolaire du Collège Maele.
+      </p>
     </section>
 
-    <section id="galerie" class="card p-4 md:p-6 mb-16">
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 grid-thumb">
+    <!-- FILTRE -->
+    <div class="flex justify-center gap-4 mb-8">
+      <button class="filter-btn active px-4 py-2 rounded-full bg-indigo-100 text-indigo-700 hover:bg-indigo-200 transition" data-filter="all">
+        Tout
+      </button>
+      <button class="filter-btn px-4 py-2 rounded-full bg-gray-100 text-gray-700 hover:bg-indigo-200 transition" data-filter="photo">
+        Photos
+      </button>
+      <button class="filter-btn px-4 py-2 rounded-full bg-gray-100 text-gray-700 hover:bg-indigo-200 transition" data-filter="video">
+        Vidéos
+      </button>
+    </div>
+
+    <!-- GALERIE -->
+    <section id="galerie" class="bg-white rounded-2xl shadow p-6 md:p-8 mb-16">
+      <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 relative">
 
         <!-- PHOTOS -->
-        <button class="thumb" data-type="photo" data-full="./images/galerie/sport.jpg" data-caption="Tournoi sportif 2025">
-          <img src="./images/galerie/sport.jpg" class="w-full h-44 object-cover rounded">
-          <span class="absolute left-2 bottom-2 text-white text-xs bg-black/50 px-2 py-1 rounded">Tournoi sportif 2025</span>
+        <button class="thumb relative group overflow-hidden rounded-xl" data-type="photo" data-full="./images/galerie/sport.jpg" data-caption="Tournoi sportif 2025">
+          <img src="./images/galerie/sport.jpg" alt="Tournoi sportif" class="w-full h-48 object-cover rounded-xl">
+          <div class="absolute bottom-0 left-0 w-full text-white text-sm p-3 bg-gradient-to-t from-black/70 to-transparent">
+            <span class="font-medium">Tournoi sportif 2025</span>
+          </div>
         </button>
 
-        <button class="thumb" data-type="photo" data-full="./images/galerie/lecture.jpg" data-caption="Atelier lecture">
-          <img src="./images/galerie/lecture.jpg" class="w-full h-44 object-cover rounded">
-          <span class="absolute left-2 bottom-2 text-white text-xs bg-black/50 px-2 py-1 rounded">Atelier lecture</span>
+        <button class="thumb relative group overflow-hidden rounded-xl" data-type="photo" data-full="./images/galerie/lecture.jpg" data-caption="Atelier lecture">
+          <img src="./images/galerie/lecture.jpg" alt="Atelier lecture" class="w-full h-48 object-cover rounded-xl">
+          <div class="absolute bottom-0 left-0 w-full text-white text-sm p-3 bg-gradient-to-t from-black/70 to-transparent">
+            <span class="font-medium">Atelier lecture</span>
+          </div>
         </button>
 
         <!-- VIDÉO LOCALE -->
-        <button class="thumb" data-type="video" data-full="./videos/presentation.mp4" data-caption="Présentation du collège">
-          <img src="./images/galerie/video-thumb.jpg" class="w-full h-44 object-cover rounded">
-          <span class="absolute right-2 top-2 bg-black/60 text-white text-[11px] px-2 py-1 rounded"><i class="fa-solid fa-play"></i> Vidéo</span>
+        <button class="thumb relative group overflow-hidden rounded-xl" data-type="video" data-full="./videos/presentation.mp4" data-caption="Présentation du collège">
+          <img src="./images/galerie/video-thumb.jpg" alt="Vidéo" class="w-full h-48 object-cover rounded-xl">
+          <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/50 transition">
+            <i class="fa-solid fa-play text-white text-3xl"></i>
+          </div>
+          <div class="absolute bottom-0 left-0 w-full text-white text-sm p-3 bg-gradient-to-t from-black/70 to-transparent">
+            <span>Présentation du collège</span>
+          </div>
         </button>
 
         <!-- VIDÉO YOUTUBE -->
-        <button class="thumb" data-type="youtube" data-full="https://www.youtube.com/watch?v=dQw4w9WgXcQ" data-caption="Présentation YouTube">
-          <img src="./images/galerie/youtube-thumb.jpg" class="w-full h-44 object-cover rounded">
-          <span class="absolute right-2 top-2 bg-red-600 text-white text-[11px] px-2 py-1 rounded"><i class="fa-brands fa-youtube"></i> YouTube</span>
+        <button class="thumb relative group overflow-hidden rounded-xl" data-type="youtube" data-full="https://www.youtube.com/watch?v=dQw4w9WgXcQ" data-caption="Présentation YouTube">
+          <img src="./images/galerie/youtube-thumb.jpg" alt="YouTube" class="w-full h-48 object-cover rounded-xl">
+          <div class="absolute inset-0 flex items-center justify-center bg-red-600/40 group-hover:bg-red-700/60 transition">
+            <i class="fa-brands fa-youtube text-white text-3xl"></i>
+          </div>
+          <div class="absolute bottom-0 left-0 w-full text-white text-sm p-3 bg-gradient-to-t from-black/70 to-transparent">
+            <span>Présentation YouTube</span>
+          </div>
         </button>
 
+      </div>
+
+      <!-- Aucun média -->
+      <div id="no-media" class="hidden text-center py-12 text-gray-500 text-sm">
+        Aucun média pour l’instant 📷
       </div>
     </section>
   </main>
 
   <!-- LIGHTBOX -->
-  <div id="lightbox" class="fixed inset-0 hidden items-center justify-center z-50 lightbox-backdrop bg-black/80">
-    <div class="relative max-w-[92vw] w-full p-4 flex flex-col items-center">
-      <button id="lb-close" class="absolute -top-10 right-0 text-white text-4xl" aria-label="Fermer">&times;</button>
-      <img id="lb-img" class="max-h-[80vh] rounded-lg shadow-xl hidden">
-      <video id="lb-video" controls class="max-h-[80vh] rounded-lg shadow-xl hidden" playsinline></video>
-      <iframe id="lb-iframe" class="max-h-[80vh] w-full rounded-lg shadow-xl hidden" frameborder="0" allowfullscreen></iframe>
-      <p id="lb-caption" class="mt-3 text-sm text-gray-200 text-center"></p>
+  <div id="lightbox" class="fixed inset-0 hidden items-center justify-center z-50 bg-black/80 fade-in backdrop-blur-sm">
+    <div class="relative max-w-[90vw] w-full p-4 flex flex-col items-center">
+      <button id="lb-close" class="absolute -top-10 right-2 text-white text-5xl hover:scale-110 transition" aria-label="Fermer">&times;</button>
 
-      <!-- Boutons de navigation -->
-      <button id="lb-prev" class="lb-nav-btn left-6"><i class="fa-solid fa-chevron-left"></i></button>
-      <button id="lb-next" class="lb-nav-btn right-6"><i class="fa-solid fa-chevron-right"></i></button>
+      <img id="lb-img" class="max-h-[80vh] rounded-xl shadow-2xl hidden">
+      <video id="lb-video" controls class="max-h-[80vh] rounded-xl shadow-2xl hidden" playsinline></video>
+      <iframe id="lb-iframe" class="max-h-[80vh] w-full rounded-xl shadow-2xl hidden" frameborder="0" allowfullscreen></iframe>
+
+      <p id="lb-caption" class="mt-4 text-gray-200 text-sm text-center italic"></p>
+
+      <button id="lb-prev" class="lb-nav-btn absolute left-6 text-3xl text-white/80 hover:text-white transition"><i class="fa-solid fa-chevron-left"></i></button>
+      <button id="lb-next" class="lb-nav-btn absolute right-6 text-3xl text-white/80 hover:text-white transition"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
   </div>
 
+  <!-- SCRIPT -->
   <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const thumbs = [...document.querySelectorAll('.thumb')];
     const lightbox = document.getElementById('lightbox');
     const lbImg = document.getElementById('lb-img');
     const lbVideo = document.getElementById('lb-video');
@@ -95,70 +156,69 @@
     const lbClose = document.getElementById('lb-close');
     const btnPrev = document.getElementById('lb-prev');
     const btnNext = document.getElementById('lb-next');
-    const thumbs = [...document.querySelectorAll('.thumb')];
+    const noMedia = document.getElementById('no-media');
+    const galleryGrid = document.getElementById('gallery-grid');
     let currentIndex = -1;
 
-    function getYouTubeEmbed(url){
+    if (thumbs.length === 0) noMedia.classList.remove('hidden');
+
+    const getYouTubeEmbed = url => {
       const match = url.match(/(?:youtube\.com.*v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
       return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1` : null;
-    }
+    };
 
-    function showContent(el){
+    const showContent = el => {
       const type = el.dataset.type;
       const src = el.dataset.full;
       const caption = el.dataset.caption || '';
-
       [lbImg, lbVideo, lbIframe].forEach(e => { e.classList.add('hidden'); e.src = ''; });
 
-      if(type === 'photo'){
+      if (type === 'photo') {
         lbImg.src = src;
         lbImg.classList.remove('hidden');
-      } else if(type === 'video'){
+      } else if (type === 'video') {
         lbVideo.src = src;
         lbVideo.classList.remove('hidden');
-      } else if(type === 'youtube'){
+      } else if (type === 'youtube') {
         lbIframe.src = getYouTubeEmbed(src);
         lbIframe.classList.remove('hidden');
       }
 
       lbCaption.textContent = caption;
-    }
+    };
 
-    function openLightbox(index){
+    const openLightbox = index => {
       currentIndex = index;
       lightbox.classList.remove('hidden');
       document.body.classList.add('overflow-hidden');
       showContent(thumbs[currentIndex]);
-    }
+    };
 
-    function closeLightbox(){
+    const closeLightbox = () => {
       lightbox.classList.add('hidden');
       document.body.classList.remove('overflow-hidden');
       [lbImg, lbVideo, lbIframe].forEach(e => { e.classList.add('hidden'); e.src = ''; });
-    }
+    };
 
-    function nextItem(){
+    const nextItem = () => {
       currentIndex = (currentIndex + 1) % thumbs.length;
       showContent(thumbs[currentIndex]);
-    }
+    };
 
-    function prevItem(){
+    const prevItem = () => {
       currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
       showContent(thumbs[currentIndex]);
-    }
+    };
 
-    thumbs.forEach((el, i) => {
-      el.addEventListener('click', () => openLightbox(i));
-    });
-
+    thumbs.forEach((el, i) => el.addEventListener('click', () => openLightbox(i)));
     lbClose.addEventListener('click', closeLightbox);
     btnNext.addEventListener('click', nextItem);
     btnPrev.addEventListener('click', prevItem);
-    lightbox.addEventListener('click', e => { if(e.target === lightbox) closeLightbox(); });
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
     document.addEventListener('keydown', e => {
-      if(e.key === 'Escape') closeLightbox();
-      if(e.key === 'ArrowRight') nextItem();
-      if(e.key === 'ArrowLeft') prevItem();
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextItem();
+      if (e.key === 'ArrowLeft') prevItem();
     });
   });
   </script>
