@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collège Maele - Impavidi Progrediamur.</title>
+    <title>Collège Maele - Impavidi Progrediamur</title>
+    <!-- Balises SEO -->
+    <meta name="description" content="Le Collège Maele à Kisangani forme les leaders de demain grâce à un enseignement d'excellence, humaniste et innovant depuis 1939. Découvrez nos parcours, notre histoire et nos valeurs.">
+    <meta name="keywords" content="Collège Maele, école Kisangani, humanités scientifiques, humanités littéraires, éducation RDC, enseignement catholique, école secondaire, collège privé, collège Maele Kisangani, collège Congo">
+    <meta name="author" content="Optimum Entreprise">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="fr">
+    <meta name="geo.region" content="CD-TU">
+    <meta name="geo.placename" content="Kisangani">
+    <meta name="geo.position" content="0.5167;25.2">
+    <meta name="ICBM" content="0.5167, 25.2">
+
     <link rel="icon" type="image/png" href="./Images/Oiseaux.jpeg">
     <!-- Tailwind CSS via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -263,7 +274,63 @@ document.addEventListener('DOMContentLoaded', () => {
   #lyrics-col-1, #lyrics-col-2 { overflow: hidden; transition: max-height .25s ease; }
   #lyrics-col-1.collapsed, #lyrics-col-2.collapsed { max-height: 0; }
 </style>
+<!-- Données structurées pour Google -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Collège Maele",
+  "alternateName": "College Maele Kisangani",
+  "url": "https://www.college-maele.com",
+  "logo": "https://www.college-maele.com/Images/Oiseaux.jpeg",
+  "description": "Le Collège Maele est une institution éducative à Kisangani, en RDC, offrant un enseignement d’excellence depuis 1939.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Boulevard Lumumba N°2, Quartier des Musiciens, Makiso",
+    "addressLocality": "Kisangani",
+    "addressRegion": "Tshopo",
+    "postalCode": "00000",
+    "addressCountry": "CD"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+243815493115",
+    "contactType": "Service administratif",
+    "availableLanguage": ["Français"]
+  },
+  "foundingDate": "1939",
+  "sameAs": [
+    "https://www.facebook.com/collegemaele",
+    "https://www.instagram.com/collegemaele",
+    "https://www.linkedin.com/company/collegemaele"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "Collège Maele",
+  "url": "https://college-maele.com/",
+  "logo": "https://college-maele.com/Images/Oiseaux.jpeg",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Boulevard Lumumba N°02, Quartier des Musiciens, MAKISO",
+    "addressLocality": "Kisangani",
+    "addressCountry": "CD"
+  },
+  "sameAs": [
+    "https://www.facebook.com/college.maele",
+    "https://www.instagram.com/college.maele",
+    "https://www.linkedin.com/company/college-maele"
+  ],
+  "foundingDate": "1939",
+  "slogan": "Impavidi Progrediamur",
+  "founder": "Père Wittebols"
+}
+</script>
 
+<link rel="canonical" href="https://www.college-maele.com">
 </head>
 <body class="overflow-x-hidden">
   <div class="progress-wrap" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
@@ -332,11 +399,11 @@ document.addEventListener('DOMContentLoaded', () => {
             <div id="bg-slider" class="absolute top-0 left-0 w-full h-full">
                 <div class="absolute inset-0 bg-black/50 z-10"></div>
                 <img src=./Images/point.jpg alt="Image d'arrière-plan 1" class="bg-slide absolute w-full h-full object-cover opacity-100">
-                <img src=./Images/campus.jpg alt="campus" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/grotte.jpg alt="grotte" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/drapeau.jpg alt="Image d'arrière-plan 4" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/bbio.jpg alt="Image d'arrière-plan 5" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/facade.jpg alt="Image d'arrière-plan 6" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/campus.jpg alt="Vue du campus du Collège Maele à Kisangani avec bâtiments modernes et élèves" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/grotte.jpg alt="grotte de prière du College Maele" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/drapeau.jpg alt="Cours intérieure du Collgège Maele, vue sur le drapeau" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/bbio.jpg alt="Image de lanouvelle bibliothèque du Collège Maele" class="bg-slide absolute w-full h-full object-cover opacity-0">
+                <img src=./Images/facade.jpg alt="Image de la  facade latterale du Collge Maele "lass="bg-slide absolute w-full h-full object-cover opacity-0">
                 <img src=./Images/point.jpg alt="Image d'arrière-plan 7" class="bg-slide absolute w-full h-full object-cover opacity-0">
                 <img src="./Images/primaire.jpg" alt="Élèves de primaire assis en classe écoutant un enseignant, pupitres et tableau noir en arrière plan, lumière naturelle par de grandes fenêtres, atmosphère studieuse et chaleureuse, pas de texte visible" class="bg-slide absolute w-full h-full object-cover opacity-0">
                 <img src=./Images/cours.jpg alt="Image d'arrière-plan 9" class="bg-slide absolute w-full h-full object-cover opacity-0">
