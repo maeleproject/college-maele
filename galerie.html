@@ -3,72 +3,52 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Galerie - Collège Maele</title>
-  <link rel="icon" type="image/png" href="/Images/Oiseaux.jpeg">
+  <meta name="description" content="Découvrez les lieux, les activités et l’histoire du Collège Maele à Kisangani en images.">
+  <title>Galerie du Collège Maele – Kisangani</title>
   <link rel="icon" type="image/png" href="/Images/Oiseaux.jpeg">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-    /* --- ANIMATIONS ET EFFETS --- */
     .thumb {
       position: relative;
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 3;
       overflow: hidden;
-      border-radius: 0.9rem;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-      transform: translateY(0);
-      transition: all 0.35s ease;
+      border-radius: .75rem;
+      background: #e2e8f0;
+      box-shadow: 0 3px 12px rgba(15, 23, 42, .08);
+      text-align: left;
+      transition: box-shadow .25s ease, transform .25s ease;
     }
     .thumb:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, .16);
     }
     .thumb img {
-      transition: transform 0.4s ease, opacity 0.4s ease;
-    }
-    .thumb:hover img {
-      transform: scale(1.08);
-      opacity: 0.9;
-    }
-    .thumb::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.65), transparent 70%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      border-radius: 0.9rem;
-    }
-    .thumb:hover::after {
-      opacity: 1;
-    }
-
-    /* Apparition douce */
-    .fade-in {
-      animation: fadeIn 0.4s ease;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.97); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    /* Progress bar */
-    .progress {
-      height: 4px;
+      display: block;
       width: 100%;
-      background-color: rgba(255,255,255,0.2);
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 50;
-    }
-
-    .progress-bar {
       height: 100%;
-      background-color: #4f46e5;
-      width: 0;
-      transition: width 0.2s ease;
+      object-fit: cover;
+      transition: transform .45s ease;
     }
-
+    .thumb:hover img { transform: scale(1.045); }
+    .thumb:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+    .thumb-caption {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 2.75rem 1rem .9rem;
+      background: linear-gradient(transparent, rgba(15, 23, 42, .82));
+      color: white;
+      font-size: .9rem;
+      font-weight: 650;
+    }
+    #lightbox[hidden] { display: none; }
+    #lightbox img { max-width: 100%; object-fit: contain; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
   </style>
 </head>
 
@@ -81,116 +61,101 @@
         <img src="/Images/Oiseaux.jpeg" alt="Logo" class="w-10 h-10 rounded-full object-cover">
         <span class="font-bold text-2xl text-indigo-700 tracking-tight">Collège Maele</span>
       </a>
-      <nav class="space-x-6 hidden md:flex text-sm font-medium">
-        <a href="./index.html" class="text-gray-600 hover:text-indigo-700 transition">Accueil</a>
-        <a href="/profs.html" class="text-gray-600 hover:text-indigo-700 transition">Professeurs</a>
-        <a href="#galerie" class="text-indigo-700 font-semibold">Galerie</a>
+      <nav aria-label="Navigation principale" class="flex items-center gap-3 text-xs font-semibold sm:gap-6 sm:text-sm">
+        <a href="./index.html" class="text-gray-600 transition hover:text-blue-700">Accueil</a>
+        <a href="/profs.html" class="hidden text-gray-600 transition hover:text-blue-700 sm:inline">Professeurs</a>
+        <a href="#galerie" aria-current="page" class="text-blue-700">Galerie</a>
       </nav>
     </div>
   </header>
 
   <!-- MAIN -->
-  <main class="max-w-7xl mx-auto px-6 pb-24">
-    <section class="mb-12 text-center">
-      <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-900 mb-3">Galerie du Collège</h1>
-      <p class="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-        Explorez les moments forts, les activités et les événements qui font la vie du <strong>Collège Maele</strong>.
-      </p>
+  <main class="mx-auto max-w-7xl px-5 pb-16 sm:px-6 sm:pb-24">
+    <section class="mb-9 border-b border-slate-200 py-10 sm:mb-12 sm:py-14">
+      <p class="text-xs font-bold uppercase tracking-widest text-blue-700">Kisangani · Depuis 1939</p>
+      <div class="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 class="text-3xl font-extrabold text-slate-900 sm:text-4xl md:text-5xl">La vie au Collège Maele</h1>
+          <p class="mt-3 max-w-2xl leading-relaxed text-slate-600">Un aperçu du campus, des lieux de rassemblement et de l’histoire de notre communauté scolaire.</p>
+        </div>
+        <p id="gallery-count" class="shrink-0 text-sm font-semibold text-slate-500" aria-live="polite"></p>
+      </div>
     </section>
 
     <!-- GALERIE -->
-    <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 relative">
-
-      <!-- PHOTOS -->
-      <button class="thumb group" data-type="photo" data-full="/images/Oiseaux.jpeg" data-caption="Logo du Collège Maele">
-        <img src="/Images/Oiseaux.jpeg" alt="Logo du Collège Maele" class="w-full h-48 md:h-56 object-cover">
-        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
-          <span class="font-semibold">Logo du Collège Maele
-          </span>
-        </div>
+    <section id="galerie" aria-label="Photographies du Collège Maele">
+      <div id="gallery-grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
+      <button class="thumb" type="button" data-type="photo" data-full="/Images/campus.jpg" data-caption="La cour du Collège Maele">
+        <img src="/Images/campus.jpg" alt="Élèves réunis dans la cour du Collège Maele" fetchpriority="high">
+        <span class="thumb-caption">La cour du collège</span>
       </button>
 
-      <button class="thumb group" data-type="photo" data-full="/Images/campus.jpg" data-caption="Cours intérieure">
-        <img src="/Images/campus.jpg" alt="Cours intérieure" class="w-full h-48 md:h-56 object-cover">
-        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
-          <span class="font-semibold">Cours intérieure</span>
-        </div>
-      </button>
-      <button class="thumb group" data-type="photo" data-full="/Images/cinquantenaire.jpg" data-caption="Le cinquantenaire du Collège Maele">
-        <img src="/Images/cinquantenaire.jpg" alt="Le cinquantenaire du Collège Maele" class="w-full h-48 md:h-56 object-cover">
-        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
-          <span class="font-semibold">Le cinquantenaire</span>
-        </div>
-      </button>
-      <button class="thumb group" data-type="photo" data-full="/Images/grotte.jpg" data-caption="La grotte de prière du College Maele">
-        <img src="/Images/grotte.jpg" alt="La grotte de prière du Collège Maele" class="w-full h-48 md:h-56 object-cover">
-        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
-          <span class="font-semibold">La Grotte</span>
-        </div>
+      <button class="thumb" type="button" data-type="photo" data-full="/Images/cinquantenaire.jpg" data-caption="Le cinquantenaire du Collège Maele">
+        <img src="/Images/cinquantenaire.jpg" alt="Souvenir du cinquantenaire du Collège Maele" loading="lazy">
+        <span class="thumb-caption">Le cinquantenaire</span>
       </button>
 
-      <!-- VIDÉO LOCALE
-      <button class="thumb group" data-type="video" data-full="./videos/presentation.mp4" data-caption="Présentation du collège">
-        <img src="/Images/galerie/video-thumb.jpg" alt="Vidéo" class="w-full h-48 md:h-56 object-cover">
-        <div class="absolute inset-0 flex items-center justify-center bg-black/40 group-hover:bg-black/60 transition">
-          <i class="fa-solid fa-play text-white text-3xl"></i>
-        </div>
-        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
-          <span class="font-semibold">Présentation du collège</span>
-        </div>
-      </button>-->
+      <button class="thumb" type="button" data-type="photo" data-full="/Images/grotte.jpg" data-caption="La grotte de prière du Collège Maele">
+        <img src="/Images/grotte.jpg" alt="Grotte de prière du Collège Maele" loading="lazy">
+        <span class="thumb-caption">La grotte de prière</span>
+      </button>
 
-      <!-- VIDÉO YOUTUBE 
-      <button class="thumb group" data-type="youtube" data-full="https://www.youtube.com/watch?v=dQw4w9WgXcQ" data-caption="Présentation YouTube">
-        <img src="./images/galerie/youtube-thumb.jpg" alt="YouTube" class="w-full h-48 md:h-56 object-cover">
-        <div class="absolute inset-0 flex items-center justify-center bg-red-600/40 group-hover:bg-red-700/60 transition">
-          <i class="fa-brands fa-youtube text-white text-3xl"></i>
-        </div>
-        <div class="absolute bottom-0 left-0 w-full text-white p-3 text-sm bg-gradient-to-t from-black/70 to-transparent">
-          <span class="font-semibold">Présentation YouTube</span>
-        </div>
-      </button>-->
+      <button class="thumb" type="button" data-type="photo" data-full="/Images/facade.jpg" data-caption="Les bâtiments du Collège Maele">
+        <img src="/Images/facade.jpg" alt="Façade d’un bâtiment du Collège Maele" loading="lazy">
+        <span class="thumb-caption">Les bâtiments</span>
+      </button>
 
-    </div>
+      <button class="thumb" type="button" data-type="photo" data-full="/Images/bbio.jpg" data-caption="La bibliothèque du Collège Maele">
+        <img src="/Images/bbio.jpg" alt="Bibliothèque du Collège Maele" loading="lazy">
+        <span class="thumb-caption">La bibliothèque</span>
+      </button>
 
-    <!-- Aucun média -->
-    <div id="no-media" class="hidden text-center py-12 text-gray-500 text-sm">
-      Aucun média pour l’instant 📷
-    </div>
+      <button class="thumb" type="button" data-type="photo" data-full="/Images/drapeau.jpg" data-caption="Le drapeau dans la cour du collège">
+        <img src="/Images/drapeau.jpg" alt="Drapeau dans la cour du Collège Maele" loading="lazy">
+        <span class="thumb-caption">La cour et le drapeau</span>
+      </button>
+
+      <button class="thumb" type="button" data-type="photo" data-full="/Images/cours.jpg" data-caption="Un espace de vie du Collège Maele">
+        <img src="/Images/cours.jpg" alt="Espace extérieur du Collège Maele" loading="lazy">
+        <span class="thumb-caption">Un espace de vie</span>
+      </button>
+
+      <button class="thumb" type="button" data-type="photo" data-full="/Images/primaire.jpg" data-caption="La vie en classe au Collège Maele">
+        <img src="/Images/primaire.jpg" alt="Élèves en classe au Collège Maele" loading="lazy">
+        <span class="thumb-caption">La vie en classe</span>
+      </button>
+      </div>
+
+      <div id="no-media" class="hidden py-16 text-center text-sm text-slate-500" role="status">Aucune photo disponible pour le moment.</div>
+    </section>
   </main>
 
 <!-- LIGHTBOX -->
-<div id="lightbox" class="fixed inset-0 hidden z-50 bg-black/90 fade-in backdrop-blur-sm flex items-center justify-center">
-  <div class="relative max-w-6xl w-[90vw] mx-auto flex flex-col items-center">
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/95 p-4 backdrop-blur-sm" aria-hidden="true">
+  <section class="relative mx-auto flex w-full max-w-6xl flex-col items-center" role="dialog" aria-modal="true" aria-labelledby="lb-caption" tabindex="-1">
     
     <!-- Bouton Fermer -->
-    <button id="lb-close" 
-      class="absolute top-4 right-4 text-white text-4xl font-light hover:scale-110 transition"
-      aria-label="Fermer">&times;
+    <button id="lb-close" type="button" class="absolute right-0 top-0 z-10 flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-3xl text-white transition hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white" aria-label="Fermer la photo">&times;
     </button>
 
     <!-- Contenu -->
     <div class="relative flex justify-center items-center w-full">
-      <button id="lb-prev" 
-        class="absolute left-4 text-4xl text-white/70 hover:text-white transition"
-        aria-label="Précédent">
+      <button id="lb-prev" type="button" class="absolute left-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/45 text-xl text-white transition hover:bg-black/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:left-3" aria-label="Photo précédente">
         <i class="fa-solid fa-chevron-left"></i>
       </button>
 
-      <img id="lb-img" class="max-h-[80vh] rounded-xl shadow-2xl hidden mx-auto">
-      <video id="lb-video" controls class="max-h-[80vh] rounded-xl shadow-2xl hidden mx-auto" playsinline></video>
-      <iframe id="lb-iframe" class="max-h-[80vh] w-full rounded-xl shadow-2xl hidden mx-auto" frameborder="0" allowfullscreen></iframe>
+      <img id="lb-img" class="mx-auto hidden max-h-[78vh] rounded-lg shadow-2xl" alt="">
+      <video id="lb-video" controls class="mx-auto hidden max-h-[78vh] max-w-full rounded-lg shadow-2xl" playsinline></video>
+      <iframe id="lb-iframe" title="Vidéo de la galerie" class="mx-auto hidden aspect-video w-full max-h-[78vh] rounded-lg shadow-2xl" allowfullscreen></iframe>
 
-      <button id="lb-next" 
-        class="absolute right-4 text-4xl text-white/70 hover:text-white transition"
-        aria-label="Suivant">
+      <button id="lb-next" type="button" class="absolute right-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/45 text-xl text-white transition hover:bg-black/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:right-3" aria-label="Photo suivante">
         <i class="fa-solid fa-chevron-right"></i>
       </button>
     </div>
 
     <!-- Légende -->
-    <p id="lb-caption" class="mt-4 text-gray-300 text-sm text-center italic max-w-2xl"></p>
-  </div>
+    <p id="lb-caption" class="mt-4 max-w-2xl text-center text-sm text-white sm:text-base"></p>
+  </section>
 </div>
 
 
@@ -207,9 +172,13 @@
     const btnPrev = document.getElementById('lb-prev');
     const btnNext = document.getElementById('lb-next');
     const noMedia = document.getElementById('no-media');
+    const galleryCount = document.getElementById('gallery-count');
+    const dialog = lightbox.querySelector('[role="dialog"]');
     let currentIndex = -1;
+    let previousFocus = null;
 
     if (thumbs.length === 0) noMedia.classList.remove('hidden');
+    galleryCount.textContent = `${thumbs.length} photos`;
 
     const getYouTubeEmbed = url => {
       const match = url.match(/(?:youtube\.com.*v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
@@ -229,7 +198,9 @@
         lbVideo.src = src;
         lbVideo.classList.remove('hidden');
       } else if (type === 'youtube') {
-        lbIframe.src = getYouTubeEmbed(src);
+        const embedUrl = getYouTubeEmbed(src);
+        if (!embedUrl) return;
+        lbIframe.src = embedUrl;
         lbIframe.classList.remove('hidden');
       }
 
@@ -238,23 +209,32 @@
 
     const openLightbox = index => {
       currentIndex = index;
+      previousFocus = document.activeElement;
       lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      lightbox.setAttribute('aria-hidden', 'false');
       document.body.classList.add('overflow-hidden');
       showContent(thumbs[currentIndex]);
+      lbClose.focus();
     };
 
     const closeLightbox = () => {
       lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      lightbox.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('overflow-hidden');
       [lbImg, lbVideo, lbIframe].forEach(e => { e.classList.add('hidden'); e.src = ''; });
+      previousFocus?.focus();
     };
 
     const nextItem = () => {
+      if (!thumbs.length) return;
       currentIndex = (currentIndex + 1) % thumbs.length;
       showContent(thumbs[currentIndex]);
     };
 
     const prevItem = () => {
+      if (!thumbs.length) return;
       currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
       showContent(thumbs[currentIndex]);
     };
@@ -265,9 +245,17 @@
     btnPrev.addEventListener('click', prevItem);
     lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
     document.addEventListener('keydown', e => {
+      if (lightbox.classList.contains('hidden')) return;
       if (e.key === 'Escape') closeLightbox();
       if (e.key === 'ArrowRight') nextItem();
       if (e.key === 'ArrowLeft') prevItem();
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const controls = [lbClose, btnPrev, btnNext];
+        const focusedIndex = controls.indexOf(document.activeElement);
+        const direction = e.shiftKey ? -1 : 1;
+        controls[(focusedIndex + direction + controls.length) % controls.length].focus();
+      }
     });
   });
   </script>

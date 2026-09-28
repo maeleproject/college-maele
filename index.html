@@ -354,6 +354,75 @@
     @media (prefers-reduced-motion: reduce) {
       #histoire .story-media img { transition: none; }
     }
+    #galeries .life-gallery {
+      display: flex;
+      gap: .75rem;
+      width: 100%;
+      height: 25rem;
+    }
+    #galeries .life-gallery-item {
+      position: relative;
+      flex: 1 1 0;
+      min-width: 0;
+      overflow: hidden;
+      border-radius: .75rem;
+      background: #cbd5e1;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, .1);
+      transition: flex .55s cubic-bezier(.25, 1, .5, 1), box-shadow .3s ease;
+    }
+    #galeries .life-gallery-item:hover,
+    #galeries .life-gallery-item:focus-visible {
+      flex: 4 1 0;
+      box-shadow: 0 14px 28px rgba(15, 23, 42, .2);
+      outline: 3px solid #2563eb;
+      outline-offset: 2px;
+    }
+    #galeries .life-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .7s ease;
+    }
+    #galeries .life-gallery-item:hover img,
+    #galeries .life-gallery-item:focus-visible img { transform: scale(1.045); }
+    #galeries .life-gallery-caption {
+      position: absolute;
+      inset: auto 0 0;
+      padding: 4rem 1.25rem 1.25rem;
+      background: linear-gradient(transparent, rgba(15, 23, 42, .82));
+      color: #fff;
+      opacity: .9;
+      transition: opacity .25s ease;
+    }
+    #galeries .life-gallery-item:hover .life-gallery-caption,
+    #galeries .life-gallery-item:focus-visible .life-gallery-caption { opacity: 1; }
+    #galeries .life-gallery-caption span { display: block; white-space: nowrap; }
+    #galeries .life-gallery-caption span:first-child { font-weight: 700; }
+    #galeries .life-gallery-caption span:last-child { margin-top: .35rem; font-size: .8rem; opacity: 0; transition: opacity .2s ease; }
+    #galeries .life-gallery-item:hover .life-gallery-caption span:last-child,
+    #galeries .life-gallery-item:focus-visible .life-gallery-caption span:last-child { opacity: .85; }
+    @media (max-width: 767px) {
+      #galeries .life-gallery {
+        height: 19rem;
+        gap: .5rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+      }
+      #galeries .life-gallery-item {
+        flex: 0 0 78%;
+        scroll-snap-align: center;
+      }
+      #galeries .life-gallery-item:hover,
+      #galeries .life-gallery-item:focus-visible { flex-basis: 78%; }
+      #galeries .life-gallery-caption span:last-child { opacity: .85; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #galeries .life-gallery-item,
+      #galeries .life-gallery-item img,
+      #galeries .life-gallery-caption,
+      #galeries .life-gallery-caption span:last-child { transition: none; }
+    }
     </style>
     <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -1062,52 +1131,72 @@ Tous nos efforts d’étudiants !</textarea>
             </section>
           </div>
         </section>
-        <!-- GALERIE PHOTO (Teaser) -->
-        <section id="galeries" class="py-20 md:py-32 bg-gray-50">
-            <div class="container mx-auto px-6 text-center">
-                <div class="text-center mb-8 animated-section fade-in">
-                    <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-4">La Vie au Collège</h2>
-                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">Plongez au cœur de notre quotidien à travers notre galerie photos.</p>
-                </div>
-                <a href="/galerie.html" class="inline-flex items-center gap-3 bg-white rounded-xl shadow p-6 hover:shadow-xl transition transform hover:-translate-y-1">
-                    <img src="./Images/campus.jpg" alt="Aperçu galerie" class="w-32 h-24 object-cover rounded">
-                    <div class="text-left">
-                        <h3 class="font-bold text-xl text-blue-700">Visitez notre Galerie</h3>
-                        <p class="text-gray-600">Voir toutes les photos du collège et découvrir des souvenirs d'événements, d'activités et de vie scolaire.</p>
-                    </div>
-                    <span class="ml-auto text-blue-600"><i class="fas fa-arrow-right"></i></span>
-                </a>
+        <!-- GALERIE PHOTO -->
+        <section id="galeries" class="bg-gray-50 py-16 md:py-24">
+          <div class="container mx-auto px-5 sm:px-6">
+            <header class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-blue-700">En images</p>
+                <h2 class="mt-2 text-3xl font-extrabold text-slate-900 sm:text-4xl">La Vie au Collège</h2>
+                <p class="mt-2 max-w-2xl text-slate-600">Découvrez les lieux et les moments qui font le quotidien de la communauté Maele.</p>
+              </div>
+              <a href="/galerie.html" class="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 self-start rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-blue-800 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 sm:self-auto">
+                Toute la galerie <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </header>
+
+            <div class="life-gallery" aria-label="Galerie photo du Collège Maele">
+              <a href="/galerie.html" class="life-gallery-item" aria-label="Voir la galerie : la cour du collège">
+                <img src="./Images/campus.jpg" alt="Élèves réunis dans la cour du Collège Maele" loading="lazy">
+                <span class="life-gallery-caption"><span>La cour du collège</span><span>Vie scolaire et rencontres</span></span>
+              </a>
+              <a href="/galerie.html" class="life-gallery-item" aria-label="Voir la galerie : les bâtiments du collège">
+                <img src="./Images/facade.jpg" alt="Façade d’un bâtiment du Collège Maele" loading="lazy">
+                <span class="life-gallery-caption"><span>Le campus</span><span>Les bâtiments de Maele</span></span>
+              </a>
+              <a href="/galerie.html" class="life-gallery-item" aria-label="Voir la galerie : la grotte de prière">
+                <img src="./Images/grotte.jpg" alt="Grotte de prière du Collège Maele" loading="lazy">
+                <span class="life-gallery-caption"><span>La grotte</span><span>Un lieu de recueillement</span></span>
+              </a>
+              <a href="/galerie.html" class="life-gallery-item" aria-label="Voir la galerie : les élèves en classe">
+                <img src="./Images/primaire.jpg" alt="Élèves en classe au Collège Maele" loading="lazy">
+                <span class="life-gallery-caption"><span>En classe</span><span>Apprendre ensemble</span></span>
+              </a>
             </div>
+          </div>
         </section>
 
-        <!-- DONS SECTION - WITH MODALS -->
-        <section id="dons" class="py-20 md:py-32 bg-gray-50">
-            <div class="container mx-auto px-6 text-center">
-                 <div class="max-w-4xl mx-auto animated-section fade-in">
-                    <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-4">Soutenez le Collège Maele</h2>
-                    <p class="text-lg text-gray-600 mb-12">Votre générosité nous aide à enrichir l'expérience éducative de nos élèves. Chaque don compte !</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-blue-500 animated-section slide-up">
-                            <i class="fas fa-mobile-alt text-5xl text-blue-500 mb-4"></i>
-                            <h4 class="text-2xl font-bold mb-2">Paiement Mobile</h4>
-                            <p class="text-gray-600 mb-6">Effectuez un don rapide via les services locaux.</p>
-                            <button data-modal-target="don-mobile" class="bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-600 transition duration-300">Voir numéros</button>
-                        </div>
-                        <div class="bg-white p-8 rounded-xl shadow-2xl border-t-4 border-blue-700 transform md:scale-110 animated-section slide-up" style="transition-delay: 150ms;">
-                            <i class="fas fa-credit-card text-5xl text-blue-700 mb-4"></i>
-                            <h4 class="text-2xl font-bold mb-2">Carte & Banque</h4>
-                            <p class="text-gray-600 mb-6">Plateforme sécurisée pour cartes et virements.</p>
-                            <button data-modal-target="don-banque" class="bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition duration-300">Voir infos</button>
-                        </div>
-                        <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-blue-500 animated-section slide-up" style="transition-delay: 300ms;">
-                            <i class="fas fa-hands-helping text-5xl text-blue-500 mb-4"></i>
-                            <h4 class="text-2xl font-bold mb-2">Don Matériel</h4>
-                            <p class="text-gray-600 mb-6">Contactez-nous pour les dons d'articles ou de meubles.</p>
-                            <a href="/contact.html" class="bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-600 transition duration-300">Nous Contacter</a>
-                        </div>
-                    </div>
-                </div>
+        <section id="dons" class="bg-slate-50 py-16 md:py-24">
+          <div class="container mx-auto max-w-7xl px-5 sm:px-6">
+            <header class="mx-auto mb-10 max-w-3xl text-center animated-section fade-in">
+              <p class="text-xs font-bold uppercase tracking-widest text-blue-700">Un geste pour l’école</p>
+              <h2 class="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl md:text-5xl">Soutenez le Collège Maele</h2>
+              <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">Votre contribution aide le Collège Maele à soutenir ses projets éducatifs et la vie de sa communauté. Choisissez la forme de soutien qui vous convient.</p>
+            </header>
+
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
+              <article class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg sm:p-7 animated-section slide-up">
+                <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-700"><i class="fa-solid fa-mobile-screen-button text-lg" aria-hidden="true"></i></span>
+                <h3 class="mt-5 text-xl font-bold text-slate-900">Mobile Money</h3>
+                <p class="mt-2 flex-1 leading-relaxed text-slate-600">Contribuez par Airtel Money, M-Pesa ou Orange Money.</p>
+                <button type="button" data-modal-target="don-mobile" class="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">Afficher les numéros <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+              </article>
+
+              <article class="flex h-full flex-col rounded-xl border border-blue-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg sm:p-7 animated-section slide-up">
+                <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-700"><i class="fa-solid fa-building-columns text-lg" aria-hidden="true"></i></span>
+                <h3 class="mt-5 text-xl font-bold text-slate-900">Virement bancaire</h3>
+                <p class="mt-2 flex-1 leading-relaxed text-slate-600">Retrouvez les coordonnées bancaires pour effectuer un virement.</p>
+                <button type="button" data-modal-target="don-banque" class="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-800 transition hover:bg-blue-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">Voir les coordonnées <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+              </article>
+
+              <article class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg sm:p-7 animated-section slide-up">
+                <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700"><i class="fa-solid fa-box-open text-lg" aria-hidden="true"></i></span>
+                <h3 class="mt-5 text-xl font-bold text-slate-900">Don matériel</h3>
+                <p class="mt-2 flex-1 leading-relaxed text-slate-600">Vous souhaitez offrir du matériel ou du mobilier ? Parlons de votre proposition.</p>
+                <a href="/contact.html" class="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">Nous contacter <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+              </article>
             </div>
+          </div>
         </section>
 
     <section id="bde" class="overflow-hidden bg-slate-50 py-16 sm:py-20 md:py-24">
@@ -1231,8 +1320,8 @@ Tous nos efforts d’étudiants !</textarea>
     <div id="don-banque" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 opacity-0">
         <div class="modal-content bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl transform scale-95 opacity-0">
             <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">×</button>
-            <div class="text-center"><i class="fas fa-university text-5xl text-blue-700 mb-4"></i><h3 class="text-2xl font-bold mb-4">Don par Banque ou Carte</h3></div>
-            <p class="text-center text-gray-600 mb-6">Utilisez les informations suivantes pour un virement.</p>
+            <div class="text-center"><i class="fas fa-university text-5xl text-blue-700 mb-4"></i><h3 class="text-2xl font-bold mb-4">Don par virement bancaire</h3></div>
+            <p class="text-center text-gray-600 mb-6">Utilisez ces coordonnées pour effectuer votre virement.</p>
             <div class="space-y-3 text-left text-md bg-gray-100 p-4 rounded-lg"><p><strong>Nom du Compte:</strong> Collège Maele</p><p><strong>Banque:</strong> SMICO</p><p><strong>Numéro de Compte:</strong> KS000174</p></div>
         </div>
     </div>
@@ -1242,25 +1331,12 @@ Tous nos efforts d’étudiants !</textarea>
             <div class="text-center"><i class="fas fa-donate text-5xl text-blue-600 mb-4"></i><h3 class="text-2xl font-bold mb-4">Choisissez votre mode de Don</h3></div>
             <p class="text-center text-gray-600 mb-8">Sélectionnez la méthode qui vous convient.</p>
             <div class="flex flex-col md:flex-row gap-4">
-                <button data-modal-target="don-mobile" class="flex-1 bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition">Paiement Mobile</button>
-                <button data-modal-target="don-banque" class="flex-1 bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-800 transition">Banque / Carte</button>
+                <button data-modal-target="don-mobile" class="flex-1 bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition">Mobile Money</button>
+                <button data-modal-target="don-banque" class="flex-1 bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-800 transition">Virement bancaire</button>
             </div>
         </div>
     </div>
 
-    <!-- Donation Modal: Generic for main button -->
-    <div id="don-principal" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="modal-content bg-white w-full max-w-lg p-8 rounded-2xl shadow-2xl transform scale-95">
-            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">×</button>
-            <div class="text-center"><i class="fas fa-donate text-5xl text-blue-600 mb-4"></i><h3 class="text-2xl font-bold mb-4">Choisissez votre mode de Don</h3></div>
-            <p class="text-center text-gray-600 mb-8">Votre soutien est précieux. Sélectionnez la méthode qui vous convient le mieux.</p>
-            <div class="flex flex-col md:flex-row gap-4">
-                <button data-modal-target="don-mobile" class="modal-switch-btn flex-1 bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300">Paiement Mobile</button>
-                <button data-modal-target="don-banque" class="modal-switch-btn flex-1 bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-800 transition duration-300">Banque / Carte</button>
-            </div>
-        </div>
-    </div>
-    
     <!-- Photo Gallery Modal -->
     <div id="gallery-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="relative max-w-[90vw] w-full">
