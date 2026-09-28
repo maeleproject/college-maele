@@ -3,28 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="description" content="Découvrez et recherchez les professeurs du Collège Maele à Kisangani par nom ou par matière." />
   <title>Nos Professeurs - Collège Maele</title>
   <link rel="icon" type="image/png" href="/Images/Oiseaux.jpeg">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-    .card{background:#fff;border-radius:1rem;box-shadow:0 10px 15px -3px rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.04);}
-    .btn{display:inline-flex;align-items:center;justify-content:center;border-radius:0.75rem;font-weight:600;transition:transform .2s ease,box-shadow .2s ease,background-color .2s ease,color .2s ease;}
-    .btn-primary{background-image:linear-gradient(90deg,#2563eb,#1e3a8a);color:#fff;box-shadow:0 10px 15px -3px rgb(37 99 235 / .25);}
-    .btn-primary:hover{transform:translateY(-1px);box-shadow:0 20px 25px -5px rgb(30 58 138 / .25);}
-    .btn-outline{background:#fff;color:#1e40af;border:1px solid rgba(30,64,175,.25);}
-    .btn-outline:hover{background:#eff6ff;}
-    .chip{display:inline-flex;align-items:center;gap:.375rem;border:1px solid rgba(30,58,138,.18);color:#1e3a8a;background:#fff;border-radius:9999px;padding:.375rem .75rem;font-size:.75rem;font-weight:600;}
-    .chip.active{background:#1e3a8a;color:#fff;border-color:#1e3a8a;}
-    .animated{opacity:0;transform:translateY(12px);transition:opacity .45s ease,transform .45s ease;}
+    :root { color-scheme: light; }
+    body { background: #f8fafc; }
+    .btn{display:inline-flex;min-height:2.75rem;align-items:center;justify-content:center;gap:.5rem;border-radius:.75rem;font-weight:650;transition:background-color .18s ease,border-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease;}
+    .btn-primary{background:#1d4ed8;color:#fff;box-shadow:0 5px 14px rgba(29,78,216,.18);}
+    .btn-primary:hover{background:#1e40af;box-shadow:0 8px 18px rgba(29,78,216,.24);transform:translateY(-1px);}
+    .btn-outline{background:#fff;color:#1e40af;border:1px solid #cbd5e1;}
+    .btn-outline:hover{border-color:#93c5fd;background:#eff6ff;}
+    .chip{display:inline-flex;min-height:2.25rem;align-items:center;gap:.4rem;border:1px solid #cbd5e1;color:#475569;background:#fff;border-radius:9999px;padding:.4rem .8rem;font-size:.78rem;font-weight:650;transition:background-color .18s ease,border-color .18s ease,color .18s ease;}
+    .chip:hover{border-color:#93c5fd;color:#1d4ed8;}
+    .chip.active{background:#1d4ed8;color:#fff;border-color:#1d4ed8;}
+    .prof-card{display:flex;min-height:100%;flex-direction:column;border:1px solid #e2e8f0;border-radius:1rem;background:#fff;padding:1.5rem;text-align:center;box-shadow:0 4px 14px rgba(15,23,42,.035);transition:border-color .2s ease,box-shadow .2s ease,transform .2s ease;}
+    .prof-card[hidden]{display:none;}
+    .prof-card:hover{transform:translateY(-3px);border-color:#bfdbfe;box-shadow:0 14px 28px rgba(15,23,42,.09);}
+    .prof-photo{width:6.5rem;height:6.5rem;margin:0 auto 1rem;border:3px solid #eff6ff;border-radius:50%;background:#f1f5f9;object-fit:cover;}
+    .prof-card h2{color:#0f172a;font-size:1rem;font-weight:750;line-height:1.4;}
+    .prof-subject{display:inline-flex;justify-content:center;margin: .65rem auto 0;border-radius:9999px;background:#eff6ff;padding:.35rem .7rem;color:#1d4ed8;font-size:.75rem;font-weight:650;line-height:1.4;}
+    .prof-card .quickview-btn{width:100%;margin-top:auto;padding:.65rem .8rem;}
+    .animated{opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease;}
     .animated.visible{opacity:1;transform:translateY(0);}
-    .progress-wrap { position: fixed; left: 0; right: 0; top: 0; height: 4px; z-index: 60; pointer-events: none; }
-    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg,#2563eb,#1e40af); transform-origin: 0 50%; transition: width .12s linear; }
-    /* Skeleton shimmer */
-    .skeleton{position:relative;overflow:hidden;background:#eef2ff;}
-    .skeleton::after{content:"";position:absolute;inset:0;transform:translateX(-100%);background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);animation:shimmer 1.4s infinite;}
-    @keyframes shimmer{100%{transform:translateX(100%)}}
+    .progress-wrap{position:fixed;left:0;right:0;top:0;height:3px;z-index:60;pointer-events:none;background:transparent;}
+    .progress-bar{height:100%;width:0%;background:#2563eb;transition:width .12s linear;}
+    #quickview-modal[hidden]{display:none;}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important;}}
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -33,93 +41,100 @@
   <div class="progress-wrap"><div id="progressBar" class="progress-bar"></div></div>
 
   <!-- HEADER -->
-  <header class="bg-white/90 backdrop-blur shadow sticky top-0 z-40">
-    <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+  <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <div class="container mx-auto flex items-center justify-between px-5 py-3 sm:px-6">
       <a href="/index.html" class="flex items-center gap-3">
-        <img src="/Images/Oiseaux.jpeg" alt="Logo" class="w-10 h-10 rounded-full object-cover">
-        <span class="font-extrabold text-xl md:text-2xl text-blue-800">Collège Maele</span>
+        <img src="/Images/Oiseaux.jpeg" alt="" class="h-10 w-10 rounded-full object-cover ring-1 ring-slate-200">
+        <span class="font-extrabold text-lg text-blue-900 sm:text-xl">Collège Maele</span>
       </a>
-      <nav class="space-x-4 hidden md:flex">
-        <a href="/pages/accueil.html" class="text-gray-600 hover:text-blue-700">Blog</a>
-        <a href="#prof-list" class="text-gray-600 hover:text-blue-700">Professeurs</a>
+      <nav aria-label="Navigation principale" class="flex items-center gap-3 text-sm font-medium sm:gap-5">
+        <a href="/pages/accueil.html" class="text-slate-600 transition hover:text-blue-700">Blog</a>
+        <a href="#prof-list" class="text-slate-600 transition hover:text-blue-700">Professeurs</a>
+        <a href="/index.html#equipe" class="hidden text-slate-600 transition hover:text-blue-700 sm:inline">Équipe</a>
       </nav>
     </div>
   </header>
 
-  <main class="container mx-auto px-6">
-    <section class="card p-6 md:p-8 my-8 animated">
-      <div class="flex items-start justify-between gap-6 flex-wrap">
+  <main class="container mx-auto max-w-7xl px-5 sm:px-6">
+    <section class="py-10 sm:py-14 animated">
+      <div class="flex flex-col gap-6 border-b border-slate-200 pb-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 class="text-3xl md:text-4xl font-extrabold text-blue-900">Nos Professeurs</h1>
-          <p class="mt-2 text-gray-600 max-w-2xl">Découvrez l’équipe enseignante : matières, parcours, disponibilités et contacts.</p>
+          <p class="text-xs font-bold uppercase tracking-widest text-blue-700">Annuaire pédagogique</p>
+          <h1 class="mt-2 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Nos professeurs</h1>
+          <p class="mt-3 max-w-2xl text-base leading-relaxed text-slate-600">Retrouvez l’équipe enseignante par nom ou par matière.</p>
         </div>
-        <a href="index.html#equipe" class="btn btn-outline px-4 py-2"><i class="fa-solid fa-people-group mr-2"></i>Retour à l’équipe</a>
+        <a href="index.html#equipe" class="btn btn-outline px-4 py-2.5"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>Retour à l’équipe</a>
       </div>
     </section>
 
-    <!-- OUTILS -->
-    <section class="card p-4 md:p-6 mb-8 animated">
-      <div class="grid md:grid-cols-4 gap-4">
-        <div class="md:col-span-2">
-          <label class="block text-sm font-medium text-gray-700 mb-1">Rechercher</label>
+    <section aria-label="Recherche et filtres" class="mb-7 border-b border-slate-200 pb-6 animated">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-[minmax(0,1fr)_13rem_auto] sm:items-end">
+        <div>
+          <label for="searchInput" class="mb-1.5 block text-sm font-semibold text-slate-700">Rechercher un professeur</label>
           <div class="relative">
-            <input id="searchInput" type="text" placeholder="Nom, matière, mot-clé…" class="w-full rounded-xl border border-gray-300/80 bg-white px-4 py-3 pr-10 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30">
-            <i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true"></i>
+            <input id="searchInput" type="search" autocomplete="off" placeholder="Nom ou matière…" class="w-full rounded-lg border border-slate-300 bg-white py-3 pl-11 pr-4 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10">
           </div>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Trier par</label>
-          <select id="sortSelect" class="w-full rounded-xl border border-gray-300/80 bg-white px-4 py-3 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30">
-            <option value="name_asc">Nom (A → Z)</option>
-            <option value="name_desc">Nom (Z → A)</option>
+          <label for="sortSelect" class="mb-1.5 block text-sm font-semibold text-slate-700">Trier les résultats</label>
+          <select id="sortSelect" class="w-full rounded-lg border border-slate-300 bg-white px-3 py-3 shadow-sm outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10">
+            <option value="name_asc">Nom (A à Z)</option>
+            <option value="name_desc">Nom (Z à A)</option>
             <option value="subject">Matière</option>
           </select>
         </div>
-        <div class="flex items-end">
-          <button id="resetBtn" class="btn btn-outline w-full px-4 py-3"><i class="fa-solid fa-rotate-left mr-2"></i>Réinitialiser</button>
-        </div>
+        <button id="resetBtn" type="button" class="btn btn-outline px-4 py-2.5"><i class="fa-solid fa-rotate-left" aria-hidden="true"></i>Effacer les filtres</button>
       </div>
-      <div id="chipsRow" class="mt-4 flex flex-wrap gap-2"></div>
+      <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div id="chipsRow" class="flex flex-wrap gap-2" aria-label="Filtrer par matière"></div>
+        <p id="resultCount" class="shrink-0 text-sm font-medium text-slate-500" aria-live="polite"></p>
+      </div>
     </section>
 
-    <!-- SKELETONS -->
-    <section id="prof-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-      <div class="card p-6 skeleton h-52"></div>
-      <div class="card p-6 skeleton h-52"></div>
-      <div class="card p-6 skeleton h-52"></div>
-      <div class="card p-6 skeleton h-52"></div>
-      <div class="card p-6 skeleton h-52"></div>
-      <div class="card p-6 skeleton h-52"></div>
+    <section aria-label="Liste des professeurs">
+      <div id="prof-list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" aria-live="polite">
+        <p class="col-span-full py-12 text-center text-sm text-slate-500" role="status">Chargement de l’annuaire…</p>
+      </div>
+      <div id="noProfMsg" class="hidden py-16 text-center">
+        <span class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-500"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i></span>
+        <h2 class="mt-4 text-lg font-bold text-slate-900">Aucun résultat</h2>
+        <p class="mt-1 text-sm text-slate-600">Modifiez votre recherche ou retirez le filtre actif.</p>
+      </div>
     </section>
 
-    <div id="noProfMsg" class="card p-8 text-center md:col-span-2 lg:col-span-3 hidden">
-      <p class="text-gray-600">Aucun professeur pour le moment.</p>
-    </div>
-
-    <section id="contact" class="mb-16 text-center animated">
-      <a href="/index.html" class="btn btn-outline px-5 py-3"><i class="fa-solid fa-house mr-2"></i>Retour à l’accueil</a>
+    <section id="contact" class="my-12 border-t border-slate-200 py-6 text-center">
+      <a href="/index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-blue-700 transition hover:text-blue-900"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>Retour à l’accueil</a>
     </section>
   </main>
 
   <!-- MODAL APERÇU -->
-  <div id="quickview-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-    <div class="card relative w-full max-w-lg overflow-hidden">
-      <button id="quickview-close" class="absolute top-3 right-3 text-2xl text-gray-500 hover:text-gray-800">×</button>
-      <div class="grid md:grid-cols-2">
-        <div class="bg-blue-50 p-6 flex items-center justify-center">
-          <img id="qv-photo" src="Images/point.jpg" alt="Photo professeur" class="w-40 h-40 rounded-full object-cover border-4 border-white shadow-md">
-        </div>
-        <div class="p-6">
-          <h4 id="qv-name" class="text-xl font-bold text-blue-900">Nom du professeur</h4>
-          <p id="qv-subject" class="text-blue-600">Matière</p>
-          <p id="qv-bio" class="mt-3 text-gray-700 text-sm leading-relaxed">—</p>
-        </div>
+  <div id="quickview-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/55 p-4 backdrop-blur-sm" aria-hidden="true">
+    <section class="relative grid w-full max-w-xl overflow-hidden rounded-2xl bg-white shadow-2xl sm:grid-cols-[12rem_minmax(0,1fr)]" role="dialog" aria-modal="true" aria-labelledby="qv-name" aria-describedby="qv-bio" tabindex="-1">
+      <button id="quickview-close" type="button" aria-label="Fermer l’aperçu" class="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white text-xl text-slate-500 shadow-sm transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600">&times;</button>
+      <div class="flex items-center justify-center bg-blue-50 p-8 sm:p-6">
+        <img id="qv-photo" src="/Images/point.jpg" alt="Portrait du professeur" class="h-36 w-36 rounded-full border-4 border-white object-cover shadow-md">
       </div>
-    </div>
+      <div class="flex flex-col justify-center p-6 sm:p-8">
+        <p class="text-xs font-bold uppercase tracking-widest text-blue-700">Équipe enseignante</p>
+        <h2 id="qv-name" class="mt-2 pr-8 text-xl font-extrabold text-slate-900">Nom du professeur</h2>
+        <p id="qv-subject" class="mt-2 text-sm font-semibold text-blue-700">Matière</p>
+        <p id="qv-bio" class="mt-4 text-sm leading-relaxed text-slate-600">Professeur au Collège Maele.</p>
+      </div>
+    </section>
   </div>
+
+  <footer class="mt-16 border-t border-slate-200 bg-white">
+    <div class="container mx-auto flex max-w-7xl flex-col gap-2 px-5 py-6 text-center text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:text-left">
+      <p>© <span id="current-year">2026</span> Collège Maele, Design by <a href="https://davidwawina.site" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-slate-800">Optimum Entreprise</a>.</p>
+      <a href="https://web.facebook.com/profile.php?id=61594951737384" target="_blank" rel="noopener noreferrer" aria-label="Page Facebook officielle du Collège Maele (nouvel onglet)" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-blue-50 text-blue-700 transition hover:-translate-y-0.5 hover:bg-[#1877F2] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+      <a href="/index.html" class="font-semibold text-blue-700 transition hover:text-blue-900">Retour au site principal</a>
+    </div>
+  </footer>
 
   <script>
   document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('current-year').textContent = new Date().getFullYear();
     /* === Données === */
     const profBase = "/Images/Professeurs/";
     const explicitPhotos = {
@@ -150,89 +165,163 @@
     ];
 
     const grid = document.getElementById('prof-list');
+    const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('fr');
+    const formatSubjects = subjects => [...new Set(subjects)].join(' · ');
 
-    // Délai simulé de chargement (skeleton visible)
-    setTimeout(() => {
-      grid.innerHTML = "";
-      profsList.forEach(([nom, matiere]) => {
-        const img = explicitPhotos[nom] ? profBase + explicitPhotos[nom] : "Images/point.jpg";
-        const card = document.createElement('article');
-        card.className = "card p-6 text-center animated prof-card";
-        card.dataset.name = nom.toLowerCase();
-        card.dataset.subject = matiere;
-        card.dataset.keywords = nom.toLowerCase() + " " + matiere.toLowerCase();
-        card.innerHTML = `
-          <div class="relative w-28 h-28 mx-auto -mt-2 mb-3">
-            <img src="${img}" alt="${nom}" class="w-28 h-28 rounded-full mx-auto object-cover border-4 border-white shadow-md">
-            <span class="absolute -bottom-1 -right-1 inline-flex items-center justify-center h-7 w-7 rounded-full bg-blue-600 text-white ring-2 ring-white shadow"><i class="fa-solid fa-user-graduate text-xs"></i></span>
-          </div>
-          <h3 class="font-bold text-lg text-blue-900">${nom}</h3>
-          <p class="text-sm text-blue-600 font-medium">${matiere}</p>
-          <div class="mt-4 flex items-center justify-center">
-            <button type="button" class="btn btn-primary px-3 py-2 text-sm quickview-btn" data-name="${nom}" data-subject="${matiere}" data-photo="${img}">
-              <i class="fa-solid fa-circle-info mr-2"></i>Aperçu rapide
-            </button>
-          </div>`;
-        grid.appendChild(card);
-      });
-      initFeatures();
-    }, 1300);
+    grid.innerHTML = '';
+    profsList.forEach(([nom, ...subjects]) => {
+      const img = explicitPhotos[nom] ? profBase + explicitPhotos[nom] : '/Images/point.jpg';
+      const matieres = formatSubjects(subjects);
+      const card = document.createElement('article');
+      card.className = 'prof-card animated';
+      card.dataset.name = normalize(nom);
+      card.dataset.subject = normalize(matieres);
+      card.dataset.keywords = normalize(`${nom} ${matieres}`);
+      card.innerHTML = `
+        <img src="${img}" alt="Portrait de ${nom}" class="prof-photo" loading="lazy">
+        <h2>${nom}</h2>
+        <p class="prof-subject">${matieres}</p>
+        <button type="button" class="btn btn-primary quickview-btn" aria-label="Afficher le profil de ${nom}">
+          <i class="fa-solid fa-circle-info" aria-hidden="true"></i>Voir le profil
+        </button>`;
+      const photo = card.querySelector('.prof-photo');
+      photo.addEventListener('error', () => {
+        if (!photo.src.endsWith('/Images/point.jpg')) photo.src = '/Images/point.jpg';
+      }, { once: true });
+      grid.appendChild(card);
+    });
+    initFeatures();
 
     function initFeatures() {
       const searchInput = document.getElementById('searchInput');
       const resetBtn = document.getElementById('resetBtn');
+      const sortSelect = document.getElementById('sortSelect');
       const cards = Array.from(document.querySelectorAll('.prof-card'));
       const chipsRow = document.getElementById('chipsRow');
       const noProfMsg = document.getElementById('noProfMsg');
-      const subjects = [...new Set(profsList.map(p=>p[1]))].sort();
-      let activeSubject="";
+      const resultCount = document.getElementById('resultCount');
+      const subjects = [...new Set(profsList.flatMap(prof => prof.slice(1)))].sort((a,b)=>a.localeCompare(b,'fr',{sensitivity:'base'}));
+      let activeSubject = '';
 
-      function renderChips(){
-        chipsRow.innerHTML="";
-        subjects.forEach(s=>{
-          const btn=document.createElement('button');
-          btn.className='chip'+(activeSubject===s?' active':'');
-          btn.innerHTML=`<i class="fa-solid fa-book-open text-xs"></i><span>${s}</span>`;
-          btn.onclick=()=>{activeSubject=(activeSubject===s?"":s);filter();renderChips();};
+      function renderChips() {
+        chipsRow.innerHTML = '';
+        subjects.forEach(subject => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `chip${activeSubject === subject ? ' active' : ''}`;
+          btn.setAttribute('aria-pressed', String(activeSubject === subject));
+          btn.textContent = subject;
+          btn.addEventListener('click', () => {
+            activeSubject = activeSubject === subject ? '' : subject;
+            filter();
+            renderChips();
+          });
           chipsRow.appendChild(btn);
         });
       }
 
-      function filter(){
-        const q=(searchInput.value||"").toLowerCase();
-        let visible=0;
-        cards.forEach(c=>{
-          const matchQ=!q||c.dataset.name.includes(q)||c.dataset.subject.toLowerCase().includes(q);
-          const matchS=!activeSubject||c.dataset.subject===activeSubject;
-          c.style.display=(matchQ&&matchS)?'':'none';
-          if(matchQ&&matchS)visible++;
+      function sortCards() {
+        const direction = sortSelect.value;
+        const sorted = [...cards].sort((first, second) => {
+          if (direction === 'subject') return first.dataset.subject.localeCompare(second.dataset.subject, 'fr');
+          const comparison = first.dataset.name.localeCompare(second.dataset.name, 'fr');
+          return direction === 'name_desc' ? -comparison : comparison;
         });
-        noProfMsg.classList.toggle('hidden',visible>0);
+        sorted.forEach(card => grid.appendChild(card));
       }
 
-      searchInput.addEventListener('input',filter);
-      resetBtn.addEventListener('click',()=>{searchInput.value="";activeSubject="";filter();renderChips();});
+      function filter() {
+        const query = normalize(searchInput.value.trim());
+        const selectedSubject = normalize(activeSubject);
+        let visible = 0;
+        cards.forEach(card => {
+          const matchesQuery = !query || card.dataset.keywords.includes(query);
+          const matchesSubject = !selectedSubject || card.dataset.subject.split(' · ').some(subject => normalize(subject) === selectedSubject);
+          const isVisible = matchesQuery && matchesSubject;
+          card.hidden = !isVisible;
+          if (isVisible) visible++;
+        });
+        noProfMsg.classList.toggle('hidden', visible !== 0);
+        resultCount.textContent = `${visible} professeur${visible > 1 ? 's' : ''}`;
+      }
+
+      searchInput.addEventListener('input', filter);
+      sortSelect.addEventListener('change', () => { sortCards(); filter(); });
+      resetBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        sortSelect.value = 'name_asc';
+        activeSubject = '';
+        sortCards();
+        filter();
+        renderChips();
+        searchInput.focus();
+      });
+      sortCards();
       renderChips();
       filter();
 
-      const modal=document.getElementById('quickview-modal');
-      const qvPhoto=document.getElementById('qv-photo');
-      const qvName=document.getElementById('qv-name');
-      const qvSubj=document.getElementById('qv-subject');
-      const qvClose=document.getElementById('quickview-close');
+      const modal = document.getElementById('quickview-modal');
+      const dialog = modal.querySelector('[role="dialog"]');
+      const qvPhoto = document.getElementById('qv-photo');
+      const qvName = document.getElementById('qv-name');
+      const qvSubj = document.getElementById('qv-subject');
+      const qvBio = document.getElementById('qv-bio');
+      const qvClose = document.getElementById('quickview-close');
+      let previousFocus = null;
 
-      document.querySelectorAll('.quickview-btn').forEach(btn=>{
-        btn.onclick=()=>{qvPhoto.src=btn.dataset.photo;qvName.textContent=btn.dataset.name;qvSubj.textContent=btn.dataset.subject;modal.classList.remove('hidden');modal.classList.add('flex');document.body.style.overflow='hidden';};
+      function closeQuickview() {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        previousFocus?.focus();
+      }
+
+      grid.addEventListener('click', event => {
+        const button = event.target.closest('.quickview-btn');
+        if (!button) return;
+        const card = button.closest('.prof-card');
+        previousFocus = button;
+        qvPhoto.src = card.querySelector('.prof-photo').src;
+        qvPhoto.alt = card.querySelector('.prof-photo').alt;
+        qvName.textContent = profsList.find(([name]) => normalize(name) === card.dataset.name)?.[0] || '';
+        qvSubj.textContent = card.querySelector('.prof-subject').textContent;
+        qvBio.textContent = `${qvName.textContent} enseigne ${qvSubj.textContent} au Collège Maele.`;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        qvClose.focus();
       });
-      qvClose.onclick=()=>{modal.classList.add('hidden');modal.classList.remove('flex');document.body.style.overflow='';};
+      qvClose.addEventListener('click', closeQuickview);
+      modal.addEventListener('click', event => { if (event.target === modal) closeQuickview(); });
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && !modal.classList.contains('hidden')) closeQuickview();
+        if (event.key === 'Tab' && !modal.classList.contains('hidden')) {
+          event.preventDefault();
+          qvClose.focus();
+        }
+      });
 
-      const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});},{threshold:.1});
-      document.querySelectorAll('.animated').forEach(el=>observer.observe(el));
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .1 });
+        document.querySelectorAll('.animated').forEach(el => observer.observe(el));
+      } else {
+        document.querySelectorAll('.animated').forEach(el => el.classList.add('visible'));
+      }
     }
 
     window.addEventListener('scroll',()=>{
       const doc=document.documentElement;
-      const pct=(window.scrollY/(doc.scrollHeight-doc.clientHeight))*100;
+      const scrollableHeight = doc.scrollHeight - doc.clientHeight;
+      const pct = scrollableHeight > 0 ? (window.scrollY / scrollableHeight) * 100 : 0;
       document.getElementById('progressBar').style.width=pct+'%';
     });
   });

@@ -10,6 +10,62 @@
   <link rel="icon" type="image/png" href="/Images/Oiseaux.jpeg">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+  <style>
+    .article-editor-toolbar.ql-toolbar.ql-snow {
+      border: 1px solid #d1d5db;
+      border-bottom: 0;
+      border-radius: .75rem .75rem 0 0;
+      background: #f8fafc;
+      padding: .65rem;
+    }
+    #article-editor.ql-container.ql-snow {
+      min-height: 20rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0 0 .75rem .75rem;
+      background: #fff;
+      color: #1f2937;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    #article-editor .ql-editor {
+      min-height: 20rem;
+      padding: 1rem;
+      line-height: 1.75;
+    }
+    #article-editor .ql-editor.ql-blank::before {
+      color: #9ca3af;
+      font-style: normal;
+      left: 1rem;
+      right: 1rem;
+    }
+    #article-editor .ql-editor img {
+      max-width: 100%;
+      height: auto;
+      border-radius: .5rem;
+    }
+    .article-toolbar-button {
+      display: inline-flex;
+      width: 1.75rem;
+      height: 1.75rem;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: .35rem;
+      background: transparent;
+      color: #475569;
+      cursor: pointer;
+    }
+    .article-toolbar-button:hover,
+    .article-toolbar-button:focus-visible {
+      background: #dbeafe;
+      color: #1d4ed8;
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+  </style>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -17,7 +73,66 @@
 
       // Animation d’envoi du formulaire
       const form = document.getElementById("article-form");
-      form.addEventListener("submit", () => {
+      const contentField = document.getElementById("contenu");
+      const editorShell = document.getElementById("article-editor-shell");
+      const editorError = document.getElementById("editor-error");
+      let articleEditor = null;
+
+      if (window.Quill && editorShell) {
+        const imageHandler = () => {
+          const imageUrl = window.prompt("Collez le lien public de l’image (https://…)");
+          if (!imageUrl) return;
+
+          let parsedUrl;
+          try {
+            parsedUrl = new URL(imageUrl.trim());
+          } catch {
+            window.alert("Veuillez saisir une URL valide.");
+            return;
+          }
+          if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+            window.alert("Le lien de l’image doit commencer par http:// ou https://.");
+            return;
+          }
+
+          const range = articleEditor.getSelection(true);
+          articleEditor.insertEmbed(range.index, "image", parsedUrl.href, "user");
+          articleEditor.setSelection(range.index + 1, 0, "silent");
+          const insertedImage = articleEditor.root.querySelector(`img[src="${CSS.escape(parsedUrl.href)}"]`);
+          if (insertedImage) insertedImage.alt = "Illustration de l’article";
+        };
+
+        articleEditor = new Quill("#article-editor", {
+          theme: "snow",
+          placeholder: "Rédigez votre article ici. Sélectionnez du texte pour le mettre en forme…",
+          modules: {
+            toolbar: {
+              container: "#article-editor-toolbar",
+              handlers: { image: imageHandler }
+            }
+          }
+        });
+        contentField.required = false;
+        contentField.hidden = true;
+        editorShell.hidden = false;
+        articleEditor.on("text-change", () => {
+          contentField.value = articleEditor.root.innerHTML;
+          editorError.textContent = "";
+        });
+      }
+
+      form.addEventListener("submit", (event) => {
+        if (articleEditor) {
+          const articleText = articleEditor.getText().trim();
+          contentField.value = articleEditor.root.innerHTML;
+          if (!articleText) {
+            event.preventDefault();
+            editorError.textContent = "Rédigez le contenu de votre article avant de l’envoyer.";
+            articleEditor.focus();
+            return;
+          }
+        }
+
         const button = form.querySelector("button[type='submit']");
         button.disabled = true;
         button.innerHTML = `
@@ -84,7 +199,37 @@
 
         <!-- Corps -->
         <div>
-          <label for="contenu" class="block text-sm font-medium text-gray-700">Corps de l’article</label>
+          <label for="article-editor" class="mb-2 block text-sm font-medium text-gray-700">Corps de l’article</label>
+          <div id="article-editor-shell" hidden>
+            <div id="article-editor-toolbar" class="article-editor-toolbar">
+              <span class="ql-formats">
+                <select class="ql-header" aria-label="Style du paragraphe">
+                  <option selected></option>
+                  <option value="2">Titre 2</option>
+                  <option value="3">Titre 3</option>
+                </select>
+              </span>
+              <span class="ql-formats">
+                <button type="button" class="ql-bold" aria-label="Gras" title="Gras"></button>
+                <button type="button" class="ql-italic" aria-label="Italique" title="Italique"></button>
+                <button type="button" class="ql-underline" aria-label="Souligné" title="Souligné"></button>
+                <button type="button" class="ql-strike" aria-label="Barré" title="Barré"></button>
+              </span>
+              <span class="ql-formats">
+                <button type="button" class="ql-list" value="ordered" aria-label="Liste numérotée" title="Liste numérotée"></button>
+                <button type="button" class="ql-list" value="bullet" aria-label="Liste à puces" title="Liste à puces"></button>
+                <button type="button" class="ql-blockquote" aria-label="Citation" title="Citation"></button>
+              </span>
+              <span class="ql-formats">
+                <button type="button" class="ql-link" aria-label="Ajouter un lien" title="Ajouter un lien"></button>
+                <button type="button" class="ql-image" aria-label="Insérer une image par URL" title="Insérer une image par URL"></button>
+                <button type="button" class="ql-clean" aria-label="Effacer le formatage" title="Effacer le formatage"></button>
+              </span>
+            </div>
+            <div id="article-editor"></div>
+            <p class="mt-2 text-xs text-gray-500">Mise en forme disponible : gras, italique, souligné, barré, titres, listes et liens. Les images s’ajoutent uniquement avec une URL publique.</p>
+            <p id="editor-error" class="mt-2 text-sm font-medium text-red-600" role="alert" aria-live="polite"></p>
+          </div>
           <textarea id="contenu" name="Corps_de_l_article" rows="8" required placeholder="Rédigez ici votre article complet..." class="block w-full rounded-xl border border-gray-300 px-4 py-3 focus:ring-2 focus:ring-blue-500/30"></textarea>
         </div>
 
@@ -121,7 +266,8 @@
 <!-- FOOTER -->
 <footer class="bg-gray-800 text-white mt-20">
   <div class="container mx-auto px-6 py-10 text-center text-sm text-gray-400">
-    © <span id="current-year"></span> Collège Maele – Design par <a href="https://portfoliodavidwawina.vercel.app" class="underline hover:text-white">Optimum Entreprise</a>.
+    © <span id="current-year">2026</span> Collège Maele, Design by <a href="https://davidwawina.site" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-white">Optimum Entreprise</a>.
+    <a href="https://web.facebook.com/profile.php?id=61594951737384" target="_blank" rel="noopener noreferrer" aria-label="Page Facebook officielle du Collège Maele (nouvel onglet)" class="ml-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition hover:-translate-y-0.5 hover:bg-[#1877F2] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
   </div>
 </footer>
 

@@ -155,16 +155,87 @@
   .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg,#2563eb,#1e40af); transform-origin: 0 50%; transition: width .12s linear; }
     /* Avatars and teacher images: ensure consistent sizing and cropping */
     /* Applies to statically-rendered team cards and dynamically-inserted teacher cards */
-    #equipe .rounded-full, #equipe img, .team-card img, #teacher-carousel-track img {
-      width: 8rem; /* 128px */
-      height: 8rem; /* 128px */
+    #equipe .team-avatar {
+      width: 7.5rem;
+      height: 7.5rem;
       object-fit: cover;
-      border-radius: 9999px; /* full */
+      border-radius: 9999px;
       display: block;
     }
-    /* Slightly smaller on very small screens */
-    @media (max-width: 420px) {
-      #equipe .rounded-full, #equipe img, .team-card img, #teacher-carousel-track img { width: 6.5rem; height: 6.5rem; }
+    #equipe .team-profile {
+      height: 100%;
+      padding: 1.75rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 1rem;
+      background: #fff;
+      text-align: center;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, .045);
+      transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+    #equipe .team-profile:hover {
+      border-color: #bfdbfe;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, .09);
+      transform: translateY(-3px);
+    }
+    #equipe .team-avatar {
+      margin: 0 auto 1rem;
+      border: 3px solid #eff6ff;
+      background: #f1f5f9;
+    }
+    #equipe .team-role {
+      display: inline-flex;
+      margin-top: .65rem;
+      border-radius: 9999px;
+      background: #eff6ff;
+      padding: .35rem .7rem;
+      color: #1d4ed8;
+      font-size: .75rem;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    #teacher-carousel-track img {
+      width: 5rem;
+      height: 5rem;
+      border-radius: 9999px;
+      object-fit: cover;
+    }
+    #equipe .teacher-profile-card {
+      display: flex;
+      height: 100%;
+      min-height: 13rem;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      border: 1px solid #e2e8f0;
+      border-radius: .875rem;
+      background: #fff;
+      padding: 1rem .75rem;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .04);
+    }
+    #equipe .teacher-profile-avatar {
+      width: 5rem;
+      height: 5rem;
+      margin-bottom: .75rem;
+      overflow: hidden;
+      border: 3px solid #eff6ff;
+      border-radius: 9999px;
+      background: #f1f5f9;
+    }
+    #equipe .teacher-profile-card h4 {
+      color: #1e3a8a;
+      font-size: .875rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    #equipe .teacher-profile-card p {
+      margin-top: .35rem;
+      color: #64748b;
+      font-size: .75rem;
+      line-height: 1.4;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #equipe .team-profile { transition: none; }
     }
 
     /* Frise historique */
@@ -369,12 +440,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (hidden) {
         box.classList.remove('collapsed');
         box.style.maxHeight = box.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded', 'true');
+        btn.textContent = 'Masquer les paroles';
         setTimeout(()=> box.style.maxHeight = '', 250);
       } else {
         box.style.maxHeight = box.scrollHeight + 'px';
         requestAnimationFrame(()=> {
           box.style.maxHeight = '0px';
           box.classList.add('collapsed');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.textContent = 'Afficher les paroles';
         });
       }
     });
@@ -390,6 +465,32 @@ document.addEventListener('DOMContentLoaded', () => {
   /* transition douce pour les blocs de paroles */
   #lyrics-col-1, #lyrics-col-2 { overflow: hidden; transition: max-height .25s ease; }
   #lyrics-col-1.collapsed, #lyrics-col-2.collapsed { max-height: 0; }
+  #hymne { background: #fff !important; color: #1f2937; }
+  #hymne .hymn-verse {
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, .045);
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+  }
+  #hymne .hymn-verse::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    width: 2.5rem;
+    height: 3px;
+    background: #2563eb;
+  }
+  #hymne .hymn-verse:hover {
+    border-color: #bfdbfe;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, .08);
+    transform: translateY(-2px);
+  }
+  #hymne .hymn-lyrics p + p { margin-top: 1.1rem; }
+  #hymne audio { accent-color: #2563eb; }
+  @media (prefers-reduced-motion: reduce) {
+    #hymne .hymn-verse { transition: none; }
+  }
 
   .fb-page-wrapper {
     width: 100%;
@@ -428,7 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
   },
   "foundingDate": "1939",
   "sameAs": [
-    "https://www.facebook.com/collegemaele",
+    "https://web.facebook.com/profile.php?id=61594951737384",
     "https://www.instagram.com/collegemaele",
     "https://www.linkedin.com/company/collegemaele"
   ]
@@ -448,7 +549,7 @@ document.addEventListener('DOMContentLoaded', () => {
     "addressCountry": "CD"
   },
   "sameAs": [
-    "https://www.facebook.com/college.maele",
+    "https://web.facebook.com/profile.php?id=61594951737384",
     "https://www.instagram.com/college.maele",
     "https://www.linkedin.com/company/college-maele"
   ],
@@ -691,72 +792,68 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
         <!-- HYMNE SECTION -->
-<section id="hymne" class="relative overflow-hidden py-20 md:py-32 bg-gray-100 dark:bg-slate-800">
-  <!-- décor doux -->
-  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-    <div class="absolute -top-24 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-200/60 via-blue-300/20 to-transparent blur-3xl dark:from-blue-900/30 dark:via-blue-700/20"></div>
-    <svg class="absolute -bottom-16 -right-16 h-[520px] w-[520px] opacity-15 dark:opacity-10" viewBox="0 0 200 200" fill="none">
-      <defs><pattern id="dots-hymne" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" class="fill-blue-500"></circle></pattern></defs>
-      <rect width="200" height="200" fill="url(#dots-hymne)"></rect>
-    </svg>
-  </div>
+<section id="hymne" class="relative overflow-hidden bg-white py-16 md:py-24">
+  <div class="container relative mx-auto px-5 sm:px-6">
+    <div class="mx-auto mb-10 max-w-3xl text-center animated-section fade-in">
+      <span class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-blue-700">
+        <i class="fa-solid fa-music" aria-hidden="true"></i> Patrimoine musical
+      </span>
+      <h2 class="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl md:text-5xl">L’Hymne du Collège Maele</h2>
+      <p class="mt-2 text-xl font-semibold text-blue-700">La Maélienne</p>
+      <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">Un chant de fierté et d’unité, transmis au cœur de la communauté éducative.</p>
+    </div>
 
-  <div class="container mx-auto px-6">
-    <!-- Titre + lecteur -->
-    <div class="text-center mb-10 animated-section fade-in">
-      <h2 class="text-3xl md:text-5xl font-extrabold text-blue-900 dark:text-blue-300" alt="L'hymne du Collège Maele - La Maelienne">L’Hymne du Collège Maele — <span class="italic">La Maélienne</span></h2>
-      <p class="mt-2 text-gray-600 dark:text-gray-300">Chant de fierté & d’unité de notre communauté éducative.</p>
-
-      <!-- Lecteur audio (optionnel : place ton fichier si disponible) -->
-      <div class="mt-6 inline-flex items-center gap-3 rounded-full border border-blue-200/70 bg-white/80 px-4 py-2 shadow-sm backdrop-blur dark:border-blue-800/40 dark:bg-slate-800/50">
-        <button id="hymnPlayBtn" class="h-10 w-10 inline-flex items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-700 transition" aria-label="Lire / mettre en pause l’hymne">
-          <i class="fa-solid fa-play"></i>
-        </button>
-        <audio id="hymnAudio" preload="none">
-          <!-- Remplace ce src si tu as l’audio -->
-          <source src="./Audio/maelienne.mp3" type="audio/mpeg" alt="La version audio de la Maelienne">
-        </audio>
-        <div class="text-sm md:text-base font-medium text-blue-900 dark:text-blue-200">Lecture de l’hymne</div>
-        <div class="ml-3 flex items-center gap-2">
-          <button id="copyLyricsBtn" class="text-xs md:text-sm inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-3 py-1.5 text-blue-800 hover:bg-blue-50 transition dark:border-blue-800/40 dark:bg-slate-800/50 dark:text-blue-200">
-            <i class="fa-regular fa-copy" alt="Les paraoles de la Maelienne - L'hymne du Collège Maele"></i> Copier les paroles
-          </button>
-          <a id="downloadLyricsBtn" download="Hymne_College_Maele.txt" alt="paroles de la Maelienne au format texte"
-             class="text-xs md:text-sm inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-3 py-1.5 text-blue-800 hover:bg-blue-50 transition dark:border-blue-800/40 dark:bg-slate-800/50 dark:text-blue-200"
-             href="#">
-            <i class="fa-solid fa-file-arrow-down" alt="téléchargement de la Maelienne"></i> Télécharger
-          </a>
+    <div class="mx-auto mb-8 max-w-4xl rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 animated-section slide-up">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-center gap-3">
+          <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+            <i class="fa-solid fa-headphones" aria-hidden="true"></i>
+          </span>
+          <div>
+            <p class="font-bold text-slate-900">Écouter l’hymne</p>
+            <p class="text-sm text-slate-500">La Maélienne · fichier audio</p>
+          </div>
         </div>
+        <audio id="hymnAudio" controls preload="none" class="w-full min-w-0 sm:max-w-md">
+          <source src="./Audio/maelienne.mp3" type="audio/mpeg">
+          Votre navigateur ne prend pas en charge la lecture audio.
+        </audio>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-2 border-t border-slate-100 pt-4">
+        <button id="copyLyricsBtn" type="button" class="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          <i class="fa-regular fa-copy" aria-hidden="true"></i> Copier les paroles
+        </button>
+        <a id="downloadLyricsBtn" download="Hymne_College_Maele.txt" href="#" class="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+          <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Télécharger les paroles
+        </a>
       </div>
     </div>
 
-    <!-- Paroles -->
-    <div class="max-w-5xl mx-auto animated-section slide-up">
-      <div class="grid md:grid-cols-2 gap-6 text-gray-800 dark:text-gray-100">
-        <!-- Colonne 1 -->
-        <div class="rounded-2xl bg-white/90 dark:bg-slate-900/50 p-6 shadow ring-1 ring-black/5">
-          <div class="italic leading-relaxed space-y-4" id="lyrics-col-1">
+    <div class="mx-auto grid max-w-5xl gap-5 md:grid-cols-2 animated-section slide-up">
+      <article class="hymn-verse rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+        <p class="mb-5 text-xs font-bold uppercase tracking-widest text-blue-700">Première partie</p>
+        <div class="hymn-lyrics leading-8 text-slate-700" id="lyrics-col-1">
             <p>Salut à toi, ô noble source,<br> D’où jaillit la vie si douce<br> Creuset d’amour et des sciences<br> Maele, nous te chantons.</p>
             <p>Ô toi noble berceau<br> Tu nous pousses au plus haut<br> Tu nous armes pour la vie.</p>
             <p>Que ta splendeur brille à jamais<br> Au jour le jour dans notre vie,<br> Afin que tous réalisions, réalisions, réalisions</p>
             <p>La grande et belle issue<br> Que nous prépares l’institut.</p>
-          </div>
-          <button class="mt-4 text-sm text-blue-700 hover:underline" data-expand="#lyrics-col-1">Afficher/masquer</button>
         </div>
+        <button class="mt-5 rounded-lg px-2 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" data-expand="#lyrics-col-1" aria-expanded="true">Masquer les paroles</button>
+      </article>
 
-        <!-- Colonne 2 -->
-        <div class="rounded-2xl bg-white/90 dark:bg-slate-900/50 p-6 shadow ring-1 ring-black/5">
-          <div class="italic leading-relaxed space-y-4" id="lyrics-col-2">
+      <article class="hymn-verse rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+        <p class="mb-5 text-xs font-bold uppercase tracking-widest text-blue-700">Deuxième partie</p>
+        <div class="hymn-lyrics leading-8 text-slate-700" id="lyrics-col-2">
             <p>Apprends-nous, ô toi notre Mère,<br> La sagesse et la technique<br> Latin-Philo, math physique<br> Patrimoine séculaire</p>
             <p>Mais surtout apprends-nous<br> À aimer, à servir<br> Notre beau pays : Congo.</p>
             <p>Ma-e-liens, main dans la main<br> Marchons sans peur du lendemain,<br> Transformons tout sur nos chemins, sur nos chemins, sur nos chemins</p>
             <p>Que le bon Dieu bénisse<br> Tous nos efforts d’étudiants !</p>
-          </div>
-          <button class="mt-4 text-sm text-blue-700 hover:underline" data-expand="#lyrics-col-2">Afficher/masquer</button>
         </div>
-      </div>
+        <button class="mt-5 rounded-lg px-2 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" data-expand="#lyrics-col-2" aria-expanded="true">Masquer les paroles</button>
+      </article>
+    </div>
 
-      <p class="text-sm text-gray-500 dark:text-gray-400 mt-8 text-center">
+      <p class="mt-8 text-center text-sm text-slate-500">
         Paroles : Abbé Buse Meluna · Musique : Chovu, Colonel · Fait à Mandombe, le 28 février 1886.
       </p>
       <!-- stockage invisible pour le bouton “copier” -->
@@ -878,74 +975,92 @@ Tous nos efforts d’étudiants !</textarea>
 
 
         <!-- EQUIPE SECTION -->
-        <section id="equipe" class="py-20 md:py-32 bg-white">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16 animated-section fade-in">
-                    <h2 class="text-4xl md:text-5xl font-bold text-blue-800 mb-4">Notre Équipe Dédiée</h2>
-                    <p class="text-lg text-gray-600 max-w-3xl mx-auto">Rencontrez les professionnels passionnés qui œuvrent chaque jour pour l'excellence et le bien-être de nos élèves.</p>
+        <section id="equipe" class="bg-white py-16 md:py-24">
+          <div class="container mx-auto px-5 sm:px-6">
+            <header class="mx-auto mb-14 max-w-3xl text-center animated-section fade-in">
+              <span class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-blue-700">
+                <i class="fa-solid fa-people-group" aria-hidden="true"></i> La communauté Maele
+              </span>
+              <h2 class="mt-4 text-3xl font-extrabold text-slate-900 sm:text-4xl md:text-5xl">Notre Équipe Dédiée</h2>
+              <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">Une équipe engagée pour accompagner les élèves et faire vivre le projet éducatif du Collège Maele.</p>
+            </header>
+
+            <div class="mx-auto mb-14 max-w-6xl">
+              <div class="mb-6 flex items-end justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-widest text-blue-700">01 · Gouvernance</p>
+                  <h3 class="mt-1 text-2xl font-bold text-slate-900">Préfecture et direction scolaire</h3>
                 </div>
-                <!-- Direction -->
-                <h3 class="text-3xl font-bold text-center mb-10 text-blue-700 animated-section slide-up">Préfecture et Direction Scolaire</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto mb-20">
-                    <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-                        <img src="./Images/Préfet.png" alt="Préfet des études du College Maele actuelle" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md">
-                        <h4 class="text-xl font-bold">M. Jean-Claude Kazadi</h4><p class="text-blue-600">Préfet des Etudes</p>
-                    </div>
-          <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300 team-card" style="transition-delay: 150ms;">
-            <img src="./Images/directeur1.png" alt="Directeur des Études" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md team-avatar" loading="lazy">
-            <h4 class="text-xl font-bold">M. Richard Essymandra</h4><p class="text-blue-600">Directeur des Etudes</p>
+                <i class="fa-solid fa-building-columns hidden text-2xl text-blue-200 sm:block" aria-hidden="true"></i>
+              </div>
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <article class="team-profile animated-section slide-up">
+                  <img src="./Images/Préfet.png" alt="Jean-Claude Kazadi, préfet des études" class="team-avatar" loading="lazy">
+                  <h4 class="text-lg font-bold leading-snug text-slate-900">M. Jean-Claude Kazadi</h4>
+                  <span class="team-role">Préfet des études</span>
+                </article>
+                <article class="team-profile animated-section slide-up">
+                  <img src="./Images/directeur1.png" alt="Richard Essymandra, directeur des études" class="team-avatar" loading="lazy">
+                  <h4 class="text-lg font-bold leading-snug text-slate-900">M. Richard Essymandra</h4>
+                  <span class="team-role">Directeur des études</span>
+                </article>
+                <article class="team-profile animated-section slide-up">
+                  <img src="./Images/directeur2.png" alt="Clément Lugaluga, directeur des études" class="team-avatar" loading="lazy">
+                  <h4 class="text-lg font-bold leading-snug text-slate-900">M. Clément Lugaluga</h4>
+                  <span class="team-role">Directeur des études</span>
+                </article>
+              </div>
+            </div>
+
+            <div class="mx-auto mb-16 max-w-6xl">
+              <div class="mb-6 flex items-end justify-between gap-4 border-b border-slate-200 pb-4">
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-widest text-blue-700">02 · Services</p>
+                  <h3 class="mt-1 text-2xl font-bold text-slate-900">Administration et vie scolaire</h3>
+                </div>
+                <i class="fa-solid fa-clipboard-list hidden text-2xl text-blue-200 sm:block" aria-hidden="true"></i>
+              </div>
+              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <article class="team-profile animated-section slide-up">
+                  <img src="./Images/disciplinaire.png" alt="Pierre Kasongo, directeur de discipline" class="team-avatar" loading="lazy">
+                  <h4 class="text-lg font-bold leading-snug text-slate-900">M. Pierre Kasongo</h4>
+                  <span class="team-role">Directeur de discipline</span>
+                </article>
+                <article class="team-profile animated-section slide-up">
+                  <img src="./Images/Professeurs/3.png" alt="Sœur Yuma Safinia, intendante" class="team-avatar" loading="lazy">
+                  <h4 class="text-lg font-bold leading-snug text-slate-900">Sœur Yuma Safinia</h4>
+                  <span class="team-role">Intendante</span>
+                </article>
+              </div>
+            </div>
+
+            <section id="equipe-profs" class="mx-auto max-w-6xl border-t border-slate-200 pt-12 animated-section fade-in">
+              <div class="mb-7 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p class="text-xs font-bold uppercase tracking-widest text-blue-700">03 · Enseignement</p>
+                  <h3 class="mt-1 text-2xl font-bold text-slate-900">Notre corps enseignant</h3>
+                  <p class="mt-2 max-w-2xl text-slate-600">Les professeurs sont classés par nom de famille.</p>
+                </div>
+                <a href="profs.html" class="inline-flex min-h-11 items-center justify-center gap-2 self-start rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 sm:self-auto">
+                  Tous les profils <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              <div class="relative px-1 sm:px-8">
+                <div id="teacher-carousel" class="overflow-hidden">
+                  <div id="teacher-carousel-track" class="flex items-stretch">
+                    <!-- Teacher cards are created from the alphabetized staff list. -->
+                  </div>
+                </div>
+                <button id="teacher-prev" type="button" aria-label="Professeur précédent" class="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-blue-700 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                  <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+                </button>
+                <button id="teacher-next" type="button" aria-label="Professeur suivant" class="absolute right-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-blue-700 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                  <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            </section>
           </div>
-            <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300 team-card" style="transition-delay: 300ms;">
-              <img src="./Images/directeur2.png" alt="Directeur des Etudes" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md team-avatar" loading="lazy">
-              <h4 class="text-xl font-bold">M. Clément LUGALUGA </h4><p class="text-blue-600">Direcetur des Etudes</p>
-            </div>
-                </div>
-                
-                    <!-- Administration -->
-                    <h3 class="text-3xl font-bold text-center mb-10 text-blue-700 animated-section slide-up">Secrétariat et Administration</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto mb-20">
-            <!--<div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300 team-card">
-              <img src="./Images/Professeurs/28.png" alt="Sècretaire" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md team-avatar" loading="lazy">
-              <h4 class="text-xl font-bold">M. Alain AMSINI</h4><p class="text-blue-600">Secrétaire</p>
-            </div>-->
-            <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300 team-card" style="transition-delay: 150ms;">
-              <img src="./Images/disciplinaire.png" alt="disciplinaire" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md team-avatar" loading="lazy">
-              <h4 class="text-xl font-bold">M. Pierre KASONGO</h4><p class="text-blue-600">Directeur de discipline</p>
-            </div>
-            <div class="bg-gray-50 p-6 rounded-xl shadow-lg text-center animated-section slide-up hover:shadow-xl hover:-translate-y-2 transition-all duration-300 team-card" style="transition-delay: 300ms;">
-                    <img src="./Images/Professeurs/3.png" alt="Intendante" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-white shadow-md team-avatar" loading="lazy">
-                <h4 class="text-xl font-bold">Soeur YUMA SAFINA</h4><p class="text-blue-600">Intendante</p>
-            </div>
-                    </div>
-
-                <!-- Teacher Carousel (stylised section) -->
-                <section id="equipe-profs" class="py-16 bg-gradient-to-b from-white to-blue-50 rounded-2xl shadow-inner border border-blue-100 animated-section fade-in max-w-6xl mx-auto px-6">
-                    <div class="flex items-center justify-between mb-8">
-                        <div>
-                            <h3 class="text-3xl font-bold text-blue-700">Notre Corps Enseignant</h3>
-                            <p class="text-gray-600 mt-2">Une équipe dévouée, riche en expériences et passionnée par l'enseignement.</p>
-                        </div>
-                        <div class="hidden sm:block">
-                            <a href="profs.html" class="inline-flex items-center gap-3 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:scale-105 transition transform">En savoir plus sur nos professeurs <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="relative">
-                        <div id="teacher-carousel" class="overflow-hidden">
-                            <div id="teacher-carousel-track" class="flex items-stretch">
-                                <!-- Teacher cards will be dynamically inserted here by JavaScript -->
-                            </div>
-                        </div>
-                        <button id="teacher-prev" class="absolute top-1/2 -translate-y-1/2 -left-2 md:-left-4 bg-white/90 text-blue-700 p-0 text-[8px] w-4 h-4 md:w-5 md:h-5 rounded-full shadow-sm hover:bg-blue-600 hover:text-white transition-transform transform hover:scale-110 flex items-center justify-center"><i class="fas fa-chevron-left fa-2xs"></i></button>
-                        <button id="teacher-next" class="absolute top-1/2 -translate-y-1/2 -right-2 md:-right-4 bg-white/90 text-blue-700 p-0 text-[8px] w-4 h-4 md:w-5 md:h-5 rounded-full shadow-sm hover:bg-blue-600 hover:text-white transition-transform transform hover:scale-110 flex items-center justify-center"><i class="fas fa-chevron-right fa-2xs"></i></button>
-                    </div>
-
-                    <!-- Small screen CTA -->
-                    <div class="mt-6 sm:hidden text-center">
-                        <a href="/profs.html" class="inline-flex items-center gap-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow hover:scale-105 transition transform">En savoir plus sur nos professeurs <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </section>
-            </div>
         </section>
         <!-- GALERIE PHOTO (Teaser) -->
         <section id="galeries" class="py-20 md:py-32 bg-gray-50">
@@ -995,52 +1110,56 @@ Tous nos efforts d’étudiants !</textarea>
             </div>
         </section>
 
-        <!-- Nouvelle Section : Bureau des Élèves (BDE) - Stylisée -->
-    <section id="bde" class="py-20 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="max-w-7xl mx-auto bg-gradient-to-r from-blue-50 via-white to-blue-50 rounded-3xl shadow-lg overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-6 items-center p-6 md:p-10 animated-section slide-up">
-                <!-- Image -->
-                <div class="relative">
-                    <img src="./Images/Oiseaux.jpeg" alt="Activités du Bureau des Élèves du Collège Maele" class="w-full h-80 md:h-[420px] object-cover rounded-2xl shadow-inner">
-                    <div class="absolute bottom-4 left-4 bg-white/80 backdrop-blur-md rounded-full px-4 py-2 flex items-center space-x-3 shadow-md">
-                        <i class="fas fa-users text-blue-700"></i>
-                        <span class="text-sm font-semibold text-gray-800">BDE • Vie Scolaire</span>
-                    </div>
-                </div>
-
-                <!-- Contenu -->
-                <div class="p-2 md:p-6">
-                    <h2 class="text-3xl md:text-4xl font-extrabold text-blue-800 mb-3">Le Bureau des Élèves (BDE)</h2>
-                    <p class="text-gray-700 mb-4 leading-relaxed">Le Bureau des Élèves du Collège Maele est le cœur vibrant de la vie scolaire. Composé d'élèves motivés, il organise des événements variés : soirées thématiques, tournois sportifs, journées caritatives, journées culturelles et bien plus.</p>
-
-                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                        <li class="flex items-start space-x-3">
-                            <span class="text-blue-600 mt-1"><i class="fas fa-calendar-alt"></i></span>
-                            <span class="text-gray-700">Soirées à thème et animations culturelles</span>
-                        </li>
-                        <li class="flex items-start space-x-3">
-                            <span class="text-blue-600 mt-1"><i class="fas fa-futbol"></i></span>
-                            <span class="text-gray-700">Tournois sportifs interclasses</span>
-                        </li>
-                        <li class="flex items-start space-x-3">
-                            <span class="text-blue-600 mt-1"><i class="fas fa-hand-holding-heart"></i></span>
-                            <span class="text-gray-700">Journées caritatives et collectes</span>
-                        </li>
-                        <li class="flex items-start space-x-3">
-                            <span class="text-blue-600 mt-1"><i class="fas fa-map-signs"></i></span>
-                            <span class="text-gray-700">Excursions et visites pédagogiques</span>
-                        </li>
-                    </ul>
-
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0">
-                        <a href="/contact.html" class="inline-block w-full sm:w-auto text-center bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold py-3 px-6 rounded-lg shadow hover:scale-105 transform transition">Rejoindre le BDE</a>
-                        <a href="/galerie.html" class="inline-block w-full sm:w-auto text-center bg-white border border-blue-200 text-blue-700 font-semibold py-3 px-6 rounded-lg shadow-sm hover:bg-blue-50 transition">Voir nos Événements</a>
-                    </div>
-
-                    <p class="mt-6 text-sm text-gray-500">Vous avez une idée d'événement ? <a href="/contact.html" class="text-blue-700 font-semibold underline">Contactez-nous</a> — nous serons ravis d'en discuter.</p>
-                </div>
+    <section id="bde" class="overflow-hidden bg-slate-50 py-16 sm:py-20 md:py-24">
+      <div class="container mx-auto max-w-7xl px-5 sm:px-6">
+        <div class="grid items-center gap-9 lg:grid-cols-[1.05fr_.95fr] lg:gap-16">
+          <figure class="animated-section slide-in-left">
+            <div class="overflow-hidden rounded-xl bg-slate-200">
+              <img src="./Images/campus.jpg" alt="Élèves réunis dans la cour du Collège Maele à Kisangani" class="aspect-[4/3] w-full object-cover" loading="lazy">
             </div>
+            <figcaption class="mt-3 flex items-center gap-2 text-sm text-slate-500">
+              <i class="fa-solid fa-location-dot text-blue-700" aria-hidden="true"></i>
+              La vie scolaire au Collège Maele
+            </figcaption>
+          </figure>
+
+          <div class="animated-section slide-in-right">
+            <p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-700">
+              <i class="fa-solid fa-people-group" aria-hidden="true"></i> Initiative des élèves
+            </p>
+            <h2 class="mt-3 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">Le Bureau des Élèves</h2>
+            <p class="mt-4 max-w-xl text-base leading-relaxed text-slate-600">Le BDE donne aux élèves l’occasion de faire vivre leur école. Il soutient les idées, rassemble les équipes et contribue à organiser des activités tout au long de l’année.</p>
+
+            <ul class="mt-7 grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
+              <li class="flex items-start gap-3">
+                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-700"><i class="fa-solid fa-masks-theater" aria-hidden="true"></i></span>
+                <div><h3 class="font-semibold text-slate-900">Culture & événements</h3><p class="mt-1 text-sm leading-relaxed text-slate-600">Animations, journées culturelles et soirées à thème.</p></div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700"><i class="fa-solid fa-futbol" aria-hidden="true"></i></span>
+                <div><h3 class="font-semibold text-slate-900">Sport</h3><p class="mt-1 text-sm leading-relaxed text-slate-600">Tournois et rencontres entre les classes.</p></div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i></span>
+                <div><h3 class="font-semibold text-slate-900">Solidarité</h3><p class="mt-1 text-sm leading-relaxed text-slate-600">Actions collectives et initiatives caritatives.</p></div>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-rose-100 text-rose-700"><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i></span>
+                <div><h3 class="font-semibold text-slate-900">Découvertes</h3><p class="mt-1 text-sm leading-relaxed text-slate-600">Sorties et visites à visée pédagogique.</p></div>
+              </li>
+            </ul>
+
+            <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href="/contact.html" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
+                <i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Proposer une activité
+              </a>
+              <a href="/galerie.html" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
+                Voir la galerie <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Nouvelle Section : Actualités / Blog -->
@@ -1094,9 +1213,9 @@ Tous nos efforts d’étudiants !</textarea>
                 <div class="md:col-span-1"><h3 class="text-xl font-bold mb-4">Collège Maele</h3><p class="text-gray-400">Former les leaders de demain avec excellence et intégrité.</p></div>
                 <div><h4 class="font-semibold mb-4">Liens Rapides</h4><ul class="space-y-2"><li><a href="#a-propos" class="text-gray-400 hover:text-white">À Propos</a></li><li><a href="#equipe" class="text-gray-400 hover:text-white">Notre Équipe</a></li><li><a href="./pages/accueil.html" class="text-gray-400 hover:text-white">Blog</a></li><li><a href="/contact.html" class="text-gray-400 hover:text-white">Contact</a></li></ul></div>
                  <div><h4 class="font-semibold mb-4">Contact Info</h4><ul class="space-y-2 text-gray-400"><li>Boulevard Lumumba N02, Quartier Des Musiciens, MAKISO,</li><li>Kisangani, RDC</li><li>contact@college-maele.com</li></ul></div>
-                 <div><h4 class="font-semibold mb-4">Suivez-nous</h4><div class="flex space-x-4"><a href="https://wa.me/243812345678" class="text-green-400 hover:text-white text-2xl"><i class="fab fa-whatsapp"></i></a><a href="https://facebook.com" class="text-blue-600 hover:text-white text-2xl"><i class="fab fa-facebook"></i></a><a href="https://instagram.com" class="text-pink-500 hover:text-white text-2xl"><i class="fab fa-instagram"></i></a><a href="https://www.linkedin.com" class="text-sky-500 hover:text-white text-2xl"><i class="fab fa-linkedin"></i></a></div></div>
+                 <div><h4 class="font-semibold mb-4">Suivez-nous</h4><div class="flex space-x-3"><a href="https://wa.me/243812345678" aria-label="WhatsApp du Collège Maele" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-green-300 transition hover:-translate-y-0.5 hover:bg-green-600 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-300"><i class="fab fa-whatsapp" aria-hidden="true"></i></a><a href="https://web.facebook.com/profile.php?id=61594951737384" target="_blank" rel="noopener noreferrer" aria-label="Page Facebook officielle du Collège Maele (nouvel onglet)" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:-translate-y-0.5 hover:bg-[#1877F2] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300"><i class="fab fa-facebook-f" aria-hidden="true"></i></a><a href="https://instagram.com" aria-label="Instagram du Collège Maele" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-pink-300 transition hover:-translate-y-0.5 hover:bg-pink-600 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-300"><i class="fab fa-instagram" aria-hidden="true"></i></a><a href="https://www.linkedin.com" aria-label="LinkedIn du Collège Maele" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-sky-300 transition hover:-translate-y-0.5 hover:bg-sky-600 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></div></div>
             </div>
-            <div class="border-t border-gray-700 pt-6 text-center text-gray-500 text-sm">© <span id="current-year"></span> Collège Maele. Design By <a href="https://davidwawina.site">Optimum Entreprise</a>. Tous droits réservés.</div>
+            <div class="border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">© <span id="current-year">2026</span> Collège Maele, Design by <a href="https://davidwawina.site" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-white">Optimum Entreprise</a>.</div>
         </div>
     </footer>
 
@@ -1268,7 +1387,6 @@ Tous nos efforts d’étudiants !</textarea>
         const teacherCarouselTrack = document.getElementById('teacher-carousel-track');
         const teacherPrevBtn = document.getElementById('teacher-prev');
         const teacherNextBtn = document.getElementById('teacher-next');
-        const TEACHER_COUNT = 41; // requested by user
         let teacherCurrentIndex = 0;
         let teacherSlidesToShow = getTeacherSlidesToShow();
         let teacherAutoScroll;
@@ -1369,6 +1487,13 @@ Tous nos efforts d’étudiants !</textarea>
             ["Emmanuel AMURI","Professeur et Surveillant"],
         ];
 
+        const surnameOf = name => name.trim().split(/\s+/).pop();
+        profsList.sort((first, second) =>
+          surnameOf(first[0]).localeCompare(surnameOf(second[0]), 'fr', { sensitivity: 'base' }) ||
+          first[0].localeCompare(second[0], 'fr', { sensitivity: 'base' })
+        );
+        const TEACHER_COUNT = profsList.length;
+
     profsList.forEach((p, index) => {
             const i = index + 1;
             const name = p[0];
@@ -1376,15 +1501,15 @@ Tous nos efforts d’étudiants !</textarea>
       const filename = explicitPhotos[name] || ((i === 5) ? '5png.png' : `${i}.png`);
             const src = profBase + filename;
             const card = document.createElement('div');
-            card.className = 'flex-shrink-0 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-3';
+            card.className = 'flex-shrink-0 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2';
             card.innerHTML = `
-                <div class="bg-white rounded-lg shadow-md p-4 text-center hover:shadow-xl transition-shadow duration-300">
-                    <div class="w-24 h-24 mx-auto -mt-6 mb-3 rounded-full overflow-hidden border-4 border-white shadow-md">
-                        <img src="${src}" alt="${name}" class="w-full h-full object-cover">
-                    </div>
-                    <h5 class="font-bold text-sm text-blue-900">${name}</h5>
-                    <p class="text-xs text-blue-600">${subject}</p>
+              <article class="teacher-profile-card">
+                <div class="teacher-profile-avatar">
+                  <img src="${src}" alt="${name}" loading="lazy">
                 </div>
+                <h4>${name}</h4>
+                <p>${subject}</p>
+              </article>
             `;
             teacherCarouselTrack.appendChild(card);
         });
