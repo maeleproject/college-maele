@@ -1,1968 +1,770 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr" class="no-js" data-root="./">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collège Maele - Impavidi Progrediamur</title>
-    <!-- Balises SEO -->
-    <meta name="description" content="Le Collège Maele à Kisangani forme les leaders de demain grâce à un enseignement d'excellence, humaniste et innovant depuis 1939. Découvrez nos parcours, notre histoire et nos valeurs.">
-    <meta name="keywords" content="Collège Maele, école Kisangani, humanités scientifiques, humanités littéraires, éducation RDC, enseignement catholique, école secondaire, collège privé, collège Maele Kisangani, collège Congo">
-    <meta name="author" content="Optimum Entreprise">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="fr">
-    <meta name="geo.region" content="CD-TU">
-    <meta name="geo.placename" content="Kisangani">
-    <meta name="geo.position" content="0.5167;25.2">
-    <meta name="ICBM" content="0.5167, 25.2">
-
-    <link rel="icon" type="image/png" href="/Images/Oiseaux.jpeg">
-    <!-- Tailwind CSS via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Photo gallery : utiliser des images statiques depuis blog/static/blog/Images/
-        const photoGallery = document.getElementById('photo-gallery');
-        const galleryModal = document.getElementById('gallery-modal');
-        const modalImg = document.getElementById('modal-img');
-        const modalCaption = document.getElementById('modal-caption');
-        const modalClose = document.getElementById('modal-close');
-        const modalPrev = document.getElementById('modal-prev');
-        const modalNext = document.getElementById('modal-next');
-
-        // Remplacez ces chemins par vos vraies images dans static/blog/Images/
-        const imagesPaths = {
-              logo: "./images/oiseaux.jpeg",
-              campus: "./images/campus.jpg",
-              grotte: "./images/grotte.jpg",
-              facade: "./images/facade.jpg",
-              primaire: "./images/primaire.jpg",
-              cours: "./images/cours.jpg",
-              point: "./images/point.jpg",
-              bbio: "./images/bbio.jpg",
-              cinquantenaire: "./images/cinquantenaire.jpg",
-              drapeau: "./images/drapeau.jpg"
-          };
-
-        let currentIndex = 0;
-
-        // Create thumbnails
-        images.forEach((img, index) => {
-            const a = document.createElement('a');
-            a.href = img.full;
-            a.className = "block relative overflow-hidden rounded-lg shadow-md animated-section slide-up";
-            a.dataset.index = index;
-            a.innerHTML = `\n                <img src="${img.thumb}" alt="${img.caption}" class="w-full h-40 md:h-48 object-cover transform hover:scale-105 transition-transform duration-300">\n                <div class="absolute inset-0 bg-black/0 hover:bg-black/20 flex items-end p-3 opacity-0 hover:opacity-100 transition-opacity duration-200">\n                    <p class=\"text-white text-sm\">${img.caption}</p>\n                </div>`;
-            a.addEventListener('click', (e) => {
-                e.preventDefault();
-                openGallery(index);
-            });
-            photoGallery.appendChild(a);
-        });
-
-        function openGallery(index) {
-            currentIndex = index;
-            const item = images[currentIndex];
-            modalImg.src = item.full;
-            modalImg.alt = item.caption || 'Image de la galerie';
-            modalCaption.textContent = item.caption || '';
-            galleryModal.classList.remove('hidden');
-            galleryModal.classList.add('flex');
-            document.body.style.overflow = 'hidden'; // empêcher le scroll de fond
-        }
-
-        function closeGallery() {
-            galleryModal.classList.add('hidden');
-            galleryModal.classList.remove('flex');
-            modalImg.src = '';
-            modalCaption.textContent = '';
-            document.body.style.overflow = '';
-        }
-
-        function showImage(delta) {
-            currentIndex = (currentIndex + delta + images.length) % images.length;
-            const item = images[currentIndex];
-            modalImg.src = item.full;
-            modalImg.alt = item.caption || '';
-            modalCaption.textContent = item.caption || '';
-        }
-
-        modalClose.addEventListener('click', closeGallery);
-        modalPrev.addEventListener('click', (e) => { e.stopPropagation(); showImage(-1); });
-        modalNext.addEventListener('click', (e) => { e.stopPropagation(); showImage(1); });
-
-        // Close when clicking backdrop
-        galleryModal.addEventListener('click', (e) => {
-            if (e.target === galleryModal) closeGallery();
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (galleryModal.classList.contains('flex')) {
-                if (e.key === 'Escape') closeGallery();
-                if (e.key === 'ArrowLeft') showImage(-1);
-                if (e.key === 'ArrowRight') showImage(1);
-            }
-        });
-
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-    });
-    </script>
-    <style>
-        /* ====== Global animation helpers ====== */
-        :root { --anim-duration: 480ms; --anim-ease: cubic-bezier(.2,.9,.3,1); }
-
-        /* Respect user preference */
-        @media (prefers-reduced-motion: reduce) {
-            .animated-section, .slide-in-left, .slide-in-right, .fade-in-up { transition: none !important; transform: none !important; opacity: 1 !important; }
-        }
-
-        .animated-section { opacity: 0; transform: translateY(18px); transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease); will-change: opacity, transform; }
-        .animated-section.visible { opacity: 1; transform: translateY(0); }
-
-        .slide-in-left { transform: translateX(-18px); transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease); }
-        .slide-in-right { transform: translateX(18px); transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease); }
-        .slide-in-left.visible, .slide-in-right.visible { transform: translateX(0); opacity: 1; }
-
-        .fade-in-up { transform: translateY(10px); opacity: 0; transition: opacity var(--anim-duration) var(--anim-ease), transform var(--anim-duration) var(--anim-ease); }
-        .fade-in-up.visible { transform: translateY(0); opacity: 1; }
-
-        /* Hamburger menu transition */
-        #mobile-menu { transition: transform 0.32s var(--anim-ease); }
-
-        /* Teacher carousel transition - SMOOTHER ANIMATION */
-        #teacher-carousel-track { transition: transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1); }
-
-        /* Background Slider */
-        #bg-slider .bg-slide { transition: opacity 1.2s ease-in-out; }
-
-        /* Modal transitions */
-        .modal { transition: opacity 220ms ease-in-out; }
-        .modal-content { transition: transform 260ms ease-in-out, opacity 200ms ease-in-out; }
-
-        /* Small utility for focus outlines for keyboard users */
-  :focus { outline: 3px solid rgba(37,99,235,0.14); outline-offset: 2px; }
-  /* Progress bar styling */
-  .progress-wrap { position: fixed; left: 0; right: 0; top: 0; height: 4px; z-index: 60; pointer-events: none; }
-  .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg,#2563eb,#1e40af); transform-origin: 0 50%; transition: width .12s linear; }
-    /* Avatars and teacher images: ensure consistent sizing and cropping */
-    /* Applies to statically-rendered team cards and dynamically-inserted teacher cards */
-    #equipe .team-avatar {
-      width: 7.5rem;
-      height: 7.5rem;
-      object-fit: cover;
-      border-radius: 9999px;
-      display: block;
-    }
-    #equipe .team-profile {
-      height: 100%;
-      padding: 1.75rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 1rem;
-      background: #fff;
-      text-align: center;
-      box-shadow: 0 8px 22px rgba(15, 23, 42, .045);
-      transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
-    }
-    #equipe .team-profile:hover {
-      border-color: #bfdbfe;
-      box-shadow: 0 14px 30px rgba(15, 23, 42, .09);
-      transform: translateY(-3px);
-    }
-    #equipe .team-avatar {
-      margin: 0 auto 1rem;
-      border: 3px solid #eff6ff;
-      background: #f1f5f9;
-    }
-    #equipe .team-role {
-      display: inline-flex;
-      margin-top: .65rem;
-      border-radius: 9999px;
-      background: #eff6ff;
-      padding: .35rem .7rem;
-      color: #1d4ed8;
-      font-size: .75rem;
-      font-weight: 700;
-      line-height: 1.4;
-    }
-    #teacher-carousel-track img {
-      width: 5rem;
-      height: 5rem;
-      border-radius: 9999px;
-      object-fit: cover;
-    }
-    #equipe .teacher-profile-card {
-      display: flex;
-      height: 100%;
-      min-height: 13rem;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      border: 1px solid #e2e8f0;
-      border-radius: .875rem;
-      background: #fff;
-      padding: 1rem .75rem;
-      text-align: center;
-      box-shadow: 0 6px 18px rgba(15, 23, 42, .04);
-    }
-    #equipe .teacher-profile-avatar {
-      width: 5rem;
-      height: 5rem;
-      margin-bottom: .75rem;
-      overflow: hidden;
-      border: 3px solid #eff6ff;
-      border-radius: 9999px;
-      background: #f1f5f9;
-    }
-    #equipe .teacher-profile-card h4 {
-      color: #1e3a8a;
-      font-size: .875rem;
-      font-weight: 700;
-      line-height: 1.35;
-    }
-    #equipe .teacher-profile-card p {
-      margin-top: .35rem;
-      color: #64748b;
-      font-size: .75rem;
-      line-height: 1.4;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      #equipe .team-profile { transition: none; }
-    }
-
-    /* Frise historique */
-    #histoire .story-shell {
-      position: relative;
-      display: grid;
-      gap: 2rem;
-    }
-    #histoire .story-shell::before {
-      content: "";
-      position: absolute;
-      top: 1rem;
-      bottom: 1rem;
-      left: 50%;
-      width: 2px;
-      transform: translateX(-50%);
-      background: linear-gradient(to bottom, transparent, #93c5fd 8%, #2563eb 50%, #93c5fd 92%, transparent);
-    }
-    #histoire .story-item {
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      align-items: center;
-      gap: 3.5rem;
-      min-height: 15rem;
-    }
-    #histoire .story-item:nth-child(even) .story-content { order: 2; }
-    #histoire .story-item:nth-child(even) .story-media { order: 1; }
-    #histoire .story-content {
-      padding: clamp(1.25rem, 3vw, 2rem);
-      border: 1px solid #dbeafe;
-      border-radius: 1rem;
-      background: rgba(255, 255, 255, .94);
-      box-shadow: 0 12px 32px rgba(15, 23, 42, .07);
-    }
-    #histoire .story-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: .55rem;
-      padding: .45rem .8rem;
-      border: 1px solid #bfdbfe;
-      border-radius: 9999px;
-      background: #eff6ff;
-      color: #1d4ed8;
-      font-size: .75rem;
-      font-weight: 700;
-    }
-    #histoire .story-card-title {
-      margin-top: 1rem;
-      color: #1e3a8a;
-      font-size: clamp(1.35rem, 2.5vw, 1.8rem);
-      font-weight: 800;
-      line-height: 1.2;
-    }
-    #histoire .story-role {
-      margin-top: .4rem;
-      color: #2563eb;
-      font-size: .9rem;
-      font-weight: 700;
-    }
-    #histoire .story-text {
-      margin-top: .8rem;
-      color: #4b5563;
-      line-height: 1.75;
-    }
-    #histoire .story-media {
-      overflow: hidden;
-      aspect-ratio: 16 / 10;
-      border: 4px solid white;
-      border-radius: 1rem;
-      background: #dbeafe;
-      box-shadow: 0 16px 36px rgba(15, 23, 42, .14);
-    }
-    #histoire .story-media img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform .45s ease;
-    }
-    #histoire .story-item:hover .story-media img { transform: scale(1.04); }
-    #histoire .story-dot {
-      position: absolute;
-      z-index: 1;
-      top: 50%;
-      left: 50%;
-      width: 1rem;
-      height: 1rem;
-      transform: translate(-50%, -50%);
-      border: 4px solid white;
-      border-radius: 50%;
-      background: #2563eb;
-      box-shadow: 0 0 0 3px #bfdbfe;
-    }
-    @media (prefers-color-scheme: dark) {
-      #histoire .story-content { border-color: #334155; background: rgba(15, 23, 42, .92); }
-      #histoire .story-card-title { color: #bfdbfe; }
-      #histoire .story-text { color: #cbd5e1; }
-      #histoire .story-badge { border-color: #1e40af; background: #172554; color: #bfdbfe; }
-      #histoire .story-media { border-color: #1e293b; }
-    }
-    @media (max-width: 767px) {
-      #histoire .story-shell { gap: 1.25rem; }
-      #histoire .story-shell::before { left: .5rem; }
-      #histoire .story-item {
-        grid-template-columns: minmax(0, 1fr);
-        gap: .85rem;
-        min-height: 0;
-        padding-left: 2rem;
-      }
-      #histoire .story-item:nth-child(even) .story-content,
-      #histoire .story-item:nth-child(even) .story-media { order: initial; }
-      #histoire .story-dot { top: 1.5rem; left: .5rem; }
-      #histoire .story-media { aspect-ratio: 16 / 9; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      #histoire .story-media img { transition: none; }
-    }
-    #galeries .life-gallery {
-      display: flex;
-      gap: .75rem;
-      width: 100%;
-      height: 25rem;
-    }
-    #galeries .life-gallery-item {
-      position: relative;
-      flex: 1 1 0;
-      min-width: 0;
-      overflow: hidden;
-      border-radius: .75rem;
-      background: #cbd5e1;
-      box-shadow: 0 4px 14px rgba(15, 23, 42, .1);
-      transition: flex .55s cubic-bezier(.25, 1, .5, 1), box-shadow .3s ease;
-    }
-    #galeries .life-gallery-item:hover,
-    #galeries .life-gallery-item:focus-visible {
-      flex: 4 1 0;
-      box-shadow: 0 14px 28px rgba(15, 23, 42, .2);
-      outline: 3px solid #2563eb;
-      outline-offset: 2px;
-    }
-    #galeries .life-gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform .7s ease;
-    }
-    #galeries .life-gallery-item:hover img,
-    #galeries .life-gallery-item:focus-visible img { transform: scale(1.045); }
-    #galeries .life-gallery-caption {
-      position: absolute;
-      inset: auto 0 0;
-      padding: 4rem 1.25rem 1.25rem;
-      background: linear-gradient(transparent, rgba(15, 23, 42, .82));
-      color: #fff;
-      opacity: .9;
-      transition: opacity .25s ease;
-    }
-    #galeries .life-gallery-item:hover .life-gallery-caption,
-    #galeries .life-gallery-item:focus-visible .life-gallery-caption { opacity: 1; }
-    #galeries .life-gallery-caption span { display: block; white-space: nowrap; }
-    #galeries .life-gallery-caption span:first-child { font-weight: 700; }
-    #galeries .life-gallery-caption span:last-child { margin-top: .35rem; font-size: .8rem; opacity: 0; transition: opacity .2s ease; }
-    #galeries .life-gallery-item:hover .life-gallery-caption span:last-child,
-    #galeries .life-gallery-item:focus-visible .life-gallery-caption span:last-child { opacity: .85; }
-    @media (max-width: 767px) {
-      #galeries .life-gallery {
-        height: 19rem;
-        gap: .5rem;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: thin;
-      }
-      #galeries .life-gallery-item {
-        flex: 0 0 78%;
-        scroll-snap-align: center;
-      }
-      #galeries .life-gallery-item:hover,
-      #galeries .life-gallery-item:focus-visible { flex-basis: 78%; }
-      #galeries .life-gallery-caption span:last-child { opacity: .85; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      #galeries .life-gallery-item,
-      #galeries .life-gallery-item img,
-      #galeries .life-gallery-caption,
-      #galeries .life-gallery-caption span:last-child { transition: none; }
-    }
-    </style>
-    <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Compteurs “count-up” lorsqu’ils entrent dans le viewport
-  const counters = document.querySelectorAll('#a-propos .counter');
-  if (!counters.length) return;
-
-  const easeOut = t => 1 - Math.pow(1 - t, 3); // easing doux
-  const animateCounter = (el) => {
-    const target = parseInt(el.dataset.count || '0', 10);
-    const start  = 0;
-    const dur    = 1200; // ms
-    let st = null;
-
-    const step = (ts) => {
-      if (!st) st = ts;
-      const p = Math.min((ts - st) / dur, 1);
-      const val = Math.floor(start + (target - start) * easeOut(p));
-      el.textContent = val.toLocaleString('fr-FR');
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  };
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        const el = e.target;
-        animateCounter(el);
-        io.unobserve(el);
-      }
-    });
-  }, { threshold: 0.4 });
-
-  counters.forEach(c => io.observe(c));
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  /* ====== Animation d’apparition ====== */
-  const animated = document.querySelectorAll('.animated-section');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }});
-  }, { threshold: .12 });
-  animated.forEach(el=>io.observe(el));
-
-  /* ====== HYMN – play/pause ====== */
-  const playBtn = document.getElementById('hymnPlayBtn');
-  const audio   = document.getElementById('hymnAudio');
-  if (playBtn && audio) {
-    const setIcon = playing => playBtn.innerHTML = `<i class="fa-solid ${playing ? 'fa-pause' : 'fa-play'}"></i>`;
-    playBtn.addEventListener('click', () => {
-      if (audio.paused) { audio.play().catch(()=>{}); setIcon(true); }
-      else { audio.pause(); setIcon(false); }
-    });
-    audio.addEventListener('ended', () => setIcon(false));
-  }
-
-  /* ====== HYMN – copier & télécharger ====== */
-  const copyBtn = document.getElementById('copyLyricsBtn');
-  const dlBtn   = document.getElementById('downloadLyricsBtn');
-  const lyrics  = document.getElementById('lyricsFull');
-  if (copyBtn && lyrics) {
-    copyBtn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(lyrics.value);
-        copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copié !';
-        setTimeout(()=> copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copier les paroles', 1400);
-      } catch(e) {}
-    });
-  }
-  if (dlBtn && lyrics) {
-    const blob = new Blob([lyrics.value], {type: 'text/plain;charset=utf-8'});
-    dlBtn.href = URL.createObjectURL(blob);
-  }
-
-  /* ====== HYMN – afficher/masquer colonnes ====== */
-  document.querySelectorAll('[data-expand]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const sel = btn.getAttribute('data-expand');
-      const box = document.querySelector(sel);
-      if(!box) return;
-      const hidden = box.style.maxHeight === '0px' || box.classList.contains('collapsed');
-      if (hidden) {
-        box.classList.remove('collapsed');
-        box.style.maxHeight = box.scrollHeight + 'px';
-        btn.setAttribute('aria-expanded', 'true');
-        btn.textContent = 'Masquer les paroles';
-        setTimeout(()=> box.style.maxHeight = '', 250);
-      } else {
-        box.style.maxHeight = box.scrollHeight + 'px';
-        requestAnimationFrame(()=> {
-          box.style.maxHeight = '0px';
-          box.classList.add('collapsed');
-          btn.setAttribute('aria-expanded', 'false');
-          btn.textContent = 'Afficher les paroles';
-        });
-      }
-    });
-  });
-});
-</script>
-<style>
-  /* Forcer la suppression du débordement horizontal pour éviter le "vide à droite" */
-  html, body {
-    overflow-x: hidden;
-    width: 100%;
-  }
-  /* transition douce pour les blocs de paroles */
-  #lyrics-col-1, #lyrics-col-2 { overflow: hidden; transition: max-height .25s ease; }
-  #lyrics-col-1.collapsed, #lyrics-col-2.collapsed { max-height: 0; }
-  #hymne { background: #fff !important; color: #1f2937; }
-  #hymne .hymn-verse {
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, .045);
-    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
-  }
-  #hymne .hymn-verse::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 1.5rem;
-    width: 2.5rem;
-    height: 3px;
-    background: #2563eb;
-  }
-  #hymne .hymn-verse:hover {
-    border-color: #bfdbfe;
-    box-shadow: 0 14px 32px rgba(15, 23, 42, .08);
-    transform: translateY(-2px);
-  }
-  #hymne .hymn-lyrics p + p { margin-top: 1.1rem; }
-  #hymne audio { accent-color: #2563eb; }
-  @media (prefers-reduced-motion: reduce) {
-    #hymne .hymn-verse { transition: none; }
-  }
-
-  .fb-page-wrapper {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    overflow: hidden;
-    border-radius: 8px;
-  }
-  .fb-page, .fb-page span, .fb-page iframe {
-    width: 100% !important;
-  }
-</style>
-<!-- Données structurées pour Google -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  "name": "Collège Maele",
-  "alternateName": "College Maele Kisangani",
-  "url": "https://www.college-maele.com",
-  "logo": "https://www.college-maele.com/Images/Oiseaux.jpeg",
-  "description": "Le Collège Maele est une institution éducative à Kisangani, en RDC, offrant un enseignement d’excellence depuis 1939.",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Boulevard Lumumba N°2, Quartier des Musiciens, Makiso",
-    "addressLocality": "Kisangani",
-    "addressRegion": "Tshopo",
-    "postalCode": "00000",
-    "addressCountry": "CD"
-  },
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "telephone": "+243815493115",
-    "contactType": "Service administratif",
-    "availableLanguage": ["Français"]
-  },
-  "foundingDate": "1939",
-  "sameAs": [
-    "https://web.facebook.com/profile.php?id=61594951737384",
-    "https://www.instagram.com/collegemaele",
-    "https://www.linkedin.com/company/collegemaele"
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  "name": "Collège Maele",
-  "url": "https://college-maele.com/",
-  "logo": "https://college-maele.com/Images/Oiseaux.jpeg",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Boulevard Lumumba N°02, Quartier des Musiciens, MAKISO",
-    "addressLocality": "Kisangani",
-    "addressCountry": "CD"
-  },
-  "sameAs": [
-    "https://web.facebook.com/profile.php?id=61594951737384",
-    "https://www.instagram.com/college.maele",
-    "https://www.linkedin.com/company/college-maele"
-  ],
-  "foundingDate": "1939",
-  "slogan": "Impavidi Progrediamur",
-  "founder": "Père Wittebols"
-}
-</script>
-
-<link rel="canonical" href="https://www.college-maele.com">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collège Maele — Kisangani · Excellence et humanisme depuis 1939</title>
+  <meta name="description" content="Le Collège Maele, école conventionnée catholique de Kisangani (RDC), forme depuis 1939 des élèves en éducation de base et en humanités scientifiques et littéraires.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Collège Maele">
+  <meta name="theme-color" content="#0a1b33">
+  <link rel="canonical" href="https://www.college-maele.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Collège Maele">
+  <meta property="og:title" content="Collège Maele — Kisangani · Excellence et humanisme depuis 1939">
+  <meta property="og:description" content="Le Collège Maele, école conventionnée catholique de Kisangani (RDC), forme depuis 1939 des élèves en éducation de base et en humanités scientifiques et littéraires.">
+  <meta property="og:url" content="https://www.college-maele.com/">
+  <meta property="og:image" content="https://www.college-maele.com/Images/campus/entree-principale.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/jpeg" href="./Images/Oiseaux.jpeg">
+  <link rel="apple-touch-icon" href="./Images/Oiseaux.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="./assets/css/maele.css?v=20261020">
+  <link rel="preload" as="image" href="./Images/campus/entree-principale.webp" fetchpriority="high">
 </head>
-<body class="overflow-x-hidden">
-  <div id="fb-root"></div>
-  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v19.0"></script>
-  <div class="progress-wrap" aria-hidden="true"><div id="progressBar" class="progress-bar"></div></div>
-    <!-- HEADER & NAVIGATION -->
-    <header id="header" class="bg-white/80 backdrop-blur-lg shadow-md sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <a href="#accueil" class="flex items-center space-x-3">
-                <img src="./Images/Oiseaux.jpeg" alt="Logo Collège Maele" class="rounded-full w-10 h-10 object-cover">
-                <span class="text-xl md:text-2xl font-bold text-blue-700">Collège Maele</span>
-            </a>
-            
-            <!-- Desktop Menu -->
-            <div class="hidden lg:flex items-center space-x-6">
-                <a href="#accueil" class="text-gray-700 hover:text-blue-600 transition duration-300" alt="Bienvenue au Collgège Maele">Accueil</a>
-                <a href="#a-propos" class="text-gray-700 hover:text-blue-600 transition duration-300" alt="En savoir plus sur le Collège Maele">À Propos</a>
-                <a href="#hymne" class="text-gray-700 hover:text-blue-600 transition duration-300" alt="L'hymne du Collège Maele - La maelienne">Hymne</a>
-                <a href="#histoire" class="text-gray-700 hover:text-blue-600 transition duration-300" alt="Decouvrez les fondatiions de notre bien aimée Collège">Histoire</a>
-                <a href="#equipe" class="text-gray-700 hover:text-blue-600 transition duration-300" alt="Nos Professeurs">Équipe</a>
-                <a href="/galerie.html" class="text-gray-700 hover:text-blue-600 transition duration-300" alt="Galerie photo du Collège Maele">Galeries</a>
-                <a href="#dons" class="text-gray-700 hover:text-blue-600 transition duration-300">Dons</a>
-                <a href="./pages/accueil.html" class="text-gray-700 hover:text-blue-600 transition duration-300" alt="Blog du Collège Maele">Blog</a>
-                <a href="/contact.html" class="text-gray-700 hover:text-blue-600 transition duration-300" alt="Contacter le Collège Maele">Contact</a>
-            </div>
-
-            <button data-modal-target="don-principal" class="hidden lg:block bg-gradient-to-r from-blue-600 to-blue-800 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition duration-300">
-                Faire un Don
-            </button>
-
-      <!-- Mobile Menu Button -->
-      <div class="lg:hidden">
-                <button id="hamburger-button" class="text-gray-800 focus:outline-none">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
-                </button>
-            </div>
-        </nav>
-
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="lg:hidden fixed top-0 right-0 h-full w-64 bg-white shadow-2xl transform translate-x-full opacity-0 pointer-events-none z-50" aria-hidden="true">
-            <div class="p-6">
-                <button id="close-menu-button" class="absolute top-4 right-4 text-gray-800">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                </button>
-                <div class="mt-12 flex flex-col space-y-6">
-                    <a href="#accueil" class="mobile-link text-xl text-gray-700 hover:text-blue-600" alt="Bienvenue au Collgège Maele">Accueil</a>
-                    <a href="#a-propos" class="mobile-link text-xl text-gray-700 hover:text-blue-600">À Propos</a>
-                    <a href="#hymne" class="mobile-link text-xl text-gray-700 hover:text-blue-600" alt="L'hymne du Collège Maele - La maelienne">Hymne</a>
-                    <a href="#histoire" class="mobile-link text-xl text-gray-700 hover:text-blue-600" alt="Decouvrez les fondatiions de notre bien aimée Collège">Histoire</a>
-                    <a href="#equipe" class="mobile-link text-xl text-gray-700 hover:text-blue-600" alt="Nos Professeurs">Équipe</a>
-                    <a href="/galerie.html" class="mobile-link text-xl text-gray-700 hover:text-blue-600" alt="Galerie photo du Collège Maele">Galeries</a>
-                    <a href="./pages/accueil.html" class="mobile-link text-xl text-gray-700 hover:text-blue-600" alt="Blog du Collège Maele">Blog</a>
-                    <a href="/contact.html" class="mobile-link text-xl text-gray-700 hover:text-blue-600" alt="Contacter le Collège Maele">Contact</a>
-                    <button data-modal-target="don-principal" class="mt-4 block w-full bg-gradient-to-r from-blue-600 to-blue-800 text-white text-center font-bold py-3 px-6 rounded-full shadow-lg">
-                        Faire un Don
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <!-- HERO SECTION WITH BACKGROUND SLIDER -->
-        <section id="accueil" class="relative h-screen flex items-center justify-center text-white overflow-hidden">
-            <!-- Background Image Slider -->
-            <div id="bg-slider" class="absolute top-0 left-0 w-full h-full">
-                <div class="absolute inset-0 bg-black/50 z-10"></div>
-                <img src=./Images/point.jpg alt="Image d'arrière-plan 1" class="bg-slide absolute w-full h-full object-cover opacity-100">
-                <img src=./Images/campus.jpg alt="Vue du campus du Collège Maele à Kisangani avec bâtiments modernes et élèves" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/grotte.jpg alt="grotte de prière du College Maele" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/drapeau.jpg alt="Cours intérieure du Collgège Maele, vue sur le drapeau" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/bbio.jpg alt="Image de lanouvelle bibliothèque du Collège Maele" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/facade.jpg alt="Image de la  facade latterale du Collge Maele "lass="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/point.jpg alt="Image d'arrière-plan 7" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src="./Images/primaire.jpg" alt="Élèves de primaire assis en classe écoutant un enseignant, pupitres et tableau noir en arrière plan, lumière naturelle par de grandes fenêtres, atmosphère studieuse et chaleureuse, pas de texte visible" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/cours.jpg alt="Image d'arrière-plan 9" class="bg-slide absolute w-full h-full object-cover opacity-0">
-                <img src=./Images/point.jpg alt="Image d'arrière-plan 10" class="bg-slide absolute w-full h-full object-cover opacity-0">
-            </div>
-
-            <!-- Slider Controls -->
-            <button id="prev-slide" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 bg-white/20 text-white p-3 rounded-full hover:bg-white/40 transition">
-                <i class="fas fa-chevron-left fa-lg"></i>
-            </button>
-            <button id="next-slide" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 bg-white/20 text-white p-3 rounded-full hover:bg-white/40 transition">
-                <i class="fas fa-chevron-right fa-lg"></i>
-            </button>
-            
-            <!-- Hero Content -->
-            <div class="relative z-20 text-center px-4">
-                <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 animate-fade-in-down" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">Bienvenue au Collège Maele</h1>
-                <p class="text-lg md:text-2xl mb-8 max-w-3xl mx-auto animate-fade-in-up" style="text-shadow: 1px 1px 4px rgba(0,0,0,0.7);">Impavidi Progrediamur.</p>
-                <a href="#a-propos" class="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-4 px-10 text-lg rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transform transition duration-300">
-                    Découvrir notre collège
-                </a>
-            </div>
-        </section>
-
-        <!-- A PROPOS SECTION -->
-<section id="a-propos" class="relative overflow-hidden py-20 md:py-32 bg-white">
-  <!-- décor doux -->
-  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-    <div class="absolute -top-24 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-200/60 via-blue-300/25 to-transparent blur-3xl"></div>
-    <svg class="absolute -bottom-16 -right-16 h-[520px] w-[520px] opacity-15" viewBox="0 0 200 200" fill="none">
-      <defs><pattern id="dots-ap" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" class="fill-blue-500"></circle></pattern></defs>
-      <rect width="200" height="200" fill="url(#dots-ap)"></rect>
-    </svg>
-  </div>
-
-  <div class="container mx-auto px-6">
-    <!-- Titre -->
-    <div class="text-center mb-16 animated-section fade-in">
-      <div class="inline-flex items-center gap-2 rounded-full border border-blue-200/70 bg-white/80 px-3 py-1 text-xs font-medium text-blue-700 shadow-sm">
-        <i class="fa-solid fa-school-flag"></i> Notre identité
-      </div>
-      <h2 class="mt-3 text-4xl md:text-5xl font-extrabold text-blue-900">Notre mission, nos valeurs</h2>
-      <p class="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">
-        Au Collège Maele, nous offrons une éducation de qualité qui développe l’intelligence, le caractère et le sens du service.
-      </p>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-12 items-center">
-      <!-- Visuel -->
-      <div class="animated-section slide-in-left">
-        <div class="relative group">
-          <img src="./Images/cinquantenaire.jpg" alt="Cours intérieure du Collège Maele"
-               class="rounded-2xl shadow-2xl w-full object-cover transition-transform duration-500 group-hover:scale-[1.015]">
-          <!-- Badge superposé -->
-          <div class="absolute left-4 bottom-4 md:left-6 md:bottom-6">
-            <div class="inline-flex items-center gap-2 rounded-full bg-white/85 backdrop-blur px-4 py-2 text-sm font-semibold text-blue-900 shadow">
-              <i class="fa-solid fa-shield-heart text-blue-700"></i> Excellence & Humanisme
-            </div>
-          </div>
-        </div>
-
-        <!-- Statistiques (compteurs) -->
-        <div class="mt-6 grid grid-cols-3 gap-3 md:gap-4">
-          <div class="rounded-xl bg-white border border-blue-100 p-4 text-center shadow-sm">
-            <div class="text-2xl md:text-3xl font-extrabold text-blue-800">
-              <span class="counter" data-count="1939">0</span>
-            </div>
-            <p class="text-xs text-gray-500 mt-1">Année de fondation</p>
-          </div>
-          <div class="rounded-xl bg-white border border-blue-100 p-4 text-center shadow-sm">
-            <div class="text-2xl md:text-3xl font-extrabold text-blue-800">
-              <span class="counter" data-count="3">0</span> <span class="text-base font-bold">+</span>
-            </div>
-            <p class="text-xs text-gray-500 mt-1">Parcours structurés</p>
-          </div>
-          <div class="rounded-xl bg-white border border-blue-100 p-4 text-center shadow-sm">
-            <div class="text-2xl md:text-3xl font-extrabold text-blue-800">
-              <span class="counter" data-count="100">0</span><span class="text-base font-bold">%</span>
-            </div>
-            <p class="text-xs text-gray-500 mt-1">Engagés pour la réussite</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Contenu -->
-      <div class="animated-section slide-in-right">
-        <h3 class="text-2xl md:text-3xl font-extrabold mb-3 text-blue-900" alt="Année de création du Collège Maele">Un héritage d’excellence depuis 1939</h3>
-        <p class="text-gray-700 mb-6">
-          Nous cultivons un environnement d’apprentissage stimulant où la curiosité, la pensée critique et la créativité sont encouragées.
-          Notre pédagogie combine exigence scolaire, accompagnement personnalisé et ouverture au monde.
-        </p>
-
-        <!-- Les 3 voies (cartes compactes) -->
-        <div class="grid gap-3 md:gap-4 mb-6">
-          <div class="flex items-start gap-3 rounded-xl border border-blue-100 bg-white p-4 shadow-sm">
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
-              <i class="fa-solid fa-seedling"></i>
-            </div>
-            <div>
-              <h4 class="font-semibold text-blue-900">Éducation de base</h4>
-              <p class="text-sm text-gray-600">Fondations du savoir, de la discipline et de la citoyenneté.</p>
-            </div>
-          </div>
-
-          <div class="flex items-start gap-3 rounded-xl border border-blue-100 bg-white p-4 shadow-sm">
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
-              <i class="fa-solid fa-feather-pointed"></i>
-            </div>
-            <div>
-              <h4 class="font-semibold text-blue-900">Humanités littéraires</h4>
-              <p class="text-sm text-gray-600">Esprit critique, expression, culture générale et ouverture.</p>
-            </div>
-          </div>
-
-          <div class="flex items-start gap-3 rounded-xl border border-blue-100 bg-white p-4 shadow-sm">
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-700">
-              <i class="fa-solid fa-atom"></i>
-            </div>
-            <div>
-              <h4 class="font-semibold text-blue-900">Humanités scientifiques</h4>
-              <p class="text-sm text-gray-600">Rigueur, analyse et innovation vers les filières techniques et universitaires.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Liste de valeurs -->
-        <div class="space-y-3">
-          <div class="flex items-start gap-3">
-            <i class="fas fa-check-circle text-blue-600 mt-1"></i>
-            <p class="text-gray-700">Programmes pédagogiques <strong>évolutifs</strong> et adaptés.</p>
-          </div>
-          <div class="flex items-start gap-3">
-            <i class="fas fa-check-circle text-blue-600 mt-1"></i>
-            <p class="text-gray-700">Accompagnement <strong>personnalisé</strong> de chaque élève.</p>
-          </div>
-          <div class="flex items-start gap-3">
-            <i class="fas fa-check-circle text-blue-600 mt-1"></i>
-            <p class="text-gray-700">Ouverture sur le monde & <strong>nouvelles technologies</strong>.</p>
-          </div>
-        </div>
-
-        <!-- CTA -->
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href="#equipe" class="inline-flex items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400">
-            <i class="fa-solid fa-people-group mr-2"></i>Voir notre équipe
-          </a>
-          <a href="/contact.html" class="inline-flex items-center justify-center rounded-xl border border-blue-200 bg-white px-5 py-3 text-sm font-semibold text-blue-800 shadow-sm transition hover:bg-blue-50">
-            <i class="fa-solid fa-paper-plane mr-2"></i>Nous contacter
-          </a>
-        </div>
-      </div>
+<body>
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+  <div class="topbar">
+    <div class="container">
+      <ul class="topbar__list">
+        <li><a href="tel:+243815493115"><i class="fa-solid fa-phone" aria-hidden="true"></i>+243 81 54 93 115</a></li>
+        <li class="topbar__hide-sm"><a href="mailto:contact@college-maele.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i>contact@college-maele.com</a></li>
+        <li class="topbar__hide-sm"><a href="./contact.html#plan"><i class="fa-solid fa-location-dot" aria-hidden="true"></i>Kisangani, RDC</a></li>
+      </ul>
+      <ul class="topbar__list topbar__hide-sm">
+        <li><span class="topbar__motto">Impavidi Progrediamur</span></li>
+        <li><a href="https://web.facebook.com/profile.php?id=61594951737384" target="_blank" rel="noopener noreferrer" aria-label="Facebook du Collège Maele (nouvel onglet)"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a></li>
+        <li><a href="https://wa.me/243815493115" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp du Collège Maele (nouvel onglet)"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a></li>
+      </ul>
     </div>
   </div>
-</section>
-
-        
-        <!-- HYMNE SECTION -->
-<section id="hymne" class="relative overflow-hidden bg-white py-16 md:py-24">
-  <div class="container relative mx-auto px-5 sm:px-6">
-    <div class="mx-auto mb-10 max-w-3xl text-center animated-section fade-in">
-      <span class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-blue-700">
-        <i class="fa-solid fa-music" aria-hidden="true"></i> Patrimoine musical
-      </span>
-      <h2 class="mt-5 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl md:text-5xl">L’Hymne du Collège Maele</h2>
-      <p class="mt-2 text-xl font-semibold text-blue-700">La Maélienne</p>
-      <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">Un chant de fierté et d’unité, transmis au cœur de la communauté éducative.</p>
-    </div>
-
-    <div class="mx-auto mb-8 max-w-4xl rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 animated-section slide-up">
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex items-center gap-3">
-          <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
-            <i class="fa-solid fa-headphones" aria-hidden="true"></i>
-          </span>
-          <div>
-            <p class="font-bold text-slate-900">Écouter l’hymne</p>
-            <p class="text-sm text-slate-500">La Maélienne · fichier audio</p>
-          </div>
-        </div>
-        <audio id="hymnAudio" controls preload="none" class="w-full min-w-0 sm:max-w-md">
-          <source src="./Audio/maelienne.mp3" type="audio/mpeg">
-          Votre navigateur ne prend pas en charge la lecture audio.
-        </audio>
-      </div>
-      <div class="mt-4 flex flex-wrap gap-2 border-t border-slate-100 pt-4">
-        <button id="copyLyricsBtn" type="button" class="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-          <i class="fa-regular fa-copy" aria-hidden="true"></i> Copier les paroles
-        </button>
-        <a id="downloadLyricsBtn" download="Hymne_College_Maele.txt" href="#" class="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-          <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Télécharger les paroles
-        </a>
-      </div>
-    </div>
-
-    <div class="mx-auto grid max-w-5xl gap-5 md:grid-cols-2 animated-section slide-up">
-      <article class="hymn-verse rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
-        <p class="mb-5 text-xs font-bold uppercase tracking-widest text-blue-700">Première partie</p>
-        <div class="hymn-lyrics leading-8 text-slate-700" id="lyrics-col-1">
-            <p>Salut à toi, ô noble source,<br> D’où jaillit la vie si douce<br> Creuset d’amour et des sciences<br> Maele, nous te chantons.</p>
-            <p>Ô toi noble berceau<br> Tu nous pousses au plus haut<br> Tu nous armes pour la vie.</p>
-            <p>Que ta splendeur brille à jamais<br> Au jour le jour dans notre vie,<br> Afin que tous réalisions, réalisions, réalisions</p>
-            <p>La grande et belle issue<br> Que nous prépares l’institut.</p>
-        </div>
-        <button class="mt-5 rounded-lg px-2 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" data-expand="#lyrics-col-1" aria-expanded="true">Masquer les paroles</button>
-      </article>
-
-      <article class="hymn-verse rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
-        <p class="mb-5 text-xs font-bold uppercase tracking-widest text-blue-700">Deuxième partie</p>
-        <div class="hymn-lyrics leading-8 text-slate-700" id="lyrics-col-2">
-            <p>Apprends-nous, ô toi notre Mère,<br> La sagesse et la technique<br> Latin-Philo, math physique<br> Patrimoine séculaire</p>
-            <p>Mais surtout apprends-nous<br> À aimer, à servir<br> Notre beau pays : Congo.</p>
-            <p>Ma-e-liens, main dans la main<br> Marchons sans peur du lendemain,<br> Transformons tout sur nos chemins, sur nos chemins, sur nos chemins</p>
-            <p>Que le bon Dieu bénisse<br> Tous nos efforts d’étudiants !</p>
-        </div>
-        <button class="mt-5 rounded-lg px-2 py-2 text-sm font-semibold text-blue-700 transition hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" data-expand="#lyrics-col-2" aria-expanded="true">Masquer les paroles</button>
-      </article>
-    </div>
-
-      <p class="mt-8 text-center text-sm text-slate-500">
-        Paroles : Abbé Buse Meluna · Musique : Chovu, Colonel · Fait à Mandombe, le 28 février 1886.
-      </p>
-      <!-- stockage invisible pour le bouton “copier” -->
-      <textarea id="lyricsFull" class="hidden" aria-hidden="true">Salut à toi, ô noble source,
-D’où jaillit la vie si douce
-Creuset d’amour et des sciences
-Maele, nous te chantons.
-
-Ô toi noble berceau
-Tu nous pousses au plus haut
-Tu nous armes pour la vie.
-
-Que ta splendeur brille à jamais
-Au jour le jour dans notre vie,
-Afin que tous réalisions, réalisions, réalisions
-
-La grande et belle issue
-Que nous prépares l’institut.
-
-Apprends-nous, ô toi notre Mère,
-La sagesse et la technique
-Latin-Philo, math physique
-Patrimoine séculaire
-
-Mais surtout apprends-nous
-À aimer, à servir
-Notre beau pays : Congo.
-
-Ma-e-liens, main dans la main
-Marchons sans peur du lendemain,
-Transformons tout sur nos chemins, sur nos chemins, sur nos chemins
-
-Que le bon Dieu bénisse
-Tous nos efforts d’étudiants !</textarea>
-    </div>
-  </div>
-</section>
-
-
-       <!-- HISTOIRE SECTION - Timeline premium -->
-<section id="histoire" class="relative overflow-hidden py-20 md:py-32 bg-gray-50 dark:bg-slate-900">
-  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-    <div class="absolute -top-24 left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-200/60 via-blue-300/20 to-transparent blur-3xl dark:from-blue-900/30 dark:via-blue-700/20"></div>
-    <svg class="absolute -bottom-20 -left-20 h-[560px] w-[560px] opacity-10 dark:opacity-10" viewBox="0 0 200 200" fill="none">
-      <defs><pattern id="dots-hist" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" class="fill-blue-500"></circle></pattern></defs>
-      <rect width="200" height="200" fill="url(#dots-hist)"></rect>
-    </svg>
-  </div>
-
-  <div class="container mx-auto px-6">
-    <div class="text-center mb-12 animated-section fade-in">
-      <span class="inline-flex items-center gap-2 rounded-full border border-blue-200/80 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-blue-700 shadow-sm dark:border-blue-800/50 dark:bg-slate-800/60 dark:text-blue-200">Notre héritage</span>
-      <h2 class="mt-4 text-4xl md:text-5xl font-extrabold text-blue-900 dark:text-blue-300">Histoire & Préfets des Études</h2>
-      <p class="mt-4 max-w-3xl mx-auto text-lg text-gray-600 dark:text-gray-300">Un hommage aux figures qui ont porté la vision, la discipline et l’excellence du Collège Maele.</p>
-    </div>
-
-    <div class="mx-auto max-w-6xl story-shell animated-section slide-up">
-      <article class="story-item">
-        <div class="story-content story-copy">
-          <span class="story-badge"><i class="fa-solid fa-star text-[10px]"></i> 1939–1948</span>
-          <h3 class="story-card-title">Père Wittebols</h3>
-          <p class="story-role">Préfet fondateur</p>
-          <p class="story-text">Il a jeté les fondements de l’esprit Maelien : rigueur, éthique, excellence académique et culture du travail bien fait.</p>
-        </div>
-        <div class="story-media">
-          <img src="./Images/facade.jpg" alt="Père Wittebols" loading="lazy">
-        </div>
-        <span class="story-dot"></span>
-      </article>
-
-      <article class="story-item">
-        <div class="story-content story-copy">
-          <span class="story-badge"><i class="fa-solid fa-forward text-[10px]"></i> 1948–1957</span>
-          <h3 class="story-card-title">Père Neises</h3>
-          <p class="story-role">Ère de modernisation</p>
-          <p class="story-text">Sous son impulsion, le collège a renforcé les pratiques pédagogiques modernes, l’ouverture intellectuelle et l’essor des disciplines.</p>
-        </div>
-        <div class="story-media">
-          <img src="./Images/campus.jpg" alt="Père Neises" loading="lazy">
-        </div>
-        <span class="story-dot"></span>
-      </article>
-
-      <article class="story-item">
-        <div class="story-content story-copy">
-          <span class="story-badge"><i class="fa-solid fa-heart text-[10px]"></i> 1964–1965</span>
-          <h3 class="story-card-title">Père Roelants Rébelion</h3>
-          <p class="story-role">Développement humain</p>
-          <p class="story-text">Il a mis l’accent sur le bien-être des élèves, la vie parascolaire et l’engagement communautaire, en favorisant une éducation plus humaine.</p>
-        </div>
-        <div class="story-media">
-          <img src="./Images/cours.jpg" alt="Père Roelants Rébelion" loading="lazy">
-        </div>
-        <span class="story-dot"></span>
-      </article>
-
-      <article class="story-item">
-        <div class="story-content story-copy">
-          <span class="story-badge"><i class="fa-solid fa-leaf text-[10px]"></i> Période récente</span>
-          <h3 class="story-card-title">Père Lommel</h3>
-          <p class="story-role">Vision & innovation</p>
-          <p class="story-text">Aujourd’hui, l’école continue d’innover avec une pédagogie tournée vers le développement durable, le leadership et la croissance globale des élèves.</p>
-        </div>
-        <div class="story-media">
-          <img src="./Images/primaire.jpg" alt="Père Lommel" loading="lazy">
-        </div>
-        <span class="story-dot"></span>
-      </article>
-    </div>
-
-    <div class="mt-14 text-center">
-      <a href="#equipe" class="inline-flex items-center justify-center rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400">
-        <i class="fa-solid fa-people-group mr-2"></i> Voir notre équipe
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="#accueil" aria-label="Collège Maele — accueil">
+        <img class="brand__logo" src="./Images/Oiseaux.jpeg" alt="" width="48" height="48">
+        <span class="brand__text"><span class="brand__name">Collège Maele</span><span class="brand__tagline">Kisangani · depuis 1939</span></span>
       </a>
+      <nav class="main-nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="#accueil" aria-current="page">Accueil</a></li>
+          <li><a href="#college">Le Collège</a></li>
+          <li><a href="#enseignement">Enseignement</a></li>
+          <li><a href="#campus">Campus</a></li>
+          <li><a href="./profs.html">Équipe</a></li>
+          <li><a href="./galerie.html">Galerie</a></li>
+          <li><a href="./pages/accueil.html">Actualités</a></li>
+          <li><a href="./contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a class="btn btn--gold btn--sm" href="#soutenir"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i>Soutenir</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="drawer"><i class="fa-solid fa-bars" aria-hidden="true"></i><span class="nav-toggle__label">Menu</span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="drawer" id="drawer" hidden>
+    <div class="drawer__backdrop" data-drawer-close></div>
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu principal">
+      <div class="drawer__head">
+        <span class="drawer__title">Collège Maele</span>
+        <button class="drawer__close" type="button" data-drawer-close aria-label="Fermer le menu"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      </div>
+      <nav aria-label="Navigation mobile">
+        <ul>
+          <li><a href="#accueil" aria-current="page">Accueil<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li><a href="#college">Le Collège<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li><a href="#enseignement">Enseignement<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li><a href="#campus">Campus<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li><a href="./profs.html">Équipe<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li><a href="./galerie.html">Galerie<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li><a href="./pages/accueil.html">Actualités<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+          <li><a href="./contact.html">Contact<i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a></li>
+        </ul>
+      </nav>
+      <div class="drawer__foot">
+        <a class="btn btn--gold btn--block" href="#soutenir"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i>Soutenir le collège</a>
+        <a class="drawer__contact" href="tel:+243815493115"><i class="fa-solid fa-phone" aria-hidden="true"></i>+243 81 54 93 115</a>
+        <a class="drawer__contact" href="mailto:contact@college-maele.com"><i class="fa-solid fa-envelope" aria-hidden="true"></i>contact@college-maele.com</a>
+      </div>
     </div>
   </div>
-</section>
 
+  <main id="contenu">
 
-
-        <!-- EQUIPE SECTION -->
-        <section id="equipe" class="bg-white py-16 md:py-24">
-          <div class="container mx-auto px-5 sm:px-6">
-            <header class="mx-auto mb-14 max-w-3xl text-center animated-section fade-in">
-              <span class="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-blue-700">
-                <i class="fa-solid fa-people-group" aria-hidden="true"></i> La communauté Maele
-              </span>
-              <h2 class="mt-4 text-3xl font-extrabold text-slate-900 sm:text-4xl md:text-5xl">Notre Équipe Dédiée</h2>
-              <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">Une équipe engagée pour accompagner les élèves et faire vivre le projet éducatif du Collège Maele.</p>
-            </header>
-
-            <div class="mx-auto mb-14 max-w-6xl">
-              <div class="mb-6 flex items-end justify-between gap-4 border-b border-slate-200 pb-4">
-                <div>
-                  <p class="text-xs font-bold uppercase tracking-widest text-blue-700">01 · Gouvernance</p>
-                  <h3 class="mt-1 text-2xl font-bold text-slate-900">Préfecture et direction scolaire</h3>
-                </div>
-                <i class="fa-solid fa-building-columns hidden text-2xl text-blue-200 sm:block" aria-hidden="true"></i>
-              </div>
-              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                <article class="team-profile animated-section slide-up">
-                  <img src="./Images/Préfet.png" alt="Jean-Claude Kazadi, préfet des études" class="team-avatar" loading="lazy">
-                  <h4 class="text-lg font-bold leading-snug text-slate-900">M. Jean-Claude Kazadi</h4>
-                  <span class="team-role">Préfet des études</span>
-                </article>
-                <article class="team-profile animated-section slide-up">
-                  <img src="./Images/directeur1.png" alt="Richard Essymandra, directeur des études" class="team-avatar" loading="lazy">
-                  <h4 class="text-lg font-bold leading-snug text-slate-900">M. Richard Essymandra</h4>
-                  <span class="team-role">Directeur des études</span>
-                </article>
-                <article class="team-profile animated-section slide-up">
-                  <img src="./Images/directeur2.png" alt="Clément Lugaluga, directeur des études" class="team-avatar" loading="lazy">
-                  <h4 class="text-lg font-bold leading-snug text-slate-900">M. Clément Lugaluga</h4>
-                  <span class="team-role">Directeur des études</span>
-                </article>
-              </div>
-            </div>
-
-            <div class="mx-auto mb-16 max-w-6xl">
-              <div class="mb-6 flex items-end justify-between gap-4 border-b border-slate-200 pb-4">
-                <div>
-                  <p class="text-xs font-bold uppercase tracking-widest text-blue-700">02 · Services</p>
-                  <h3 class="mt-1 text-2xl font-bold text-slate-900">Administration et vie scolaire</h3>
-                </div>
-                <i class="fa-solid fa-clipboard-list hidden text-2xl text-blue-200 sm:block" aria-hidden="true"></i>
-              </div>
-              <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                <article class="team-profile animated-section slide-up">
-                  <img src="./Images/disciplinaire.png" alt="Pierre Kasongo, directeur de discipline" class="team-avatar" loading="lazy">
-                  <h4 class="text-lg font-bold leading-snug text-slate-900">M. Pierre Kasongo</h4>
-                  <span class="team-role">Directeur de discipline</span>
-                </article>
-                <article class="team-profile animated-section slide-up">
-                  <img src="./Images/Professeurs/3.png" alt="Sœur Yuma Safinia, intendante" class="team-avatar" loading="lazy">
-                  <h4 class="text-lg font-bold leading-snug text-slate-900">Sœur Yuma Safinia</h4>
-                  <span class="team-role">Intendante</span>
-                </article>
-              </div>
-            </div>
-
-            <section id="equipe-profs" class="mx-auto max-w-6xl border-t border-slate-200 pt-12 animated-section fade-in">
-              <div class="mb-7 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <p class="text-xs font-bold uppercase tracking-widest text-blue-700">03 · Enseignement</p>
-                  <h3 class="mt-1 text-2xl font-bold text-slate-900">Notre corps enseignant</h3>
-                  <p class="mt-2 max-w-2xl text-slate-600">Les professeurs sont classés par nom de famille.</p>
-                </div>
-                <a href="profs.html" class="inline-flex min-h-11 items-center justify-center gap-2 self-start rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 sm:self-auto">
-                  Tous les profils <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                </a>
-              </div>
-
-              <div class="relative px-1 sm:px-8">
-                <div id="teacher-carousel" class="overflow-hidden">
-                  <div id="teacher-carousel-track" class="flex items-stretch">
-                    <!-- Teacher cards are created from the alphabetized staff list. -->
-                  </div>
-                </div>
-                <button id="teacher-prev" type="button" aria-label="Professeur précédent" class="absolute left-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-blue-700 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                  <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-                </button>
-                <button id="teacher-next" type="button" aria-label="Professeur suivant" class="absolute right-0 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-blue-700 shadow-sm transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
-                  <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-                </button>
-              </div>
-            </section>
+    <!-- ================= HÉROS ================= -->
+    <section class="hero" id="accueil" data-hero aria-label="Bienvenue au Collège Maele">
+      <div class="hero__slides" aria-hidden="true">
+        <img class="hero__slide is-active" src="./Images/campus/entree-principale.webp" alt="" fetchpriority="high" width="2048" height="921">
+        <img class="hero__slide" data-src="./Images/campus/place-du-drapeau.webp" alt="" width="2047" height="842">
+        <img class="hero__slide" data-src="./Images/campus/cour-principale.webp" alt="" width="2048" height="921">
+        <img class="hero__slide" data-src="./Images/campus/cour-arboree.webp" alt="" width="2048" height="921">
+      </div>
+      <div class="container">
+        <div class="hero__content">
+          <span class="eyebrow">École conventionnée catholique · Kisangani</span>
+          <h1>Former des esprits libres et des cœurs droits, <em>depuis 1939.</em></h1>
+          <p class="hero__lead">Au Collège Maele, l’exigence académique, la discipline et les valeurs humaines préparent chaque élève à réussir ses études et à servir son pays.</p>
+          <div class="hero__actions">
+            <a class="btn btn--gold" href="#admissions"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>Admissions</a>
+            <a class="btn btn--ghost-light" href="#college">Découvrir le collège <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
           </div>
-        </section>
-        <!-- GALERIE PHOTO -->
-        <section id="galeries" class="bg-gray-50 py-16 md:py-24">
-          <div class="container mx-auto px-5 sm:px-6">
-            <header class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p class="text-xs font-bold uppercase tracking-widest text-blue-700">En images</p>
-                <h2 class="mt-2 text-3xl font-extrabold text-slate-900 sm:text-4xl">La Vie au Collège</h2>
-                <p class="mt-2 max-w-2xl text-slate-600">Découvrez les lieux et les moments qui font le quotidien de la communauté Maele.</p>
-              </div>
-              <a href="/galerie.html" class="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 self-start rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-blue-800 transition hover:border-blue-300 hover:bg-blue-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 sm:self-auto">
-                Toute la galerie <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-              </a>
-            </header>
+        </div>
+      </div>
+      <div class="hero__controls">
+        <button class="hero__dot" type="button" aria-label="Photo 1 : l’entrée principale" aria-current="true"><span></span></button>
+        <button class="hero__dot" type="button" aria-label="Photo 2 : la place du drapeau" aria-current="false"><span></span></button>
+        <button class="hero__dot" type="button" aria-label="Photo 3 : la cour principale" aria-current="false"><span></span></button>
+        <button class="hero__dot" type="button" aria-label="Photo 4 : la cour arborée" aria-current="false"><span></span></button>
+        <button class="hero__pause" type="button" aria-label="Mettre le diaporama en pause"><i class="fa-solid fa-pause" aria-hidden="true"></i></button>
+      </div>
+    </section>
 
-            <div class="life-gallery" aria-label="Galerie photo du Collège Maele">
-              <a href="/galerie.html" class="life-gallery-item" aria-label="Voir la galerie : la cour du collège">
-                <img src="./Images/campus.jpg" alt="Élèves réunis dans la cour du Collège Maele" loading="lazy">
-                <span class="life-gallery-caption"><span>La cour du collège</span><span>Vie scolaire et rencontres</span></span>
-              </a>
-              <a href="/galerie.html" class="life-gallery-item" aria-label="Voir la galerie : les bâtiments du collège">
-                <img src="./Images/facade.jpg" alt="Façade d’un bâtiment du Collège Maele" loading="lazy">
-                <span class="life-gallery-caption"><span>La cours</span><span>Les bâtiments de Maele</span></span>
-              </a>
-              <a href="/galerie.html" class="life-gallery-item" aria-label="Voir la galerie : la grotte de prière">
-                <img src="./Images/grotte.jpg" alt="Grotte de prière du Collège Maele" loading="lazy">
-                <span class="life-gallery-caption"><span>La grotte</span><span>Un lieu de recueillement</span></span>
-              </a>
-              <a href="/galerie.html" class="life-gallery-item" aria-label="Voir la galerie : les élèves en classe">
-                <img src="./Images/primaire.jpg" alt="Élèves en classe au Collège Maele" loading="lazy">
-                <span class="life-gallery-caption"><span>En classe</span><span>Apprendre ensemble</span></span>
-              </a>
-            </div>
+    <!-- Accès rapides -->
+    <div class="quicklinks">
+      <div class="container">
+        <nav class="quicklinks__grid" aria-label="Accès rapides">
+          <a class="quicklink" href="#enseignement"><span class="quicklink__icon"><i class="fa-solid fa-book-open" aria-hidden="true"></i></span><span><strong>Enseignement</strong><span>Éducation de base et humanités</span></span></a>
+          <a class="quicklink" href="#campus"><span class="quicklink__icon"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></span><span><strong>Le campus</strong><span>Bâtiments, cours et espaces</span></span></a>
+          <a class="quicklink" href="./profs.html"><span class="quicklink__icon"><i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i></span><span><strong>Nos professeurs</strong><span>Direction et corps enseignant</span></span></a>
+          <a class="quicklink" href="./contact.html"><span class="quicklink__icon"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i></span><span><strong>Nous contacter</strong><span>Informations et inscriptions</span></span></a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- ================= PRÉSENTATION ================= -->
+    <section class="section" id="college" aria-labelledby="college-title">
+      <div class="container split">
+        <div class="about-media reveal">
+          <div class="about-media__main">
+            <img src="./Images/campus/md/cour-principale.webp" alt="La cour principale du Collège Maele, bordée d’arbres et de pavillons de classes" loading="lazy" width="960" height="432">
           </div>
-        </section>
-
-        <section id="dons" class="bg-slate-50 py-16 md:py-24">
-          <div class="container mx-auto max-w-7xl px-5 sm:px-6">
-            <header class="mx-auto mb-10 max-w-3xl text-center animated-section fade-in">
-              <p class="text-xs font-bold uppercase tracking-widest text-blue-700">Un geste pour l’école</p>
-              <h2 class="mt-3 text-3xl font-extrabold text-slate-900 sm:text-4xl md:text-5xl">Soutenez le Collège Maele</h2>
-              <p class="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-slate-600">Votre contribution aide le Collège Maele à soutenir ses projets éducatifs et la vie de sa communauté. Choisissez la forme de soutien qui vous convient.</p>
-            </header>
-
-            <div class="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-              <article class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg sm:p-7 animated-section slide-up">
-                <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-700"><i class="fa-solid fa-mobile-screen-button text-lg" aria-hidden="true"></i></span>
-                <h3 class="mt-5 text-xl font-bold text-slate-900">Mobile Money</h3>
-                <p class="mt-2 flex-1 leading-relaxed text-slate-600">Contribuez par Airtel Money, M-Pesa ou Orange Money.</p>
-                <button type="button" data-modal-target="don-mobile" class="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">Afficher les numéros <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
-              </article>
-
-              <article class="flex h-full flex-col rounded-xl border border-blue-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg sm:p-7 animated-section slide-up">
-                <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-50 text-blue-700"><i class="fa-solid fa-building-columns text-lg" aria-hidden="true"></i></span>
-                <h3 class="mt-5 text-xl font-bold text-slate-900">Virement bancaire</h3>
-                <p class="mt-2 flex-1 leading-relaxed text-slate-600">Retrouvez les coordonnées bancaires pour effectuer un virement.</p>
-                <button type="button" data-modal-target="don-banque" class="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-semibold text-blue-800 transition hover:bg-blue-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">Voir les coordonnées <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
-              </article>
-
-              <article class="flex h-full flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg sm:p-7 animated-section slide-up">
-                <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700"><i class="fa-solid fa-box-open text-lg" aria-hidden="true"></i></span>
-                <h3 class="mt-5 text-xl font-bold text-slate-900">Don matériel</h3>
-                <p class="mt-2 flex-1 leading-relaxed text-slate-600">Vous souhaitez offrir du matériel ou du mobilier ? Parlons de votre proposition.</p>
-                <a href="/contact.html" class="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700">Nous contacter <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
-              </article>
-            </div>
+          <div class="about-media__inset">
+            <img src="./Images/campus/md/plaque-cinquantenaire.webp" alt="Plaque commémorative du cinquantenaire de l’Institut Maele (Sacré-Cœur), 1939–1989" loading="lazy" width="960" height="549">
           </div>
-        </section>
-
-    <section id="bde" class="overflow-hidden bg-slate-50 py-16 sm:py-20 md:py-24">
-      <div class="container mx-auto max-w-7xl px-5 sm:px-6">
-        <div class="grid items-center gap-9 lg:grid-cols-[1.05fr_.95fr] lg:gap-16">
-          <figure class="animated-section slide-in-left">
-            <div class="overflow-hidden rounded-xl bg-slate-200">
-              <img src="./Images/campus.jpg" alt="Élèves réunis dans la cour du Collège Maele à Kisangani" class="aspect-[4/3] w-full object-cover" loading="lazy">
-            </div>
-            <figcaption class="mt-3 flex items-center gap-2 text-sm text-slate-500">
-              <i class="fa-solid fa-location-dot text-blue-700" aria-hidden="true"></i>
-              La vie scolaire au Collège Maele
-            </figcaption>
-          </figure>
-
-          <div class="animated-section slide-in-right">
-            <p class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-blue-700">
-              <i class="fa-solid fa-people-group" aria-hidden="true"></i> Initiative des élèves
-            </p>
-            <h2 class="mt-3 text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">Le Bureau des Élèves</h2>
-            <p class="mt-4 max-w-xl text-base leading-relaxed text-slate-600">Le BDE donne aux élèves l’occasion de faire vivre leur école. Il soutient les idées, rassemble les équipes et contribue à organiser des activités tout au long de l’année.</p>
-
-            <ul class="mt-7 grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2">
-              <li class="flex items-start gap-3">
-                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-700"><i class="fa-solid fa-masks-theater" aria-hidden="true"></i></span>
-                <div><h3 class="font-semibold text-slate-900">Culture & événements</h3><p class="mt-1 text-sm leading-relaxed text-slate-600">Animations, journées culturelles et soirées à thème.</p></div>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700"><i class="fa-solid fa-futbol" aria-hidden="true"></i></span>
-                <div><h3 class="font-semibold text-slate-900">Sport</h3><p class="mt-1 text-sm leading-relaxed text-slate-600">Tournois et rencontres entre les classes.</p></div>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-700"><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i></span>
-                <div><h3 class="font-semibold text-slate-900">Solidarité</h3><p class="mt-1 text-sm leading-relaxed text-slate-600">Actions collectives et initiatives caritatives.</p></div>
-              </li>
-              <li class="flex items-start gap-3">
-                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-rose-100 text-rose-700"><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i></span>
-                <div><h3 class="font-semibold text-slate-900">Découvertes</h3><p class="mt-1 text-sm leading-relaxed text-slate-600">Sorties et visites à visée pédagogique.</p></div>
-              </li>
-            </ul>
-
-            <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="/contact.html" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-blue-700 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
-                <i class="fa-solid fa-lightbulb" aria-hidden="true"></i> Proposer une activité
-              </a>
-              <a href="/galerie.html" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
-                Voir la galerie <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-              </a>
-            </div>
+          <div class="about-media__badge">
+            <strong>1939</strong>
+            <span>Fondé par le Père Wittebols, premier préfet du collège</span>
+          </div>
+        </div>
+        <div class="reveal">
+          <span class="eyebrow">Bienvenue</span>
+          <h2 id="college-title" class="mt-2" style="font-size: clamp(2rem, 4.2vw, 3rem);">Une école d’exigence, de foi et de service</h2>
+          <div class="prose mt-3">
+            <p class="lead">Héritier de l’Institut Maele (Sacré-Cœur), le Collège Maele est une école conventionnée catholique de l’Archidiocèse de Kisangani. Depuis plus de huit décennies, il accompagne des générations de jeunes vers la réussite.</p>
+            <p>Notre projet éducatif conjugue rigueur intellectuelle, formation du caractère et ouverture au monde. Chaque élève y apprend à penser par lui-même, à travailler avec méthode et à mettre ses talents au service des autres — fidèle à notre devise, <em>Impavidi Progrediamur</em> : « avançons sans crainte ».</p>
+          </div>
+          <div class="signature">
+            <span class="signature__mark" aria-hidden="true">M</span>
+            <div><strong>La Direction du Collège Maele</strong><span>Préfecture des études · Kisangani</span></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Nouvelle Section : Actualités / Blog -->
-<section id="actus" class="py-16 bg-gradient-to-r from-blue-50 via-white to-blue-50">
-  <div class="container mx-auto px-6 text-center">
-    <div class="max-w-3xl mx-auto">
-      <h2 class="text-3xl md:text-4xl font-extrabold text-blue-800 mb-4">Découvrez nos Actualités</h2>
-      <p class="text-gray-600 mb-8">
-        Restez informé(e) sur les <strong>dernières nouvelles</strong>, les <strong>projets</strong> et les <strong>événements</strong> du Collège Maele.
-      </p>
+    <!-- ================= VALEURS ================= -->
+    <section class="section section--ivory section--tight" aria-labelledby="valeurs-title">
+      <div class="container">
+        <div class="section-head section-head--center reveal">
+          <span class="eyebrow">Nos valeurs</span>
+          <h2 id="valeurs-title">Ce qui fait l’esprit maélien</h2>
+        </div>
+        <div class="values reveal">
+          <article class="value">
+            <span class="value__icon"><i class="fa-solid fa-award" aria-hidden="true"></i></span>
+            <h3>Excellence</h3>
+            <p>Un enseignement exigeant, des méthodes de travail solides et le goût du travail bien fait.</p>
+          </article>
+          <article class="value">
+            <span class="value__icon"><i class="fa-solid fa-cross" aria-hidden="true"></i></span>
+            <h3>Foi &amp; éthique</h3>
+            <p>Une éducation catholique qui forme la conscience, le respect d’autrui et le sens des responsabilités.</p>
+          </article>
+          <article class="value">
+            <span class="value__icon"><i class="fa-solid fa-scale-balanced" aria-hidden="true"></i></span>
+            <h3>Discipline</h3>
+            <p>Un cadre clair et bienveillant, propice à la concentration, à la ponctualité et à la persévérance.</p>
+          </article>
+          <article class="value">
+            <span class="value__icon"><i class="fa-solid fa-hands-holding-child" aria-hidden="true"></i></span>
+            <h3>Service</h3>
+            <p>« Apprends-nous à aimer, à servir notre beau pays : Congo » — l’engagement citoyen au cœur du projet.</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
-      <a href="./pages/accueil.html" 
-         class="inline-flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-800 text-white text-lg font-semibold py-3 px-8 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition transform">
-        <i class="fa-solid fa-newspaper mr-2 text-white"></i>
-        Accéder au Blog
-      </a>
-    </div>
-  </div>
-</section>
+    <!-- ================= ENSEIGNEMENT ================= -->
+    <section class="section" id="enseignement" aria-labelledby="enseignement-title">
+      <div class="container">
+        <div class="section-head section-head--split reveal">
+          <div>
+            <span class="eyebrow">Enseignement</span>
+            <h2 id="enseignement-title">Des parcours structurés, de la base aux humanités</h2>
+            <p>Trois sections organisées pour accompagner l’élève pas à pas, avec un corps professoral spécialisé dans chaque discipline.</p>
+          </div>
+          <a class="link-arrow" href="./profs.html">Rencontrer nos professeurs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="grid grid--3">
+          <article class="program reveal">
+            <span class="program__num">01</span>
+            <span class="program__icon"><i class="fa-solid fa-seedling" aria-hidden="true"></i></span>
+            <h3>Éducation de base</h3>
+            <p>Les fondations du savoir : maîtrise de la langue, raisonnement mathématique, culture scientifique et éducation à la citoyenneté.</p>
+            <ul>
+              <li><i class="fa-solid fa-diamond" aria-hidden="true"></i>Français, anglais et mathématiques</li>
+              <li><i class="fa-solid fa-diamond" aria-hidden="true"></i>Sciences, histoire et géographie</li>
+              <li><i class="fa-solid fa-diamond" aria-hidden="true"></i>Éducation à la vie et éducation physique</li>
+            </ul>
+          </article>
+          <article class="program reveal">
+            <span class="program__num">02</span>
+            <span class="program__icon"><i class="fa-solid fa-atom" aria-hidden="true"></i></span>
+            <h3>Humanités scientifiques</h3>
+            <p>Rigueur, analyse et expérimentation pour préparer aux études supérieures scientifiques et techniques.</p>
+            <ul>
+              <li><i class="fa-solid fa-diamond" aria-hidden="true"></i>Mathématiques et physique</li>
+              <li><i class="fa-solid fa-diamond" aria-hidden="true"></i>Chimie et sciences de la vie (SVT)</li>
+              <li><i class="fa-solid fa-diamond" aria-hidden="true"></i>Dessin scientifique, technologie et TIC</li>
+            </ul>
+          </article>
+          <article class="program reveal">
+            <span class="program__num">03</span>
+            <span class="program__icon"><i class="fa-solid fa-feather-pointed" aria-hidden="true"></i></span>
+            <h3>Humanités littéraires</h3>
+            <p>Esprit critique, expression et culture générale, dans la tradition « Latin-Philo » chère au collège.</p>
+            <ul>
+              <li><i class="fa-solid fa-diamond" aria-hidden="true"></i>Français, latin et anglais</li>
+              <li><i class="fa-solid fa-diamond" aria-hidden="true"></i>Histoire et géographie</li>
+              <li><i class="fa-solid fa-diamond" aria-hidden="true"></i>Religion et formation humaine</li>
+            </ul>
+          </article>
+        </div>
+        <div class="pedagogy reveal">
+          <div class="pedagogy__item"><i class="fa-solid fa-user-graduate" aria-hidden="true"></i><div><strong>Accompagnement personnalisé</strong><span>Un suivi attentif de chaque élève par la direction des études et les titulaires.</span></div></div>
+          <div class="pedagogy__item"><i class="fa-solid fa-book" aria-hidden="true"></i><div><strong>Une bibliothèque moderne</strong><span>Un bâtiment dédié à la lecture, à la recherche et au travail personnel.</span></div></div>
+          <div class="pedagogy__item"><i class="fa-solid fa-laptop-code" aria-hidden="true"></i><div><strong>Ouverture au numérique</strong><span>L’initiation aux technologies de l’information et de la communication (TIC).</span></div></div>
+        </div>
+      </div>
+    </section>
 
-    <section id="facebook-feed" class="py-16 bg-white">
-      <div class="container mx-auto px-6 text-center">
-        <div class="max-w-3xl mx-auto mb-8">
-          <h2 class="text-3xl md:text-4xl font-extrabold text-blue-800 mb-4">Fil d’actualité Facebook</h2>
-          <p class="text-gray-600">Suivez les dernières publications officielles du Collège Maele.</p>
+    <!-- ================= CAMPUS ================= -->
+    <section class="section section--cool" id="campus" aria-labelledby="campus-title">
+      <div class="container">
+        <div class="section-head section-head--split reveal">
+          <div>
+            <span class="eyebrow">Le campus</span>
+            <h2 id="campus-title">Nos bâtiments et lieux de vie</h2>
+            <p>Au cœur de Makiso, le campus réunit pavillons de classes, cours arborées, bibliothèque, terrain de sport et lieux de recueillement. Cliquez sur une photo pour l’agrandir.</p>
+          </div>
+          <a class="link-arrow" href="./galerie.html">Toute la galerie <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="campus-grid">
+          <button type="button" class="campus-tile campus-tile--xl reveal" data-lightbox="campus" data-full="./Images/campus/entree-principale.webp" data-title="L’entrée principale" data-desc="Le pavillon d’accueil présente l’école conventionnée catholique de l’Archidiocèse de Kisangani et ses sections organisées.">
+            <img src="./Images/campus/md/entree-principale.webp" alt="Pavillon d’entrée du Collège Maele portant l’enseigne de l’école" loading="lazy" width="960" height="432">
+            <span class="campus-tile__zoom" aria-hidden="true"><i class="fa-solid fa-expand"></i></span>
+            <span class="campus-tile__body">
+              <span class="campus-tile__tag">Accueil</span>
+              <h3>L’entrée principale</h3>
+              <p>Le pavillon d’accueil, première image du collège pour les élèves, les parents et les visiteurs.</p>
+            </span>
+          </button>
+          <button type="button" class="campus-tile campus-tile--tall reveal" data-lightbox="campus" data-full="./Images/campus/bibliotheque.webp" data-title="La bibliothèque" data-desc="Un bâtiment à étage récemment construit, dédié à la lecture, à la recherche et au travail personnel des élèves.">
+            <img src="./Images/campus/md/bibliotheque.webp" alt="Le bâtiment à étage de la nouvelle bibliothèque du Collège Maele" loading="lazy" width="938" height="960">
+            <span class="campus-tile__zoom" aria-hidden="true"><i class="fa-solid fa-expand"></i></span>
+            <span class="campus-tile__body">
+              <span class="campus-tile__tag">Savoir</span>
+              <h3>La bibliothèque</h3>
+              <p>Un bâtiment neuf à étage dédié à la lecture et à la recherche.</p>
+            </span>
+          </button>
+          <button type="button" class="campus-tile reveal" data-lightbox="campus" data-full="./Images/campus/place-du-drapeau.webp" data-title="La place du drapeau" data-desc="Massifs fleuris et drapeau national : le lieu des rassemblements et des cérémonies.">
+            <img src="./Images/campus/md/place-du-drapeau.webp" alt="Le drapeau de la RDC au centre de la cour fleurie du collège" loading="lazy" width="960" height="395">
+            <span class="campus-tile__zoom" aria-hidden="true"><i class="fa-solid fa-expand"></i></span>
+            <span class="campus-tile__body">
+              <span class="campus-tile__tag">Cérémonies</span>
+              <h3>La place du drapeau</h3>
+            </span>
+          </button>
+          <button type="button" class="campus-tile reveal" data-lightbox="campus" data-full="./Images/campus/grotte-mariale.webp" data-title="La grotte mariale" data-desc="Un lieu de prière et de recueillement au cœur du campus.">
+            <img src="./Images/campus/md/grotte-mariale.webp" alt="La grotte mariale du Collège Maele avec la statue de la Vierge" loading="lazy" width="960" height="553">
+            <span class="campus-tile__zoom" aria-hidden="true"><i class="fa-solid fa-expand"></i></span>
+            <span class="campus-tile__body">
+              <span class="campus-tile__tag">Spiritualité</span>
+              <h3>La grotte mariale</h3>
+            </span>
+          </button>
+          <button type="button" class="campus-tile campus-tile--wide reveal" data-lightbox="campus" data-full="./Images/campus/cour-arboree.webp" data-title="Les pavillons de classes" data-desc="Les pavillons aux murs de briques entourent une cour ombragée par de grands arbres.">
+            <img src="./Images/campus/md/cour-arboree.webp" alt="Pavillons de classes en briques et grands arbres dans la cour du collège" loading="lazy" width="960" height="432">
+            <span class="campus-tile__zoom" aria-hidden="true"><i class="fa-solid fa-expand"></i></span>
+            <span class="campus-tile__body">
+              <span class="campus-tile__tag">Salles de classe</span>
+              <h3>Les pavillons de classes</h3>
+              <p>Des galeries de briques rouges à l’ombre des grands arbres.</p>
+            </span>
+          </button>
+          <button type="button" class="campus-tile campus-tile--wide reveal" data-lightbox="campus" data-full="./Images/campus/terrain-de-sport.webp" data-title="Le terrain de sport" data-desc="Un vaste terrain pour l’éducation physique, les tournois interclasses et les activités sportives.">
+            <img src="./Images/campus/md/terrain-de-sport.webp" alt="Le terrain de sport du Collège Maele avec panier de basket" loading="lazy" width="960" height="432">
+            <span class="campus-tile__zoom" aria-hidden="true"><i class="fa-solid fa-expand"></i></span>
+            <span class="campus-tile__body">
+              <span class="campus-tile__tag">Sport</span>
+              <h3>Le terrain de sport</h3>
+              <p>Éducation physique, tournois interclasses et activités sportives.</p>
+            </span>
+          </button>
+          <button type="button" class="campus-tile campus-tile--wide reveal" data-lightbox="campus" data-full="./Images/campus/cour-principale.webp" data-title="La cour principale" data-desc="Le cœur du campus, où se croisent élèves et enseignants entre les cours.">
+            <img src="./Images/campus/md/cour-principale.webp" alt="Vue d’ensemble de la cour principale et des bâtiments du collège" loading="lazy" width="960" height="432">
+            <span class="campus-tile__zoom" aria-hidden="true"><i class="fa-solid fa-expand"></i></span>
+            <span class="campus-tile__body">
+              <span class="campus-tile__tag">Vie scolaire</span>
+              <h3>La cour principale</h3>
+              <p>Le cœur du campus, entre pavillons et allées fleuries.</p>
+            </span>
+          </button>
+          <button type="button" class="campus-tile campus-tile--wide reveal" data-lightbox="campus" data-full="./Images/campus/cour-de-recreation.webp" data-title="La cour de récréation" data-desc="Un grand espace ombragé pour la détente et les rencontres entre élèves.">
+            <img src="./Images/campus/md/cour-de-recreation.webp" alt="Élèves dans la cour de récréation ombragée du collège" loading="lazy" width="960" height="432">
+            <span class="campus-tile__zoom" aria-hidden="true"><i class="fa-solid fa-expand"></i></span>
+            <span class="campus-tile__body">
+              <span class="campus-tile__tag">Détente</span>
+              <h3>La cour de récréation</h3>
+              <p>Un grand espace ombragé pour la détente et les rencontres.</p>
+            </span>
+          </button>
+        </div>
+        <p class="campus-hint" aria-hidden="true"><i class="fa-solid fa-hand-pointer"></i>Faites glisser pour découvrir les autres lieux</p>
+      </div>
+    </section>
+
+    <!-- ================= HISTOIRE ================= -->
+    <section class="section section--navy" id="histoire" aria-labelledby="histoire-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Notre héritage</span>
+          <h2 id="histoire-title">Plus de quatre-vingts ans d’histoire</h2>
+          <p>Hommage aux préfets qui ont porté la vision, la discipline et l’excellence du collège, de sa fondation à nos jours.</p>
+        </div>
+        <div class="heritage">
+          <div class="heritage__figure reveal">
+            <figure>
+              <img src="./Images/campus/md/plaque-cinquantenaire.webp" alt="Plaque en bronze : Institut Maele (Sacré-Cœur) de Kisangani, 1939–1989, le cinquantenaire" loading="lazy" width="960" height="549">
+              <figcaption><strong>1939 – 1989 : le cinquantenaire</strong>La plaque offerte par l’Association des anciens élèves des Prêtres du Sacré-Cœur (ASSANESCO) célèbre les cinquante ans de l’Institut Maele.</figcaption>
+            </figure>
+            <div class="heritage__motto">
+              <p>« Impavidi Progrediamur »</p>
+              <span>Avançons sans crainte — la devise du Collège Maele.</span>
+            </div>
+          </div>
+          <ol class="timeline reveal">
+            <li class="timeline__item">
+              <span class="timeline__date">1939 – 1948</span>
+              <h3>Père Wittebols</h3>
+              <p class="timeline__role">Préfet fondateur</p>
+              <p>Il jette les fondements de l’esprit maélien : rigueur, éthique, excellence académique et culture du travail bien fait.</p>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__date">1948 – 1957</span>
+              <h3>Père Neises</h3>
+              <p class="timeline__role">L’ère de la modernisation</p>
+              <p>Sous son impulsion, le collège renforce ses pratiques pédagogiques, son ouverture intellectuelle et l’essor de ses disciplines.</p>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__date">1964 – 1965</span>
+              <h3>Père Roelants Rébelion</h3>
+              <p class="timeline__role">Le développement humain</p>
+              <p>Il met l’accent sur le bien-être des élèves, la vie parascolaire et l’engagement communautaire, pour une éducation plus humaine.</p>
+            </li>
+            <li class="timeline__item timeline__item--highlight">
+              <span class="timeline__date">1989</span>
+              <h3>Le cinquantenaire</h3>
+              <p class="timeline__role">Cinquante ans de l’Institut Maele (Sacré-Cœur)</p>
+              <p>Les anciens élèves célèbrent un demi-siècle d’éducation et scellent leur attachement au collège par une plaque commémorative.</p>
+            </li>
+            <li class="timeline__item">
+              <span class="timeline__date">Période récente</span>
+              <h3>Père Lommel</h3>
+              <p class="timeline__role">Vision &amp; innovation</p>
+              <p>L’école poursuit son innovation pédagogique, tournée vers le développement durable, le leadership et la croissance globale des élèves.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HYMNE ================= -->
+    <section class="section section--ivory" id="hymne" aria-labelledby="hymne-title">
+      <div class="container">
+        <div class="section-head section-head--center reveal">
+          <span class="eyebrow">Patrimoine</span>
+          <h2 id="hymne-title">L’hymne du collège : « La Maélienne »</h2>
+          <p>Un chant de fierté et d’unité, transmis de génération en génération au sein de la communauté maélienne.</p>
+        </div>
+        <div class="hymn">
+          <div class="hymn__player reveal">
+            <span class="eyebrow">Écouter</span>
+            <h3 class="mt-2">La Maélienne</h3>
+            <p>Hymne officiel du Collège Maele</p>
+            <audio controls preload="none">
+              <source src="./Audio/maelienne.mp3" type="audio/mpeg">
+              Votre navigateur ne prend pas en charge la lecture audio.
+            </audio>
+            <div class="hymn__tools">
+              <button type="button" class="btn btn--ghost-light btn--sm" id="copy-lyrics"><i class="fa-regular fa-copy" aria-hidden="true"></i> Copier les paroles</button>
+              <a class="btn btn--ghost-light btn--sm" id="download-lyrics" href="#hymne" download="Hymne-College-Maele.txt"><i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i> Télécharger</a>
+            </div>
+            <p class="hymn__credits">Paroles : Abbé Buse Meluna · Musique : Chovu, Colonel<br>Fait à Mandombe, le 28 février 1886.</p>
+          </div>
+          <div class="hymn__verses reveal" id="lyrics-text">
+            <article class="verse">
+              <p class="verse__label">Première partie</p>
+              <div class="verse__body">
+                <p>Salut à toi, ô noble source,<br>D’où jaillit la vie si douce<br>Creuset d’amour et des sciences<br>Maele, nous te chantons.</p>
+                <p>Ô toi noble berceau<br>Tu nous pousses au plus haut<br>Tu nous armes pour la vie.</p>
+                <p>Que ta splendeur brille à jamais<br>Au jour le jour dans notre vie,<br>Afin que tous réalisions, réalisions, réalisions</p>
+                <p>La grande et belle issue<br>Que nous prépares l’institut.</p>
+              </div>
+            </article>
+            <article class="verse verse--refrain">
+              <p class="verse__label">Deuxième partie</p>
+              <div class="verse__body">
+                <p>Apprends-nous, ô toi notre Mère,<br>La sagesse et la technique<br>Latin-Philo, math physique<br>Patrimoine séculaire</p>
+                <p>Mais surtout apprends-nous<br>À aimer, à servir<br>Notre beau pays : Congo.</p>
+                <p>Ma-e-liens, main dans la main<br>Marchons sans peur du lendemain,<br>Transformons tout sur nos chemins, sur nos chemins, sur nos chemins</p>
+                <p>Que le bon Dieu bénisse<br>Tous nos efforts d’étudiants !</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ÉQUIPE ================= -->
+    <section class="section" id="equipe" aria-labelledby="equipe-title">
+      <div class="container">
+        <div class="section-head section-head--split reveal">
+          <div>
+            <span class="eyebrow">Gouvernance</span>
+            <h2 id="equipe-title">La direction du collège</h2>
+            <p>Une équipe de direction engagée au service du projet éducatif, de la réussite et du bien-être des élèves.</p>
+          </div>
+        </div>
+        <div class="leaders leaders--featured reveal">
+          <article class="leader">
+            <div class="leader__photo"><img src="./Images/direction/portraits/prefet.webp" alt="Portrait de M. Jean-Claude Kazadi" loading="lazy" width="480" height="600"></div>
+            <div class="leader__body"><p class="leader__role">Préfet des études</p><h3>M. Jean-Claude Kazadi</h3></div>
+          </article>
+          <article class="leader">
+            <div class="leader__photo"><img src="./Images/direction/portraits/directeur-etudes-essymandra.webp" alt="Portrait de M. Richard Essymandra" loading="lazy" width="480" height="600"></div>
+            <div class="leader__body"><p class="leader__role">Directeur des études</p><h3>M. Richard Essymandra</h3></div>
+          </article>
+          <article class="leader">
+            <div class="leader__photo"><img src="./Images/direction/portraits/directeur-etudes-lugaluga.webp" alt="Portrait de M. Clément Lugaluga" loading="lazy" width="480" height="600"></div>
+            <div class="leader__body"><p class="leader__role">Directeur des études</p><h3>M. Clément Lugaluga</h3></div>
+          </article>
+          <article class="leader">
+            <div class="leader__photo"><img src="./Images/direction/portraits/directeur-discipline.webp" alt="Portrait de M. Pierre Kasongo" loading="lazy" width="480" height="600"></div>
+            <div class="leader__body"><p class="leader__role">Directeur de discipline</p><h3>M. Pierre Kasongo</h3></div>
+          </article>
+          <article class="leader">
+            <div class="leader__photo"><img src="./Images/Professeurs/portraits/3.webp" alt="Portrait de Sœur Yuma Safinia" loading="lazy" width="480" height="600"></div>
+            <div class="leader__body"><p class="leader__role">Intendante</p><h3>Sœur Yuma Safinia</h3></div>
+          </article>
         </div>
 
-        <!-- Remplacer l’URL finale de la page Facebook officielle de l’école ici -->
-        <div class="fb-page-wrapper">
-          <div class="fb-page"
-               data-href="https://web.facebook.com/profile.php?id=61594951737384"
-               data-tabs="timeline"
-               data-width="500"
-               data-height="600"
-               data-small-header="false"
-               data-adapt-container-width="true"
-               data-hide-cover="false"
-               data-show-facepile="true">
+        <div class="section-head section-head--split mt-6 reveal" style="margin-top: clamp(3.5rem, 7vw, 5rem);">
+          <div>
+            <span class="eyebrow">Corps professoral</span>
+            <h2>Des enseignants passionnés</h2>
+            <p>Sciences, mathématiques, langues, sciences humaines, arts et formation humaine : découvrez quelques-uns des professeurs qui font vivre le collège au quotidien.</p>
+          </div>
+          <a class="btn btn--primary" href="./profs.html">Tous les professeurs <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="faculty-grid faculty-grid--5" id="faculty-preview" data-count="10" aria-live="polite">
+          <noscript><p>Consultez la <a href="./profs.html">liste complète des professeurs</a>.</p></noscript>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIE SCOLAIRE ================= -->
+    <section class="section section--ivory" id="vie-scolaire" aria-labelledby="vie-title">
+      <div class="container split split--wide-right">
+        <div class="mosaic reveal">
+          <figure><img src="./Images/campus/md/cour-de-recreation.webp" alt="Élèves dans la cour du Collège Maele" loading="lazy" width="960" height="432"></figure>
+          <figure><img src="./Images/campus/md/terrain-de-sport.webp" alt="Le terrain de sport du collège" loading="lazy" width="960" height="432"></figure>
+          <figure><img src="./Images/campus/md/grotte-mariale.webp" alt="La grotte mariale, lieu de recueillement" loading="lazy" width="960" height="553"></figure>
+        </div>
+        <div class="reveal">
+          <span class="eyebrow">Vie scolaire</span>
+          <h2 class="mt-2" id="vie-title" style="font-size: clamp(2rem, 4.2vw, 3rem);">Grandir ensemble, au-delà de la classe</h2>
+          <p class="lead mt-2">Le Bureau des Élèves (BDE) donne aux élèves l’occasion de faire vivre leur école : il soutient les idées, rassemble les équipes et organise des activités tout au long de l’année.</p>
+          <ul class="life-list">
+            <li><i class="fa-solid fa-masks-theater" aria-hidden="true"></i><div><strong>Culture &amp; événements</strong><span>Journées culturelles, animations et célébrations.</span></div></li>
+            <li><i class="fa-solid fa-futbol" aria-hidden="true"></i><div><strong>Sport</strong><span>Tournois et rencontres entre les classes.</span></div></li>
+            <li><i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i><div><strong>Solidarité</strong><span>Actions collectives et initiatives caritatives.</span></div></li>
+            <li><i class="fa-solid fa-church" aria-hidden="true"></i><div><strong>Vie spirituelle</strong><span>Catéchèse, célébrations et temps de recueillement.</span></div></li>
+            <li><i class="fa-solid fa-map-location-dot" aria-hidden="true"></i><div><strong>Découvertes</strong><span>Sorties et visites à visée pédagogique.</span></div></li>
+            <li><i class="fa-solid fa-book-open-reader" aria-hidden="true"></i><div><strong>Lecture</strong><span>La bibliothèque, ouverte au travail personnel.</span></div></li>
+          </ul>
+          <div class="actions mt-4">
+            <a class="btn btn--primary" href="./contact.html?motif=information"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i>Proposer une activité</a>
+            <a class="btn btn--outline" href="./galerie.html">Voir la galerie</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ADMISSIONS ================= -->
+    <section class="section section--navy" id="admissions" aria-labelledby="admissions-title">
+      <div class="container">
+        <div class="section-head section-head--center reveal">
+          <span class="eyebrow">Admissions</span>
+          <h2 id="admissions-title">Rejoindre le Collège Maele</h2>
+          <p>Vous souhaitez inscrire votre enfant ? Voici les grandes étapes. Le secrétariat vous accompagne et vous communique le calendrier ainsi que les modalités en vigueur.</p>
+        </div>
+        <ol class="steps reveal">
+          <li class="step"><h3>Prendre contact</h3><p>Écrivez-nous ou passez au secrétariat pour exprimer votre demande d’inscription.</p></li>
+          <li class="step"><h3>Constituer le dossier</h3><p>Rassemblez les pièces demandées par le secrétariat pour la classe visée.</p></li>
+          <li class="step"><h3>Rencontrer l’école</h3><p>Échangez avec la direction des études sur le parcours et le projet de l’élève.</p></li>
+          <li class="step"><h3>Confirmer l’inscription</h3><p>Finalisez l’inscription et préparez sereinement la rentrée scolaire.</p></li>
+        </ol>
+        <div class="admissions-cta reveal">
+          <div>
+            <h3>Pièces généralement demandées</h3>
+            <ul>
+              <li><i class="fa-solid fa-check" aria-hidden="true"></i>Bulletins scolaires récents</li>
+              <li><i class="fa-solid fa-check" aria-hidden="true"></i>Pièce d’identité ou acte de naissance</li>
+              <li><i class="fa-solid fa-check" aria-hidden="true"></i>Photos d’identité</li>
+              <li><i class="fa-solid fa-check" aria-hidden="true"></i>Attestation de l’école précédente</li>
+            </ul>
+            <small>Liste indicative : la liste officielle vous est remise par le secrétariat.</small>
+          </div>
+          <div class="admissions-cta__actions">
+            <a class="btn btn--gold" href="./contact.html?motif=inscription"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i>Demande d’inscription</a>
+            <a class="btn btn--ghost-light" href="tel:+243815493115"><i class="fa-solid fa-phone" aria-hidden="true"></i>Appeler</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ACTUALITÉS ================= -->
+    <section class="section" id="actualites" aria-labelledby="actus-title">
+      <div class="container news-grid">
+        <div class="reveal">
+          <span class="eyebrow">Actualités</span>
+          <h2 class="mt-2" id="actus-title" style="font-size: clamp(2rem, 4.2vw, 3rem);">Suivez la vie du collège</h2>
+          <p class="lead mt-2">Événements, cérémonies, résultats et annonces : retrouvez les dernières nouvelles du Collège Maele sur notre page Facebook officielle et sur le blog de l’école.</p>
+          <div class="grid grid--2 mt-4">
+            <a class="card" href="./pages/accueil.html" style="text-decoration:none;">
+              <span class="icon-badge"><i class="fa-regular fa-newspaper" aria-hidden="true"></i></span>
+              <h3 style="font-size:1.4rem;">Le blog</h3>
+              <p>Articles, projets et publications de la communauté.</p>
+            </a>
+            <a class="card" href="https://web.facebook.com/profile.php?id=61594951737384" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+              <span class="icon-badge"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></span>
+              <h3 style="font-size:1.4rem;">Facebook</h3>
+              <p>Les publications officielles, au jour le jour.</p>
+            </a>
+          </div>
+        </div>
+        <div class="fb-frame reveal" data-fb-lazy>
+          <div class="fb-page" data-href="https://web.facebook.com/profile.php?id=61594951737384" data-tabs="timeline" data-width="500" data-height="560" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false">
             <blockquote cite="https://web.facebook.com/profile.php?id=61594951737384" class="fb-xfbml-parse-ignore">
-              <a href="https://web.facebook.com/profile.php?id=61594951737384">Page Facebook de l'école</a>
+              <div class="fb-placeholder"><i class="fa-brands fa-facebook" aria-hidden="true"></i>Chargement du fil d’actualité…<br><a href="https://web.facebook.com/profile.php?id=61594951737384" target="_blank" rel="noopener noreferrer">Ouvrir la page Facebook du collège</a></div>
             </blockquote>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="bg-gray-800 text-white">
-        <div class="container mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div class="md:col-span-1"><h3 class="text-xl font-bold mb-4">Collège Maele</h3><p class="text-gray-400">Former les leaders de demain avec excellence et intégrité.</p></div>
-                <div><h4 class="font-semibold mb-4">Liens Rapides</h4><ul class="space-y-2"><li><a href="#a-propos" class="text-gray-400 hover:text-white">À Propos</a></li><li><a href="#equipe" class="text-gray-400 hover:text-white">Notre Équipe</a></li><li><a href="./pages/accueil.html" class="text-gray-400 hover:text-white">Blog</a></li><li><a href="/contact.html" class="text-gray-400 hover:text-white">Contact</a></li></ul></div>
-                 <div><h4 class="font-semibold mb-4">Contact Info</h4><ul class="space-y-2 text-gray-400"><li>Boulevard Lumumba N02, Quartier Des Musiciens, MAKISO,</li><li>Kisangani, RDC</li><li>contact@college-maele.com</li></ul></div>
-                 <div><h4 class="font-semibold mb-4">Suivez-nous</h4><div class="flex space-x-3"><a href="https://wa.me/243812345678" aria-label="WhatsApp du Collège Maele" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-green-300 transition hover:-translate-y-0.5 hover:bg-green-600 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-300"><i class="fab fa-whatsapp" aria-hidden="true"></i></a><a href="https://web.facebook.com/profile.php?id=61594951737384" target="_blank" rel="noopener noreferrer" aria-label="Page Facebook officielle du Collège Maele (nouvel onglet)" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white transition hover:-translate-y-0.5 hover:bg-[#1877F2] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-300"><i class="fab fa-facebook-f" aria-hidden="true"></i></a><a href="https://instagram.com" aria-label="Instagram du Collège Maele" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-pink-300 transition hover:-translate-y-0.5 hover:bg-pink-600 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-300"><i class="fab fa-instagram" aria-hidden="true"></i></a><a href="https://www.linkedin.com" aria-label="LinkedIn du Collège Maele" class="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-sky-300 transition hover:-translate-y-0.5 hover:bg-sky-600 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-300"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></div></div>
-            </div>
-            <div class="border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">© <span id="current-year">2026</span> Collège Maele, Design by <a href="https://davidwawina.site" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-white">Optimum Entreprise</a>.</div>
+    <!-- ================= SOUTENIR ================= -->
+    <section class="section section--ivory" id="soutenir" aria-labelledby="soutenir-title">
+      <div class="container">
+        <div class="section-head section-head--center reveal">
+          <span class="eyebrow">Un geste pour l’école</span>
+          <h2 id="soutenir-title">Soutenir le Collège Maele</h2>
+          <p>Anciens élèves, parents et amis du collège : votre contribution soutient les projets éducatifs, l’entretien du patrimoine et la vie de la communauté.</p>
         </div>
-    </footer>
-
-     <!-- MODALS SECTION -->
-    <div id="don-mobile" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 opacity-0">
-        <div class="modal-content bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl transform scale-95 opacity-0">
-            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">×</button>
-            <div class="text-center"><i class="fas fa-mobile-alt text-5xl text-blue-500 mb-4"></i><h3 class="text-2xl font-bold mb-4">Don par Paiement Mobile</h3></div>
-            <p class="text-center text-gray-600 mb-6">Envoyez votre don à l'un des numéros ci-dessous.</p>
-            <div class="space-y-3 text-lg"><p><strong>Airtel Money:</strong> +243 99 86 73 432</p><p><strong>M-Pesa:</strong> +243 81 54 93 115 </p><p><strong>Orange Money:</strong> +243 85 14 24 534  </p></div>
+        <div class="support">
+          <article class="card reveal">
+            <span class="icon-badge"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i></span>
+            <h3>Mobile Money</h3>
+            <p>Contribuez simplement par Airtel Money, M-Pesa ou Orange Money.</p>
+            <button type="button" class="btn btn--primary" data-dialog-open="don-mobile">Afficher les numéros</button>
+          </article>
+          <article class="card card--featured reveal">
+            <span class="icon-badge icon-badge--gold"><i class="fa-solid fa-building-columns" aria-hidden="true"></i></span>
+            <h3>Virement bancaire</h3>
+            <p>Retrouvez les coordonnées bancaires officielles du collège pour effectuer un virement.</p>
+            <button type="button" class="btn btn--gold" data-dialog-open="don-banque">Voir les coordonnées</button>
+          </article>
+          <article class="card reveal">
+            <span class="icon-badge"><i class="fa-solid fa-box-open" aria-hidden="true"></i></span>
+            <h3>Don matériel</h3>
+            <p>Livres, matériel didactique ou mobilier : parlons ensemble de votre proposition.</p>
+            <a class="btn btn--outline" href="./contact.html?motif=partenariat">Nous contacter</a>
+          </article>
         </div>
-    </div>
-    <div id="don-banque" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 opacity-0">
-        <div class="modal-content bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl transform scale-95 opacity-0">
-            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">×</button>
-            <div class="text-center"><i class="fas fa-university text-5xl text-blue-700 mb-4"></i><h3 class="text-2xl font-bold mb-4">Don par virement bancaire</h3></div>
-            <p class="text-center text-gray-600 mb-6">Utilisez ces coordonnées pour effectuer votre virement.</p>
-            <div class="space-y-3 text-left text-md bg-gray-100 p-4 rounded-lg"><p><strong>Nom du Compte:</strong> Collège Maele</p><p><strong>Banque:</strong> SMICO</p><p><strong>Numéro de Compte:</strong> KS000174</p></div>
+      </div>
+    </section>
+
+    <!-- ================= APPEL FINAL ================= -->
+    <section class="section section--tight">
+      <div class="container">
+        <div class="cta-band reveal">
+          <div>
+            <span class="eyebrow">Visite &amp; information</span>
+            <h2 class="mt-2">Venez découvrir le Collège Maele</h2>
+            <p>Une question sur nos parcours, une demande d’inscription ou l’envie de visiter le campus ? Notre équipe vous répond volontiers.</p>
+          </div>
+          <div class="cta-band__actions">
+            <a class="btn btn--gold" href="./contact.html">Nous écrire</a>
+            <a class="btn btn--ghost-light" href="https://wa.me/243815493115" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i>WhatsApp</a>
+          </div>
         </div>
-    </div>
-    <div id="don-principal" class="modal fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4 opacity-0">
-        <div class="modal-content bg-white w-full max-w-lg p-8 rounded-2xl shadow-2xl transform scale-95 opacity-0">
-            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl">×</button>
-            <div class="text-center"><i class="fas fa-donate text-5xl text-blue-600 mb-4"></i><h3 class="text-2xl font-bold mb-4">Choisissez votre mode de Don</h3></div>
-            <p class="text-center text-gray-600 mb-8">Sélectionnez la méthode qui vous convient.</p>
-            <div class="flex flex-col md:flex-row gap-4">
-                <button data-modal-target="don-mobile" class="flex-1 bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition">Mobile Money</button>
-                <button data-modal-target="don-banque" class="flex-1 bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-800 transition">Virement bancaire</button>
-            </div>
+      </div>
+    </section>
+
+    <!-- ================= BOÎTES DE DIALOGUE ================= -->
+    <dialog class="modal" id="don-mobile" aria-labelledby="don-mobile-title">
+      <div class="modal__head">
+        <button type="button" class="modal__close" data-dialog-close aria-label="Fermer"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        <h2 id="don-mobile-title">Don par Mobile Money</h2>
+        <p>Envoyez votre contribution à l’un des numéros ci-dessous.</p>
+      </div>
+      <div class="modal__body">
+        <ul class="pay-list">
+          <li><span><strong>Airtel Money</strong><br><span class="num">+243 99 86 73 432</span></span><button type="button" class="copy-btn" data-copy="+243998673432"><i class="fa-regular fa-copy" aria-hidden="true"></i> Copier</button></li>
+          <li><span><strong>M-Pesa</strong><br><span class="num">+243 81 54 93 115</span></span><button type="button" class="copy-btn" data-copy="+243815493115"><i class="fa-regular fa-copy" aria-hidden="true"></i> Copier</button></li>
+          <li><span><strong>Orange Money</strong><br><span class="num">+243 85 14 24 534</span></span><button type="button" class="copy-btn" data-copy="+243851424534"><i class="fa-regular fa-copy" aria-hidden="true"></i> Copier</button></li>
+        </ul>
+        <p class="muted mt-2" style="font-size:.875rem;">Pour un reçu, indiquez votre nom et l’objet du don en nous écrivant via la page contact.</p>
+        <button type="button" class="btn btn--outline btn--block mt-3" data-dialog-open="don-banque">Préférer un virement bancaire</button>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="don-banque" aria-labelledby="don-banque-title">
+      <div class="modal__head">
+        <button type="button" class="modal__close" data-dialog-close aria-label="Fermer"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        <h2 id="don-banque-title">Don par virement bancaire</h2>
+        <p>Utilisez ces coordonnées pour effectuer votre virement.</p>
+      </div>
+      <div class="modal__body">
+        <ul class="pay-list">
+          <li><span><strong>Titulaire du compte</strong><br><span class="num">Collège Maele</span></span></li>
+          <li><span><strong>Banque</strong><br><span class="num">SMICO</span></span></li>
+          <li><span><strong>Numéro de compte</strong><br><span class="num">KS000174</span></span><button type="button" class="copy-btn" data-copy="KS000174"><i class="fa-regular fa-copy" aria-hidden="true"></i> Copier</button></li>
+        </ul>
+        <button type="button" class="btn btn--outline btn--block mt-3" data-dialog-open="don-mobile">Préférer Mobile Money</button>
+      </div>
+    </dialog>
+
+    <dialog class="modal modal--profile" id="teacher-profile" aria-labelledby="teacher-profile-name">
+      <button type="button" class="modal__close" data-dialog-close aria-label="Fermer le profil"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+      <div class="profile">
+        <div class="profile__photo"><img data-p-photo src="" alt=""></div>
+        <div class="profile__body">
+          <span class="eyebrow">Corps professoral</span>
+          <h2 class="mt-1" id="teacher-profile-name" data-p-name></h2>
+          <div class="profile__tags" data-p-tags></div>
+          <p class="profile__text" data-p-text></p>
+          <div class="profile__context"><img data-p-context src="" alt="" loading="lazy"></div>
+          <div class="profile__nav">
+            <button type="button" class="btn btn--outline btn--sm" data-p-prev><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Précédent</button>
+            <span class="muted" data-p-pos style="align-self:center;font-size:.85rem;"></span>
+            <button type="button" class="btn btn--outline btn--sm" data-p-next>Suivant <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+          </div>
         </div>
-    </div>
+      </div>
+    </dialog>
 
-    <!-- Photo Gallery Modal -->
-    <div id="gallery-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="relative max-w-[90vw] w-full">
-            <button id="modal-close" class="absolute -top-12 right-0 text-white text-4xl">×</button>
-            <img id="modal-img" src="" alt="Image de la galerie" class="w-full max-w-[90vw] max-h-[75vh] rounded-lg shadow-2xl object-contain">
-            <p id="modal-caption" class="mt-3 text-sm text-gray-200 text-center"></p>
-            <button id="modal-prev" class="absolute top-1/2 -translate-y-1/2 left-4 text-white text-3xl bg-black/30 p-2 rounded-full"><i class="fas fa-chevron-left"></i></button>
-            <button id="modal-next" class="absolute top-1/2 -translate-y-1/2 right-4 text-white text-3xl bg-black/30 p-2 rounded-full"><i class="fas fa-chevron-right"></i></button>
-        </div>
-    </div>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-
-    // --- HAMBURGER MENU ---
-    const hamburgerButton = document.getElementById('hamburger-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const closeMenuButton = document.getElementById('close-menu-button');
-    const mobileLinks = document.querySelectorAll('.mobile-link');
-
-    // Ensure the menu is completely non-interactive when closed
-    if (mobileMenu) {
-      mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
-      mobileMenu.setAttribute('aria-hidden', 'true');
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "School",
+      "name": "Collège Maele",
+      "alternateName": ["Institut Maele (Sacré-Cœur)", "College Maele Kisangani"],
+      "url": "https://www.college-maele.com/",
+      "logo": "https://www.college-maele.com/Images/Oiseaux.jpeg",
+      "image": "https://www.college-maele.com/Images/campus/entree-principale.webp",
+      "description": "École conventionnée catholique de l’Archidiocèse de Kisangani offrant l’éducation de base et les humanités scientifiques et littéraires depuis 1939.",
+      "slogan": "Impavidi Progrediamur",
+      "foundingDate": "1939",
+      "founder": { "@type": "Person", "name": "Père Wittebols" },
+      "telephone": "+243815493115",
+      "email": "contact@college-maele.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Boulevard Lumumba N°2, Quartier des Musiciens, Makiso",
+        "addressLocality": "Kisangani",
+        "addressRegion": "Tshopo",
+        "addressCountry": "CD"
+      },
+      "geo": { "@type": "GeoCoordinates", "latitude": 0.5167, "longitude": 25.2 },
+      "sameAs": ["https://web.facebook.com/profile.php?id=61594951737384"]
     }
-
-    if (hamburgerButton) {
-      hamburgerButton.setAttribute('aria-expanded', 'false');
-      hamburgerButton.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const closed = mobileMenu.classList.contains('translate-x-full') || mobileMenu.getAttribute('aria-hidden') === 'true';
-        if (closed) {
-          // open menu: make interactive and visible
-          mobileMenu.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
-          mobileMenu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          mobileMenu.setAttribute('aria-hidden', 'false');
-          hamburgerButton.setAttribute('aria-expanded', 'true');
-          // focus first link if any
-          setTimeout(() => mobileMenu.querySelector('.mobile-link')?.focus(), 120);
-        } else {
-          // close
-          mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
-          mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-          mobileMenu.setAttribute('aria-hidden', 'true');
-          hamburgerButton.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
-
-    // Close handlers
-    closeMenuButton?.addEventListener('click', () => {
-      mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
-      mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      hamburgerButton?.setAttribute('aria-expanded', 'false');
-    });
-
-    mobileLinks.forEach(link => link.addEventListener('click', () => {
-      mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
-      mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      hamburgerButton?.setAttribute('aria-expanded', 'false');
-    }));
-
-    // click outside to close
-    document.addEventListener('click', (ev) => {
-      if (!mobileMenu) return;
-      const isOpen = !mobileMenu.classList.contains('translate-x-full') && mobileMenu.getAttribute('aria-hidden') !== 'true';
-      if (!isOpen) return;
-      const clickInside = mobileMenu.contains(ev.target) || hamburgerButton?.contains(ev.target);
-      if (!clickInside) {
-        mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
-        mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-        mobileMenu.setAttribute('aria-hidden', 'true');
-        hamburgerButton?.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    // close on Escape
-    document.addEventListener('keydown', (ev) => {
-      if (ev.key === 'Escape' && mobileMenu && mobileMenu.getAttribute('aria-hidden') === 'false') {
-        mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
-        mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
-        mobileMenu.setAttribute('aria-hidden', 'true');
-        hamburgerButton?.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-        // --- BACKGROUND SLIDER ---
-        const bgSlider = document.getElementById('bg-slider');
-        const slides = bgSlider.querySelectorAll('.bg-slide');
-        const prevBtn = document.getElementById('prev-slide');
-        const nextBtn = document.getElementById('next-slide');
-        let currentSlide = 0;
-        let slideInterval;
-
-        function showSlide(index) {
-            slides.forEach((slide, i) => { slide.style.opacity = i === index ? '1' : '0'; });
-            currentSlide = index;
-        }
-        function nextSlide() { showSlide((currentSlide + 1) % slides.length); }
-        function prevSlide() { showSlide((currentSlide - 1 + slides.length) % slides.length); }
-        function startSlider() { slideInterval = setInterval(nextSlide, 7000); }
-        function stopSlider() { clearInterval(slideInterval); }
-        nextBtn.addEventListener('click', () => { nextSlide(); stopSlider(); startSlider(); });
-        prevBtn.addEventListener('click', () => { prevSlide(); stopSlider(); startSlider(); });
-        bgSlider.addEventListener('mouseenter', () => { stopSlider(); showSlide(0); });
-        bgSlider.addEventListener('mouseleave', startSlider);
-        startSlider();
-
-        // --- SCROLL ANIMATIONS ---
-        const animatedSections = document.querySelectorAll('.animated-section');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        animatedSections.forEach(section => observer.observe(section));
-        
-        // --- TEACHER CAROUSEL (41 items, smooth animation) ---
-        const teacherCarouselTrack = document.getElementById('teacher-carousel-track');
-        const teacherPrevBtn = document.getElementById('teacher-prev');
-        const teacherNextBtn = document.getElementById('teacher-next');
-        let teacherCurrentIndex = 0;
-        let teacherSlidesToShow = getTeacherSlidesToShow();
-        let teacherAutoScroll;
-
-        const matieres = ["Mathématiques", "Physique", "Chimie", "Français", "Histoire", "Géographie", "Anglais", "Biologie", "Philosophie", "Sport"];
-        // base path to prof images (Django will render this)
-        const profBase = "./Images/Professeurs/";
-
-    // clear any existing content then create cards using the provided 41 professeurs
-    teacherCarouselTrack.innerHTML = '';
-    // Map explicite nom -> fichier pour l'ensemble des professeurs (assure la correspondance exacte)
-    const explicitPhotos = {
-      'Trésor KISONDOKOLO': '1.png',
-      'Germaine HAWA SUNGA': '2.png',
-      'Sœur YUMA SAFINIA': '3.png',
-      'Hubert KATAPULU': '4.png',
-      'Jean de la Croix KATSUVA': '5png.png',
-      'Diaz MATIKALI': '6.png',
-      'Cédric KAYEMBE': '7.png',
-      'Yvon TSHITENDA': '8.png',
-      'Scolastique AMISI': '9.png',
-      'Jephté MUMBERE': '12.png',
-      'Luc BOMBANGA': '10.png',
-      'Alain OTEPA': '11.png',
-      'Grâce AMBWA': '13.png',
-      'Peter KAKEYI': '14.png',
-      'Faustin LINGOMBO MONDENGA': '15.png',
-      'Michel KILYOBO KIMWANGA': '16.png',
-      'Floribert ILONGA BIKI': '17.png',
-      'Paulin KASONGO NSENGA': '18.png',
-      'John KAMANGO': '19.png',
-      'Edo KAPITA': '20.png',
-      'Justin NGONGO KIBONDO': '21.png',
-      'Alfonse IGWANGOZI BUMBA': '22.png',
-      'Gérard BASILA LABAMA': '23.png',
-      'Joseph LITETE BOBINA': '24.png',
-      'Lucien RAMAZANI MUNGANGA': '25.png',
-      'Donat MWAMBA WETU TSHIALU': '26.png',
-      'Édouard LOBOLO AMURI': '27.png',
-      'Alain AMSINI': '28.png',
-      'Georges LIKENGE LOTIKA': '29.png',
-      'Marie BOYOMA MATOLO': '30.png',
-      'Martin MUHINDO BUSANGI': '31.png',
-      'José MAKANGA': '32.png',
-      'Jean Floribert Mondondo Mongita': '33.png',
-      'Evariste LITHO LOULA': '34.png',
-      'Père Joseph-Prince EKAGNY': '35.png',
-      'Rachel SOMANA': '36.png',
-      'François KOSHI KILOLO': '37.png',
-      'Franck YANYONGO MAINGOLO': '38.png',
-      'Franck MUMBERE': '39.png',
-      'Albert BUKASA': '40.png',
-      'Prof Dieu-Merci BOLONGE': '41.png',
-      'Emmanuel AMURI': '42.png',
-    };
-        const profsList = [
-            ["Trésor KISONDOKOLO","Technologie de science physique"],
-            ["Germaine HAWA SUNGA","Éducation à la vie"],
-            ["Sœur YUMA SAFINIA","Catéchèse"],
-            ["Hubert KATAPULU","Chimie"],
-            ["Jean de la Croix KATSUVA","Anglais"],
-            ["Diaz MATIKALI","Français"],
-            ["Cédric KAYEMBE","Mathématique et sciences physique et technologie"],
-            ["Yvon TSHITENDA","Dessin scientifique, physique et mathématiques"],
-            ["Scolastique AMISI","TIC"],
-            ["Jephté MUMBERE","Latin et français"],
-            ["Luc BOMBANGA","Éducation à la vie"],
-            ["Alain OTEPA","Français"],
-            ["Grâce AMBWA","Anglais"],
-            ["Peter KAKEYI","SVT"],
-            ["Faustin LINGOMBO MONDENGA","Français"],
-            ["Michel KILYOBO KIMWANGA","SVT et Chimie"],
-            ["Floribert ILONGA BIKI","Mathématiques"],
-            ["Paulin KASONGO NSENGA","Anglais"],
-            ["John KAMANGO","SVT"],
-            ["Edo KAPITA","Mathématiques"],
-            ["Justin NGONGO KIBONDO","Mathématiques"],
-            ["Alfonse IGWANGOZI BUMBA","Français"],
-            ["Gérard BASILA LABAMA","Éducation Physique"],
-            ["Joseph LITETE BOBINA","SVT"],
-            ["Lucien RAMAZANI MUNGANGA","Géographie"],
-            ["Donat MWAMBA WETU TSHIALU","Français"],
-            ["Édouard LOBOLO AMURI","Anglais"],
-            ["Alain AMSINI","Français"],
-            ["Georges LIKENGE LOTIKA","Mathématiques"],
-            ["Marie BOYOMA MATOLO","Dessin"],
-            ["Martin MUHINDO BUSANGI","Mathématiques"],
-            ["José MAKANGA","Bibliothécaire"],
-            ["Jean Floribert Mondondo Mongita","Histoire"],
-            ["Evariste LITHO LOULA","Français"],
-            ["Père Joseph-Prince EKAGNY","Religion"],
-            ["Rachel SOMANA","Dessin"],
-            ["François KOSHI KILOLO","Géographie"],
-            ["Franck YANYONGO MAINGOLO","TIC"],
-            ["Franck MUMBERE","Latin"],
-            ["Albert BUKASA","Histoire"],
-            ["Prof Dieu-Merci BOLONGE","Physique"],
-            ["Emmanuel AMURI","Professeur et Surveillant"],
-        ];
-
-        const surnameOf = name => name.trim().split(/\s+/).pop();
-        profsList.sort((first, second) =>
-          surnameOf(first[0]).localeCompare(surnameOf(second[0]), 'fr', { sensitivity: 'base' }) ||
-          first[0].localeCompare(second[0], 'fr', { sensitivity: 'base' })
-        );
-        const TEACHER_COUNT = profsList.length;
-
-    profsList.forEach((p, index) => {
-            const i = index + 1;
-            const name = p[0];
-            const subject = p[1];
-      const filename = explicitPhotos[name] || ((i === 5) ? '5png.png' : `${i}.png`);
-            const src = profBase + filename;
-            const card = document.createElement('div');
-            card.className = 'flex-shrink-0 w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2';
-            card.innerHTML = `
-              <article class="teacher-profile-card">
-                <div class="teacher-profile-avatar">
-                  <img src="${src}" alt="${name}" loading="lazy">
-                </div>
-                <h4>${name}</h4>
-                <p>${subject}</p>
-              </article>
-            `;
-            teacherCarouselTrack.appendChild(card);
-        });
-
-        // make the track animate smoothly
-        teacherCarouselTrack.style.transition = 'transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1)';
-
-        function getTeacherSlidesToShow() {
-            if (window.innerWidth >= 1280) return 5; if (window.innerWidth >= 1024) return 4; if (window.innerWidth >= 768) return 3; return 2;
-        }
-
-        function updateTeacherCarousel(animate = true) {
-            const firstChild = teacherCarouselTrack.children[0];
-            if (!firstChild) return;
-            const cardWidth = firstChild.getBoundingClientRect().width + parseFloat(getComputedStyle(firstChild).marginRight || 0);
-            teacherCarouselTrack.style.transform = `translateX(-${teacherCurrentIndex * cardWidth}px)`;
-        }
-
-        function moveTeacherCarousel(direction) {
-            const totalItems = TEACHER_COUNT;
-            teacherCurrentIndex += direction;
-            // clamp between 0 and max start index
-            const maxStart = Math.max(0, totalItems - teacherSlidesToShow);
-            if (teacherCurrentIndex < 0) teacherCurrentIndex = maxStart;
-            if (teacherCurrentIndex > maxStart) teacherCurrentIndex = 0;
-            updateTeacherCarousel();
-        }
-
-        function startTeacherAutoScroll() { teacherAutoScroll = setInterval(() => moveTeacherCarousel(1), 4000); }
-        function stopTeacherAutoScroll() { clearInterval(teacherAutoScroll); }
-
-        teacherNextBtn?.addEventListener('click', () => { moveTeacherCarousel(1); stopTeacherAutoScroll(); startTeacherAutoScroll(); });
-        teacherPrevBtn?.addEventListener('click', () => { moveTeacherCarousel(-1); stopTeacherAutoScroll(); startTeacherAutoScroll(); });
-        window.addEventListener('resize', () => { teacherSlidesToShow = getTeacherSlidesToShow(); updateTeacherCarousel(); });
-
-        // ensure initial layout and start
-        setTimeout(() => { teacherSlidesToShow = getTeacherSlidesToShow(); updateTeacherCarousel(); startTeacherAutoScroll(); }, 50);
-
-        // --- DYNAMIC PHOTO GALLERY ---
-        const photoGallery = document.getElementById('photo-gallery');
-        const galleryModal = document.getElementById('gallery-modal');
-        const modalImg = document.getElementById('modal-img');
-        const modalClose = document.getElementById('modal-close');
-        const modalPrev = document.getElementById('modal-prev');
-        const modalNext = document.getElementById('modal-next');
-
-          // ancienne implémentation de la galerie supprimée (remplacée par la version unifiée plus haut)
-
-        // --- DONATION MODALS LOGIC ---
-        const allModals = document.querySelectorAll('.modal');
-        const modalTriggers = document.querySelectorAll('[data-modal-target]');
-
-        modalTriggers.forEach(button => {
-            button.addEventListener('click', () => {
-                const targetModalId = button.getAttribute('data-modal-target');
-                const targetModal = document.getElementById(targetModalId);
-                if (targetModal) {
-                    allModals.forEach(m => m.classList.add('hidden')); // Close any open modal
-                    openModal(targetModal);
-                }
-            });
-        });
-        
-        allModals.forEach(modal => {
-            const closeButton = modal.querySelector('.modal-close');
-            if (closeButton) {
-                closeButton.addEventListener('click', () => closeModal(modal));
-            }
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal(modal);
-            });
-        });
-
-        document.querySelectorAll('.modal-switch-btn').forEach(button => {
-             button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const currentModal = button.closest('.modal');
-                const targetModalId = button.getAttribute('data-modal-target');
-                const targetModal = document.getElementById(targetModalId);
-                if(currentModal) closeModal(currentModal, () => {
-                     if(targetModal) openModal(targetModal);
-                });
-            });
-        });
-
-        function openModal(modal) {
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modal.querySelector('.modal-content').classList.remove('scale-95');
-            }, 10);
-        }
-
-        function closeModal(modal, callback) {
-            modal.classList.add('opacity-0');
-            modal.querySelector('.modal-content').classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                if (callback) callback();
-            }, 300);
-        }
-        
-        // --- FOOTER YEAR ---
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-
-    });
-  </script>
-    <!-- GALLERY & UI SCRIPT (dynamic lightbox) -->
-    <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const photoGallery = document.getElementById('photo-gallery');
-        const galleryModal = document.getElementById('gallery-modal');
-        const modalImg = document.getElementById('modal-img');
-        const modalCaption = document.getElementById('modal-caption');
-        const modalClose = document.getElementById('modal-close');
-        const modalPrev = document.getElementById('modal-prev');
-        const modalNext = document.getElementById('modal-next');
-        if (!photoGallery || !galleryModal) return;
-
-        // Images with captions
-        // Remplacer tous les {% static '...' %} par des chemins directs
-        const imagesPaths = {
-            logo: "./images/oiseaux.jpeg",
-            campus: "./images/campus.jpg",
-            grotte: "./images/grotte.jpg",
-            facade: "./images/facade.jpg",
-            primaire: "./images/primaire.jpg",
-            cours: "./images/cours.jpg",
-            point: "./images/point.jpg",
-            bbio: "./images/bbio.jpg",
-            cinquantenaire: "./images/cinquantenaire.jpg",
-            drapeau: "./images/drapeau.jpg"
-        };
-
-        // build thumbnails
-        photoGallery.innerHTML = '';
-        images.forEach((img, idx) => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'block relative overflow-hidden rounded-lg shadow-md';
-            btn.setAttribute('aria-label', img.caption || `Photo ${idx+1}`);
-            btn.innerHTML = `<img src="${img.thumb}" alt="${img.caption||'Photo'}" class="w-full h-48 object-cover transform hover:scale-105 transition-transform duration-300">`;
-            btn.addEventListener('click', (e) => { e.preventDefault(); openLightbox(idx); });
-            photoGallery.appendChild(btn);
-        });
-
-        let currentIndex = 0;
-        function openLightbox(index) {
-            currentIndex = index;
-            const it = images[currentIndex];
-            modalImg.src = it.full;
-            modalImg.alt = it.caption || '';
-            modalCaption.textContent = it.caption || '';
-            galleryModal.classList.remove('hidden');
-            galleryModal.classList.add('flex');
-            // small delay to trigger transition classes if present
-            setTimeout(() => galleryModal.classList.remove('opacity-0'), 10);
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            galleryModal.classList.add('opacity-0');
-            setTimeout(() => {
-                galleryModal.classList.add('hidden');
-                galleryModal.classList.remove('flex');
-                modalImg.src = '';
-                document.body.style.overflow = '';
-            }, 200);
-        }
-
-        modalClose?.addEventListener('click', closeLightbox);
-        modalPrev?.addEventListener('click', (e) => { e.stopPropagation(); currentIndex = (currentIndex - 1 + images.length) % images.length; openLightbox(currentIndex); });
-        modalNext?.addEventListener('click', (e) => { e.stopPropagation(); currentIndex = (currentIndex + 1) % images.length; openLightbox(currentIndex); });
-
-        galleryModal.addEventListener('click', (e) => { if (e.target === galleryModal) closeLightbox(); });
-
-        document.addEventListener('keydown', (e) => {
-            if (galleryModal.classList.contains('flex')) {
-                if (e.key === 'Escape') closeLightbox();
-                if (e.key === 'ArrowLeft') modalPrev?.click();
-                if (e.key === 'ArrowRight') modalNext?.click();
-            }
-        });
-
-        // set footer year if not already set
-        const cy = document.getElementById('current-year'); if(cy) cy.textContent = new Date().getFullYear();
-    });
     </script>
-    <script>
+  </main>
 
+  <footer class="site-footer">
+    <div class="container site-footer__main">
+      <div>
+        <a class="brand" href="#accueil" aria-label="Collège Maele — accueil">
+        <img class="brand__logo" src="./Images/Oiseaux.jpeg" alt="" width="48" height="48">
+        <span class="brand__text"><span class="brand__name">Collège Maele</span><span class="brand__tagline">Kisangani · depuis 1939</span></span>
+      </a>
+        <p class="footer-about">École conventionnée catholique de l’Archidiocèse de Kisangani, le Collège Maele forme depuis 1939 des jeunes compétents, intègres et engagés au service de leur pays.</p>
+        <p class="footer-motto">Impavidi Progrediamur</p>
+        <div class="socials">
+          <a href="https://web.facebook.com/profile.php?id=61594951737384" target="_blank" rel="noopener noreferrer" aria-label="Facebook du Collège Maele (nouvel onglet)"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+          <a href="https://wa.me/243815493115" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp du Collège Maele (nouvel onglet)"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+          <a href="mailto:contact@college-maele.com" aria-label="Écrire au Collège Maele par e-mail"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <nav aria-labelledby="f-college">
+        <h2 id="f-college">Le Collège</h2>
+        <ul class="footer-links">
+          <li><a href="#college">Présentation</a></li>
+          <li><a href="#enseignement">Enseignement</a></li>
+          <li><a href="#histoire">Histoire</a></li>
+          <li><a href="#hymne">L’hymne « La Maélienne »</a></li>
+          <li><a href="./profs.html">Direction &amp; professeurs</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-vie">
+        <h2 id="f-vie">Vie au collège</h2>
+        <ul class="footer-links">
+          <li><a href="#campus">Le campus</a></li>
+          <li><a href="./galerie.html">Galerie photo</a></li>
+          <li><a href="./pages/accueil.html">Actualités</a></li>
+          <li><a href="#admissions">Admissions</a></li>
+          <li><a href="#soutenir">Soutenir le collège</a></li>
+          <li><a href="./recueille.html">Espace enseignants</a></li>
+        </ul>
+      </nav>
+      <div>
+        <h2>Nous contacter</h2>
+        <ul class="footer-contact">
+          <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i><address>Boulevard Lumumba N°2, Quartier des Musiciens, Makiso, Kisangani — RDC</address></li>
+          <li><i class="fa-solid fa-phone" aria-hidden="true"></i><a href="tel:+243815493115">+243 81 54 93 115</a></li>
+          <li><i class="fa-solid fa-envelope" aria-hidden="true"></i><a href="mailto:contact@college-maele.com">contact@college-maele.com</a></li>
+        </ul>
+        <a class="btn btn--ghost-light btn--sm mt-3" href="./contact.html">Formulaire de contact <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+    </div>
+    <div class="site-footer__bottom">
+      <div class="container">
+        <p>© <span data-year>2026</span> Collège Maele · Kisangani. Tous droits réservés.</p>
+        <p>Conception : <a href="https://davidwawina.site" target="_blank" rel="noopener noreferrer">Optimum Entreprise</a></p>
+      </div>
+    </div>
+  </footer>
 
-// SCRIPT UNIFIÉ ET CORRIGÉ 
-    document.addEventListener('DOMContentLoaded', () => {
-        // --- MENU HAMBURGER ---
-        const hamburgerButton = document.getElementById('hamburger-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const closeMenuButton = document.getElementById('close-menu-button');
-        const mobileLinks = document.querySelectorAll('.mobile-link');
-        if (hamburgerButton) hamburgerButton.addEventListener('click', () => mobileMenu.classList.remove('translate-x-full'));
-        if (closeMenuButton) closeMenuButton.addEventListener('click', () => mobileMenu.classList.add('translate-x-full'));
-        mobileLinks.forEach(link => link.addEventListener('click', () => mobileMenu.classList.add('translate-x-full')));
+  <button class="to-top" type="button" aria-label="Revenir en haut de la page"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
 
-        // --- SLIDER D'ARRIÈRE-PLAN ---
-        const bgSlider = document.getElementById('bg-slider');
-        if (bgSlider) {
-            const slides = bgSlider.querySelectorAll('.bg-slide');
-            let currentSlide = 0;
-            let slideInterval = setInterval(() => showSlide((currentSlide + 1) % slides.length), 7000);
-            function showSlide(index) {
-                slides.forEach((slide, i) => { slide.style.opacity = i === index ? '1' : '0'; });
-                currentSlide = index;
-            }
-        }
-
-        // --- ANIMATIONS AU DÉFILEMENT ---
-        const animatedSections = document.querySelectorAll('.animated-section');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        animatedSections.forEach(section => observer.observe(section));
-
-        // --- CONTRÔLEUR DE MODALES UNIFIÉ ---
-        const modalTriggers = document.querySelectorAll('[data-modal-target]');
-        const allModals = document.querySelectorAll('.modal');
-
-        function openModal(modal) {
-            if (!modal) return;
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => { // Permet au navigateur de rendre le 'flex' avant d'animer l'opacité
-                modal.classList.remove('opacity-0');
-                modal.querySelector('.modal-content')?.classList.remove('opacity-0', 'scale-95');
-            }, 20);
-        }
-
-        function closeModal(modal) {
-            if (!modal) return;
-            modal.classList.add('opacity-0');
-            modal.querySelector('.modal-content')?.classList.add('opacity-0', 'scale-95');
-            setTimeout(() => { // Attend la fin de la transition avant de cacher
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 300);
-        }
-
-        modalTriggers.forEach(trigger => {
-            trigger.addEventListener('click', () => {
-                const targetId = trigger.getAttribute('data-modal-target');
-                const targetModal = document.getElementById(targetId);
-                
-                // Si le déclencheur est dans une modale, fermer la modale actuelle d'abord
-                const currentModal = trigger.closest('.modal');
-                if (currentModal) {
-                    closeModal(currentModal);
-                }
-                
-                openModal(targetModal);
-            });
-        });
-
-        allModals.forEach(modal => {
-            // Fermer avec le bouton '×'
-            modal.querySelector('.modal-close')?.addEventListener('click', () => closeModal(modal));
-            // Fermer en cliquant sur le fond
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal(modal);
-            });
-        });
-
-        // Fermer avec la touche 'Echap'
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                const openModal = document.querySelector('.modal:not(.hidden)');
-                if (openModal) closeModal(openModal);
-            }
-        });
-
-        // --- ANNÉE DU FOOTER ---
-        const yearSpan = document.getElementById('current-year');
-        if(yearSpan) yearSpan.textContent = new Date().getFullYear();
-    });
-  </script>
-
-  <!-- Centralized animation initializer: ensures elements with animation classes become visible -->
-  <script>
-  (function(){
-    function shouldReduceMotion(){
-      return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    }
-
-    function applyVisible(el, delay){
-      if(!el) return;
-      if(shouldReduceMotion()){
-        el.classList.add('visible');
-        return;
-      }
-      if(delay && delay > 0){
-        setTimeout(()=> el.classList.add('visible'), delay);
-      } else {
-        el.classList.add('visible');
-      }
-    }
-
-    function initAnimations(){
-      const selector = '.animated-section, .slide-in-left, .slide-in-right, .fade-in-up, .stagger-item';
-      const els = Array.from(document.querySelectorAll(selector));
-      if(!els.length) return;
-
-      // First pass: mark items already in viewport
-      els.forEach((el, i) => {
-        // allow per-item data-delay (ms) or stagger (small incremental delays)
-        const dataDelay = parseInt(el.getAttribute('data-delay') || '0', 10);
-        const stagger = el.classList.contains('stagger-item') ? (i % 6) * 80 : 0;
-        const totalDelay = Math.max(0, dataDelay + stagger);
-
-        const rect = el.getBoundingClientRect();
-        if(rect.top < (window.innerHeight || document.documentElement.clientHeight) - 40){
-          applyVisible(el, totalDelay);
-        }
-      });
-
-      if(shouldReduceMotion()) return; // no observer when reduced motion requested
-
-      const obsOptions = { threshold: 0.12 };
-      const animObserver = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting){
-            const el = entry.target;
-            const dataDelay = parseInt(el.getAttribute('data-delay') || '0', 10);
-            const idx = Array.from(document.querySelectorAll(selector)).indexOf(el);
-            const stagger = el.classList.contains('stagger-item') ? (idx % 6) * 80 : 0;
-            applyVisible(el, dataDelay + stagger);
-            obs.unobserve(el);
-          }
-        });
-      }, obsOptions);
-
-      els.forEach(el => {
-        // skip if already visible
-        if(el.classList.contains('visible')) return;
-        animObserver.observe(el);
-      });
-    }
-
-    if(document.readyState === 'loading'){
-      document.addEventListener('DOMContentLoaded', initAnimations);
-    } else {
-      initAnimations();
-    }
-
-    // Re-run on resize/orientation change to catch layout changes
-    let resizeTO;
-    window.addEventListener('resize', () => { clearTimeout(resizeTO); resizeTO = setTimeout(initAnimations, 200); });
-    window.addEventListener('orientationchange', () => setTimeout(initAnimations, 120));
-  })();
-  </script>
-  <script>
-    (function(){
-      const bar = document.getElementById('progressBar');
-      if(!bar) return;
-      function update(){
-        const doc = document.documentElement;
-        const scrollTop = window.scrollY || doc.scrollTop || 0;
-        const height = doc.scrollHeight - doc.clientHeight;
-        const pct = height > 0 ? Math.min(100, Math.max(0, (scrollTop / height) * 100)) : 0;
-        bar.style.width = pct + '%';
-      }
-      window.addEventListener('scroll', update, { passive: true });
-      window.addEventListener('resize', update);
-      update();
-    })();
-  </script>
+  <script src="./assets/js/equipe.js?v=20261020"></script>
+  <script src="./assets/js/maele.js?v=20261020"></script>
 </body>
 </html>
-
